@@ -1,13 +1,22 @@
-image: ruby:2.7
+image: debian:latest
 
+variables:
+  COBALT_VERSION: "v0.15.0"
 pages:
   script:
-    - gem install bundler
-    - bundle install
-    - bundle exec jekyll build -d public
+  - apt-get update && apt-get -y install curl
+  - curl -LSfs https://japaric.github.io/trust/install.sh |
+    sh -s --
+    --git cobalt-org/cobalt.rs
+    --crate cobalt
+    --force
+    --target x86_64-unknown-linux-gnu
+    --tag $COBALT_VERSION
+  - export PATH="$PATH:~/.cargo/bin"
+  - mkdir -p public
+  - cobalt build -d public
   artifacts:
     paths:
-      - public
+    - public/
   only:
-    - main
-
+  - main

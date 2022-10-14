@@ -1,0 +1,7 @@
+
+site:
+  title: Almaz Murzabekov
+  description: Almaz Murzabekov live
+  base_url: http://almaz.murzabekov.net
+posts:
+  rss: rss.xml
