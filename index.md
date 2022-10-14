@@ -24,9 +24,7 @@ title: Almaz Murzabekov
                     <h3 class="article-subtitle">{{ post.data.subtitle }}</h3>
                 </div>
                 <footer class="article-time">
-                    <div>
-                        Published: <time class="article-time--published"> {{ post.published_date }} </time>
-                    </div>
+                    <div>Published: <time class="article-time--published"> {{ post.published_date | date: "%Y-%m-%d %H:%M" }}</time></div>
                     <span class="bm b bn bo cn">·</span>
                     <div>
                         <time class="article-time--reading">1 minute read</time>

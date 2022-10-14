@@ -34,7 +34,7 @@
                         <h3 class="article-subtitle">{{ page.data.subtitle }}</h3>
                     </div>
                     <footer class="article-time">
-                        <div>Published: <time class="article-time--published"> {{ page.published_date }} </time></div>
+                        <div>Published: <time class="article-time--published"> {{ page.published_date | date: "%Y-%m-%d %H:%M" }}</time></div>
                         <span class="bm b bn bo cn">·</span>
                         <div><time class="article-time--reading">1 minute read</time></div>
                     </footer>
