@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-scheme="light">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta name="Almaz Murzabekov blog" content="Almaz Murzabekov blog">
+
+      <title>Almaz Murzabekov blog</title>
+
+      <link rel="canonical" href="https://almaz.murzabekov.net/">
+      <link rel="stylesheet" href="/static/css/style.css">
+      <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="shortcut icon" type="image/x-icon" href="/static/images/icon.ico">
+    </head>  
+    <body class="article-page" style="transition: background-color 0.3s ease 0s;">
+      {% include "dark_mode_scripts.liquid" %}
+
+      <div class="container main-container flex on-phone--column extended">
+        {% include "left_aside.liquid" %}
+        <main class="main full-width">
+          <article class="has-image main-article">
+            <header class="article-header">
+                <div class="article-image">
+                    <a href="{{ page.permalink }}">
+                        <img src="{{ page.data.hover_img }}" width="100%" loading="lazy" alt="Featured image of post Hello World">
+                    </a>
+                </div>
+                <div class="article-details">
+                    <header class="article-category">
+                        <a href="https://almaz.murzabekov.net/categories/{{ page.categories }}/" style="background-color:#2a9d8f;color:#fff">{{ page.categories }}</a>
+                    </header>
+                    <div class="article-title-wrapper">
+                        <h3 class="article-title"><a href="{{ page.permalink }}"> {{ page.title }}</a></h3>
+                        <h3 class="article-subtitle">{{ page.data.subtitle }}</h3>
+                    </div>
+                    <footer class="article-time">
+                        <div>Published: <time class="article-time--published"> {{ page.published_date }} </time></div>
+                        <span class="bm b bn bo cn">·</span>
+                        <div><time class="article-time--reading">1 minute read</time></div>
+                    </footer>
+                </div>
+            </header>
+            {{ page.content }}
+            
+            <footer class="article-footer">
+                <section class="article-tags">
+                    {% for tag in page.tags %}
+                        <a href="/tags/{{ tag }}/">{{ tag }}</a>
+                    {% endfor %}
+                </section>
+            </footer>
+          </article>
+
+          
+        </main>
+      </div>
+
+      <script src="/static/js/main.js"></script>
+      <script src="/static/js/vibrant.min.js" integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin="anonymous"></script>
+   
+      <script>(
+            function(){
+            const e=document.createElement("link");
+            e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",
+            e.type="text/css",
+            e.rel="stylesheet",
+            document.head.appendChild(e)})()
+        </script>
+  </body>
+</html>

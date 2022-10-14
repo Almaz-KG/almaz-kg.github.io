@@ -1,0 +1,83 @@
+<aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+    <header>
+        <figure class="site-avatar">
+            <a href="https://almaz.murzabekov.net/">
+                <img src="/static/images/almaz.jpg" width="280" height="420" class="site-logo" loading="lazy" alt="Avatar">
+            </a>
+        </figure>
+        <div class="site-meta">
+            <h1 class="site-name"><a href="https://almaz.murzabekov.net/">Murzabekov Almaz</a></h1>
+            <h2 class="site-description">Posts about Rust, Data Engineering, Data Catalogs and others</h2>
+        </div>
+    </header>
+    <ol class="social-menu">
+        <li>
+            <a href="https://gitlab.com/almazmurzabekov" target="_blank" title="GitHub">
+                <img src="/static/images/socials/gitlab.svg" alt="GitLab" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            </a>
+        </li>
+
+        <li>
+            <a href="https://www.linkedin.com/in/almazmurzabekov/" target="_blank" title="GitHub">
+                <img src="/static/images/socials/linkedin.svg" alt="Linkedin" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            </a>
+        </li>
+
+        <li>
+            <a href="/" target="_blank" title="Youtube">
+                <img src="/static/images/socials/youtube1.svg" alt="Youtube" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            </a>
+        </li>
+
+        <li>
+            <a href="//" target="_blank" title="Instagram">
+                <img src="/static/images/socials/instagram.svg" alt="Instagram" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            </a>
+        </li>
+    </ol>
+
+    <section class="widget archives">
+        <h2 class="widget-title section-title">Archives</h2>
+        <div class="widget-archive--list">
+            <div class="archives-year">
+                <a href="https://almaz.murzabekov.net/archives/#2022">
+                    <span class="year">2022</span>
+                    <span class="count">1</span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="widget tagCloud">
+        <h2 class="widget-title section-title">Categories</h2>
+        <div class="tagCloud-tags">
+            <a href="https://almaz.murzabekov.net/categories/rust/" class="font_size_1">Rust</a>
+        </div>
+        <div class="tagCloud-tags">
+            <a href="https://almaz.murzabekov.net/categories/de/" class="font_size_1">Data Engineering</a>
+        </div>
+        <div class="tagCloud-tags">
+            <a href="https://almaz.murzabekov.net/categories/dc/" class="font_size_1">Data Catalogs</a>
+        </div>
+    </section>
+    <section class="widget tagCloud">
+        <h2 class="widget-title section-title">Tags</h2>
+        <div class="tagCloud-tags">
+            <a href="https://almaz.murzabekov.net/tags/data-quality/" class="font_size_2">Data Quality</a>
+        </div>
+        <div class="tagCloud-tags">
+            <a href="https://almaz.murzabekov.net/tags/data-quality/" class="font_size_2">Integrations</a>
+        </div>
+        <div class="tagCloud-tags">
+            <a href="https://almaz.murzabekov.net/tags/data-quality//" class="font_size_2">Pipelines</a>
+        </div>
+
+    </section>
+
+    {% include "dark_mode_slider.liquid" %}
+
+</aside>
