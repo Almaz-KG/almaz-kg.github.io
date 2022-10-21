@@ -4,7 +4,7 @@ title: Data Coffee podcast. Talks about Data Catalogs
 published_date: 2022-10-14 20:19:30 +0001
 layout: posts_layout.liquid
 is_draft: false
-categories: ["Data Engineering"]
+categories: ["Data Catalogs"]
 tags: ["Data Engineering", "Data Catalogs", "Podcast"]
 data: 
     hover_img: "/static/images/posts/data-catalogs-podcast-01/1.jpg"
