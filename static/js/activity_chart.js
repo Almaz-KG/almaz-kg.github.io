@@ -17,7 +17,6 @@ activities.set("2022-10-26", 55);
 activities.set("2022-10-27", 60);
 activities.set("2022-10-28", 65);
 
-const squares = document.querySelector('.squares');
 const get = (id) => activities.get(id) || 0;
 
 function dateFromDay(year, day){
@@ -25,6 +24,7 @@ function dateFromDay(year, day){
     return new Date(date.setDate(day)); // add the number of days
 }
 
+const squares = document.querySelector('.squares');
 for (var i = 1; i < 365; i++) {
     const activityCount = get(dateFromDay(2022, i).toISOString().slice(0, 10));
     let level = -1;

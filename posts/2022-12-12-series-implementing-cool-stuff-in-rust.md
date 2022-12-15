@@ -1,7 +1,7 @@
 ---
 permalink: /posts/implementing-cool-stuff-in-rust
 title: '[Series] Implementing Cool Stuff in Rust'
-published_date: 2022-12-12 20:19:30 +0001
+published_date: 2022-12-12 00:00:00 +0001
 layout: posts_layout.liquid
 is_draft: false
 categories: ["Rust"]
