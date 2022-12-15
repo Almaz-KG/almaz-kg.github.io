@@ -4,14 +4,12 @@ title: '[Series] Implementing Cool Stuff in Rust'
 published_date: 2022-12-12 00:00:00 +0001
 layout: posts_layout.liquid
 is_draft: false
-categories: ["Rust"]
-tags: ["Projects", "Announce"]
+categories: ["Projects", "Rust", "Announce"]
+tags: ["Projects", "Rust", "Announce"]
 data: 
     hover_img: "/static/images/posts/implementing-cool-stuff-in-rust/1.jpg"
     subtitle: "Announce of long run series about implementing different techs in Rust "
 ---
-
-<section class="article-content">
 
 It has been quite a while since my last post. It took almost two months to come up with a new post and try to explain my future mid-term and long-term goals in Rust. I've been playing with the Rust programming language for a couple of months, with some basic projects, and now I feel quite confident to start some bigger and more advanced projects. Maybe, in the future, this activity will turn out to be a sharable resource for the whole Rust community, but for now, let's try to get our hands dirty with the implementation of several projects to feel how it is to be a Rust Developer as a whole.
 

@@ -17,7 +17,7 @@
                 </div>
                 <div class="article-details">
                     <header class="article-category">
-                        <a href="https://almaz.murzabekov.net/categories/{{ page.categories }}/" style="background-color:#2a9d8f;color:#fff">{{ page.categories }}</a>
+                        {% for cat in page.categories %}<a style="background-color:#2a9d8f;color:#fff">{{cat}}</a>{% endfor %}
                     </header>
                     <div class="article-title-wrapper">
                         <h3 class="article-title"><a href="{{ page.permalink }}"> {{ page.title }}</a></h3>
@@ -25,20 +25,12 @@
                     </div>
                     <footer class="article-time">
                         <div>Published: <time class="article-time--published"> {{ page.published_date | date: "%Y-%m-%d %H:%M" }}</time></div>
-                        <span class="bm b bn bo cn">·</span>
-                        <div><time class="article-time--reading">1 minute read</time></div>
                     </footer>
                 </div>
             </header>
+            <section class="article-content">
             {{ page.content }}
-            
-            <footer class="article-footer">
-                <section class="article-tags">
-                    {% for tag in page.tags %}
-                        <a href="/tags/{{ tag }}/">{{ tag }}</a>
-                    {% endfor %}
-                </section>
-            </footer>
+            </section>
           </article>
         </main>
       </div>

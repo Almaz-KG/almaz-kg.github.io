@@ -15,20 +15,15 @@ title: Almaz Murzabekov
             </div>
             <div class="article-details">
                 <header class="article-category">
-                    <a href="https://almaz.murzabekov.net/categories/{{ post.categories }}/" style="background-color:#2a9d8f;color:#fff">{{ post.categories }}</a>
+                {% for cat in post.categories %}<a style="background-color:#2a9d8f;color:#fff">{{cat}}</a>{% endfor %}
                 </header>
                 <div class="article-title-wrapper">
                     <h2 class="article-title">
                         <a href="{{ post.permalink }}"> {{ post.title }}</a>
                     </h2>
-                    <h3 class="article-subtitle">{{ post.data.subtitle }}</h3>
                 </div>
                 <footer class="article-time">
-                    <div>Published: <time class="article-time--published"> {{ post.published_date | date: "%Y-%m-%d %H:%M" }}</time></div>
-                    <span class="bm b bn bo cn">·</span>
-                    <div>
-                        <time class="article-time--reading">1 minute read</time>
-                    </div>
+                    <div>Published: <time class="article-time--published"> {{ post.published_date | date: "%Y-%m-%d" }}</time></div>
                 </footer>
             </div>
         </header>
