@@ -12,7 +12,7 @@ data:
 ---
 If you are preparing for a Rust interview or if you are an interviewer looking for questions to ask potential candidates, this post is for you.
 
-In this post, we will cover a range of Rust interview questions that might be considered topics for interviewing experienced senior engineer candidates. These questions cover various topics, including Rust language features, concurrency and parallelism, memory management, testing and debugging, performance optimization, and integration with external libraries and platforms. There is no answer for each question because these questions are comprehensive and the answer depends on the background experience of the candidate. Anyway, the following questions are just openings for having a good conversation with a candidate.
+In this post, we will cover a range of Rust interview questions that might be considered as topics for interviewing experienced candidates. These questions cover various topics, including Rust language features, concurrency and parallelism, memory management, testing and debugging, performance optimization, and integration with external libraries and platforms. There is no answer for each question because these questions are comprehensive and the answer depends on the background experience of the candidate. Anyway, the following questions are just openings for having a good conversation with a candidate.
 
 ### General openings
 
