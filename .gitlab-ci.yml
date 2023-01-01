@@ -1,7 +1,7 @@
 image: debian:latest
 
 variables:
-  COBALT_VERSION: "v0.15.0"
+  COBALT_VERSION: "v0.18.3"
 pages:
   script:
   - apt-get update && apt-get -y install curl
