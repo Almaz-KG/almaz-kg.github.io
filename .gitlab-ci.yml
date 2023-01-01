@@ -13,7 +13,6 @@ pages:
     --target x86_64-unknown-linux-gnu
     --tag $COBALT_VERSION
   - export PATH="$PATH:~/.cargo/bin"
-  - mkdir -p public
   - cobalt build -d public
   - ls -la public
   - ls -la public/public

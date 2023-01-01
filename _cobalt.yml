@@ -1,17 +1,16 @@
 source: "."
 destination: _site
 site:
-  title: Almaz Murzabekov
-  description: Almaz Murzabekov live
-  base_url: https://almaz.murzabekov.net
-
-
+  title: Almaz Murzabekov's blog
+  description: Almaz Murzabekov's blog
+  base_url: https://almaz.murzabekov.net/
+  sitemap: sitemap
 
 # Build options
 template_extensions:
   - md
   - liquid
-include_drafts: true
+include_drafts: false
 
 default:
   excerpt_separator: "\n\n"
@@ -27,16 +26,12 @@ pages:
     layout: default.liquid
     permalink: /{{parent}}/{{name}}/
 
-# posts:
-#   rss: rss.xml
-#   dir: posts
-#   drafts_dir: _drafts
-#   order: Desc
-#   default: {}
-#   publish_date_in_filename: true
-#   title: ~
-#   description: ~
-#   rss: ~
-#   jsonfeed: ~
+posts:
+  rss: rss.xml
+  dir: posts
+  drafts_dir: _drafts
+  order: Desc
+  default: {}
+  publish_date_in_filename: true
   
   
