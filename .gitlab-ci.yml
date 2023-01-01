@@ -16,6 +16,7 @@ pages:
   - mkdir -p public
   - cobalt build -d public
   - ls -la public
+  - ls -la public/public
   artifacts:
     paths:
     - public/
