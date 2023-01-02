@@ -1,22 +1,10 @@
-image: rust:latest
+image: registry.gitlab.com/pages/hugo/hugo_extended:latest
 
-variables:
-  COBALT_VERSION: "v0.18.3"
-  COBALT_GIT_URL: https://github.com/cobalt-org/cobalt.rs.git
 pages:
   script:
-  - mkdir /cobalt
-  - cd /cobalt
-  - git clone --branch $COBALT_VERSION $COBALT_GIT_URL
-  - cd cobalt.rs/
-  - cargo build --release
-  - export PATH="$PATH:$(pwd)/target/release/"
-  - cd /builds/almazmurzabekov/blog/
-  - cobalt --version
-  - ls -la 
-  - cobalt build -d public
+  - hugo
   artifacts:
     paths:
-    - public/
-  only:
-  - main
+    - public
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

@@ -1,0 +1,167 @@
+# if your site is in 'https', then make sure your base url isn't written using 'http' otherwise your 
+# sitemap would contain http (as opposeed to https) URLs. This would affect Google indexing of your URLs.
+baseURL: "https://almaz.murzabekov.net/"
+title: Almaz Murzabekov
+theme: hugo-PaperMod
+
+enableInlineShortcodes: true
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+enableEmoji: true
+pygmentsUseClasses: true
+googleAnalytics: G-DDNMG31JN9
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+languages:
+  en:
+    languageName: "English"
+    weight: 1
+    taxonomies:
+      category: categories
+      tag: tags
+      series: series
+    menu:
+      main:
+        - name: Archive
+          url: archives
+          weight: 5
+        - name: Search
+          url: search/
+          weight: 10
+        - name: Tags
+          url: tags/
+          weight: 10
+        - name: Projects
+          url: projects/
+          weight: 11
+        - name: About
+          url: /about/
+          weight: 30
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: Almaz Murzabekov's blog
+  description: "Almaz Murzabekov Personal blog"
+  keywords: [Blog, Almaz, Murzabekov, Data Engineering, dbt, Rust, Personal, PaperMod]
+  author: Almaz Murzabekov
+  images: ["static/images"]
+  DateFormat: "January 2, 2006"
+  defaultTheme: auto # dark, light
+  disableThemeToggle: false
+
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: true
+  hidemeta: false
+  hideSummary: false
+  showtoc: false
+  tocopen: false
+
+  label:
+    text: "|"
+
+  profileMode:
+      enabled: false
+
+  homeInfoParams:
+    Title: "Almaz Murzabekov's blog"
+    Content: ""
+
+  socialIcons:
+    - name: email
+      url: "mailto:almaz@murzabekov.net"
+    - name: Rss
+      url: "index.xml"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/almazmurzabekov/"
+    - name: gitlab
+      url: "https://gitlab.com/almazmurzabekov"
+    - name: telegram
+      url: "https://t.me/AlmazKG"
+    - name: instagram
+      url: "https://www.instagram.com/almazmurzabekov/"
+
+  label:
+      text: "Home"
+      iconHeight: 35
+
+  analytics:
+    google:
+      SiteVerificationTag: "XYZabc"
+
+  assets:
+    disableHLJS: true
+    favicon: "favicon.ico"
+    favicon16x16: "favicon.ico"
+    favicon32x32: "favicon.ico"
+  #     apple_touch_icon: "<link / abs url>"
+  #     safari_pinned_tab: "<link / abs url>"
+
+  cover:
+    hidden: true # hide everywhere but not in structured data
+    hiddenInList: true # hide on list pages and home
+    hiddenInSingle: true # hide on single page
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys: ["title", "permalink", "summary", "content"]
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false
+    # anchorLineNos: true
+    # codeFences: true
+    # guessSyntax: true
+    # lineNos: true
+    # style: monokai
+
+privacy:
+  vimeo:
+    disabled: false
+    simple: true
+
+  twitter:
+    disabled: false
+    enableDNT: true
+    simple: true
+
+  instagram:
+    disabled: false
+    simple: true
+
+  youtube:
+    disabled: false
+    privacyEnhanced: true
+
+services:
+  instagram:
+    disableInlineCSS: true
+  twitter:
+    disableInlineCSS: true
