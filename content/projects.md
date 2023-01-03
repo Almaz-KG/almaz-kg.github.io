@@ -15,3 +15,4 @@ I have an ambitious project called the `Implementing X in Rust Series`, which co
 - Implementing Bitcoin in Rust [Planned]. Upcoming milestone: Project start mid-2023
 - Implementing HDFS in Rust [Planned]. Upcoming milestone: Project start early-2024
 - Implementing Cassandra in Rust [Planned]. Upcoming milestone: Project start early-2025
+- Implementing IPFS in Rust [Considering].
