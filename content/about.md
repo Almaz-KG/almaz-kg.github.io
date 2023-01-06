@@ -13,7 +13,7 @@ img {
 </style>
 {{< /css.inline >}}
 
-{{< figure src="/images/almaz.jpg" title="" alt="Almaz Murzabekov">}}
+{{< figure src="/images/almaz.png" title="" alt="Almaz Murzabekov">}}
 
 Hi 👋, my name is Almaz and I am a Data Engineer with more than 8 years of experience. I have always been passionate about high-load and big-data systems and have been fortunate to be able to pursue my interests through my work and personal projects. In my free time, you can find me learning about new things that spark my curiosity. I am excited to share my passions and experiences with you, and I hope that you will join me on my journey of discovery and learning.
 
