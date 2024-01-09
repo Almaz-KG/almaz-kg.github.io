@@ -8,13 +8,48 @@ ShowToc: false
 ShowBreadCrumbs: true
 ---
 
-dbt is the `T` in `ELT (Extract Load Transform)`. It doesn’t extract or load data, but it’s extremely good at transforming data that’s already loaded into your warehouse. If you've been working with dbt for a while, you probably noticed that dbt doesn't check the resulting version of models for sql correctness. That's a problem!
+dbt is the `T` in `ELT (Extract Load Transform)`. It doesn’t extract or load data, but it’s extremely good at transforming data that’s already loaded into your warehouse. 
 
-The lack of check functionality is based on the diverse range of databases, which dbt wants to support. If some of the popular database doesn't have the functionality to check the sql for correctness without executing it, it becomes a problem for the dbt-db adapter. And it's one of the reason why dbt doesn't provide the validation functionaly out-of-the box.
+If you've been working with dbt for a while, you probably noticed that dbt doesn't give you any option to validate the changes you've made on dbt models for sql correctness. That's a problem!
 
-We as a data-engineers should somehow handle the situation when the model becomes invalid in terms of compiled sql. Let's say someone in your team refactored the model, renamed the column name. Unless these changes will not be applied in production (table column renaming), the compiled version of dbt-model should fail. And it should fail as-fast-as-possible, even more it should fail in merge request phase, before being delivered to production envirounment.  
+The lack of validation functionality is mostly because the diverse range of databases, which dbt wants to support. If some of the popular database doesn't have the functionality to validating the sql for correctness without executing it, it becomes a problem for the dbt adapter. And it's one of the reason why dbt doesn't provide the validation functionaly out-of-the box.
 
-### So, who we can create our in-house validation process?
+The type of changes for the model might be different, but we'll concentrated on two of them:
+- changes in dbt model business logic (mostly changes in sql)
+- changes in dbt-model configuration (dbt-related changes, like partitioning, dbt-hooks, tests, etc)
+
+We want to prevent the situations, where any change in your dbt models might break the production pipelines. In a usual setup, your dbt models are running in the modingn once a day, and if you as a Data Team failed in the validation process, probably your morning dbt pipeline will fail. So, we want to somehow prevent it from happening. Ideally, we want to catch these cases during development pipeline, maybe it should be integrated with your development pipeline, so you'll get the error message instantly, during the dev process, not in the morning when the pipeline is already failed. So, this validation is cases of invalid state must fail as-fast-as-possible, even more it should fail in merge request phase, before being delivered to production envirounment.  
+
+### Is there any known solution we can grab for us?
+
+Unfornutelly, as for end of 2023, there is no available option for the dbt-world addressing for the above issue. I heard a lot of inhouse-solutions, heavely coupled with their infrastacture and setup. If you found any suitable option, please let me know.
+
+## We're going to discuss the possible options to solve the challenge!
+
+### How the validatiopn pipeline should looks like?
+
+First things first! Let's imagine how the development pipeline might looks like if we had a validation feature inside dbt-core functionality.
+Probably, we can start with the developer env setup. Usually, developers are working with their dev-env which is safe zone for them. This setup must be isolated from the production, so any changes/modification in dev env doesn't have effect on the prod env. So, let's keep this idea in mind. 
+
+The second idea, is that the changes in dev must be applicable to the prod env, and vise versa. So, devs must have abitility in git like approach pull the latest version of tables from prod env. So, devs can easily develop their models with the latest version of models. 
+
+The third idea is that the devs can easy from CLI/GUI run the validation pipeline agianst the changes he/she made. 
+
+
+### What's the main requirements for the validation pipeline?
+
+In terms of requirements, the validation pipeline should have the following features:
+- undependant from any database specifics
+- able to validate pure ANSI SQL
+- able to validate dbt models compiled to ANSI SQL
+- able to validate dbt-test against compiled compiled to ANSI SQL. Here by tests we're assuming only correctness of the tests, not data tests!
+- able to validate dbt pre and post hooks
+- able to validate dbt sources, snapshots, and seeds
+- provide an easy way to extend the validation logic (add-ons)
+- provide an interface for the interaction
+- an easy way to setup in the env
+
+### So, how we can create our in-house validation process?
 
 First of all, we should make sure that our target database supports `EXPLAIN` command or has some alternative feacture which covers the same functionality. In this article, I'll demostrate the approach on Databricks. 
 

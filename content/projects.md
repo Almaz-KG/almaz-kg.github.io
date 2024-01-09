@@ -11,7 +11,7 @@ In this showcase, you'll get a glimpse into the projects that I have been workin
 
 I have an ambitious project called the `Implementing X in Rust Series`, which consists of a series of books focused on implementing specific technologies using the Rust programming language. This project requires a lot of effort and dedication, but I am confident that the end result will be worth it.
 
-- [Implementing BitTorrent Client in Rust](https://almazmurzabekov.gitlab.io/implementing-bittorrent-client-in-rust/) [Work in Progress].
+- [Implementing BitTorrent Client in Rust](https://almazmurzabekov.gitlab.io/implementing-bittorrent-client-in-rust/) [Work in Progress]. Upcoming milestone: Draft version of the book in April 2023
 - Implementing Bitcoin in Rust [Planned]. 
 - Implementing HDFS in Rust [Planned]. 
 - Implementing Cassandra in Rust [Planned]. 
