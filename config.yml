@@ -38,6 +38,9 @@ languages:
         - name: Projects
           url: projects/
           weight: 11
+        - name: Bookshelf
+          url: bookshelf/
+          weight: 11
         - name: About
           url: /about/
           weight: 30
