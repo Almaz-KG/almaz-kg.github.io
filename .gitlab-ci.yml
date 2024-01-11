@@ -1,10 +1,26 @@
-image: registry.gitlab.com/pages/hugo/hugo_extended:latest
+# image: registry.gitlab.com/pages/hugo/hugo_extended:latest
+
+# pages:
+#   script:
+#   - hugo
+#   artifacts:
+#     paths:
+#     - public
+#   rules:
+#   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 pages:
+  image: node:lts
+
+  before_script:
+    - cd astro
+    - npm ci
+
   script:
-  - hugo
+    - npm run build
+
   artifacts:
     paths:
-    - public
-  rules:
-  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - astro/public
+  only:
+    - astro
