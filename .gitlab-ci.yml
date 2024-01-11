@@ -25,7 +25,7 @@ pages:
     - pwd
     - ls -la
     - mkdir ${CI_PROJECT_DIR}/public
-    - cp -r public/* ${CI_PROJECT_DIR}/public
+    - cp -r dist/* ${CI_PROJECT_DIR}/public
 
   artifacts:
     paths:

@@ -21,8 +21,6 @@ export default defineConfig({
   ],
   site: 'https://almaz.murzabekov.net/',
   base: '/',
-  dist: 'public',
-  outDir: 'public',
   publicDir: 'static',
   public: 'static',
 });
