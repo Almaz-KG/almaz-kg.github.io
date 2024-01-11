@@ -1,10 +1,11 @@
 import {
   ColorTags,
-  GradientText,
   Project,
   Section,
   Tags,
 } from 'astro-boilerplate-components';
+
+import { GradientText } from './GradientText';
 
 const ProjectList = () => (
   <Section

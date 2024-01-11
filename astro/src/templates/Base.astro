@@ -24,13 +24,17 @@ const {
     <meta name='author' content={AppConfig.author} />
 
     <link rel='alternate' type='application/rss+xml' href='/rss.xml' />
-    <link rel='icon' type='image/x-icon' href='/favicon.ico' />
+    <link rel='icon' type='image/x-icon' href='/favicon.png' />
   </head>
-  <body class='bg-slate-900 text-gray-100'>
-    <Navbar />
+  <body class='bg-slate-900 text-gray-100 flex flex-col h-screen'>
+    <div class="">
+      <Navbar />
+    </div>
 
-    <slot></slot>
-
+    <div class="flex-grow">
+      <slot></slot>
+    </div>
+    
     <Footer />
   </body>
 </html>

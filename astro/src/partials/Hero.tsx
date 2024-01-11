@@ -1,65 +1,61 @@
-import {
-  GradientText,
-  HeroAvatar,
-  HeroSocial,
-  Section,
-} from 'astro-boilerplate-components';
+import { SocialLink } from '../components/SocialLink';
+import { Section } from '../components/Section';
+import { HeroAvatar } from '../components/HeroAvatar'
+
 
 const Hero = () => (
   <Section>
     <HeroAvatar
       title={
         <>
-          Hi there, I'm <GradientText>Ixartz</GradientText> 👋
+          Exploring the Digital Landscape
         </>
       }
       description={
         <>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus{' '}
-          <a className="text-cyan-400 hover:underline" href="/">
-            malesuada
-          </a>{' '}
-          nisi tellus, non imperdiet nisi tempor at. Lorem ipsum dolor sit amet,{' '}
-          <a className="text-cyan-400 hover:underline" href="/">
-            consectetur
-          </a>{' '}
-          adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+        A personal blog on Data Engineering, Modern Data Stack Techs, Rust, Frontend, React, and all the beyond
         </>
       }
       avatar={
         <img
-          className="h-80 w-64"
-          src="/assets/images/avatar.svg"
+          className="h-80 w-72"
+          src="/assets/images/almaz.png"
           alt="Avatar image"
           loading="lazy"
         />
       }
       socialButtons={
         <>
-          <a href="/">
-            <HeroSocial
-              src="/assets/images/twitter-icon.png"
-              alt="Twitter icon"
-            />
-          </a>
-          <a href="/">
-            <HeroSocial
-              src="/assets/images/facebook-icon.png"
-              alt="Facebook icon"
-            />
-          </a>
-          <a href="/">
-            <HeroSocial
-              src="/assets/images/linkedin-icon.png"
-              alt="Linkedin icon"
-            />
-          </a>
-          <a href="/">
-            <HeroSocial
-              src="/assets/images/youtube-icon.png"
-              alt="Youtube icon"
-            />
-          </a>
+          <SocialLink 
+            name='Email' 
+            href="mailto:almaz@murzabekov.net" 
+            icon_path="/assets/images/social/mail-icon.png"
+            alt="Mail icon" />
+          {/* <SocialLink 
+            name='RSS' 
+            href="/index.xml" 
+            icon_path="/assets/images/social/rss-icon.png"
+            alt="RSS icon" /> */}
+          <SocialLink 
+            name='Linkedin' 
+            href="https://www.linkedin.com/in/almazmurzabekov/" 
+            icon_path="/assets/images/social/linkedin-icon.png"
+            alt="Linkedin icon" />
+          <SocialLink 
+            name='Gitlab' 
+            href="https://gitlab.com/almazmurzabekov" 
+            icon_path="/assets/images/social/gitlab-icon.png"
+            alt="Gitlab icon" />
+          <SocialLink 
+            name='Telegram' 
+            href="https://t.me/AlmazKG" 
+            icon_path="/assets/images/social/telegram-icon.png"
+            alt="Telegram icon" />
+          <SocialLink 
+            name='Instagram' 
+            href="https://www.instagram.com/almazmurzabekov/" 
+            icon_path="/assets/images/social/instagram-icon.png"
+            alt="Instagram icon" />
         </>
       }
     />
