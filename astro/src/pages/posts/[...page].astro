@@ -24,7 +24,7 @@ export async function getStaticPaths({ paginate }: GetStaticPaths) {
   const sortedPosts = sortByDate(allPosts);
 
   // Return a paginated collection of paths for all posts
-  return paginate(sortedPosts, { pageSize: 6 });
+  return paginate(sortedPosts, { pageSize: 12 });
 }
 
 interface Props {
@@ -42,8 +42,8 @@ const description =
 <Base head={{ title, description }}>
   <Section>
     <PaginationHeader
-      title='Random title here'
-      description='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+      title='Exploring the Digital Landscape'
+      description=''
     />
   </Section>
 
@@ -55,5 +55,5 @@ const description =
     <NewerOlderPagination page={page} />
   </Section>
 
-  <CTA />
+  <!-- <CTA /> -->
 </Base>
