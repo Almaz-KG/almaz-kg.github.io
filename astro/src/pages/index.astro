@@ -2,14 +2,12 @@
 import type { IFrontmatter } from 'astro-boilerplate-components';
 
 import { Hero } from '@/partials/Hero';
-// import { ProjectList } from '@/partials/ProjectList';
 import { RecentPosts } from '@/partials/RecentPosts';
 import { AppConfig } from '@/utils/AppConfig';
 import { sortByDate } from '@/utils/Posts';
 import Base from '@/templates/Base.astro';
 
 const allPosts = await Astro.glob<IFrontmatter>('./posts/*.md');
-const allProjects = await Astro.glob<IFrontmatter>('./posts/*.md');
 const sortedPosts = sortByDate(allPosts);
 const lastThreePosts = sortedPosts.slice(0, 15);
 
@@ -19,7 +17,5 @@ const { description } = AppConfig;
 
 <Base head={{ title, description }}>
   <Hero />
-  <!-- <ProjectList /> -->
   <RecentPosts postList={lastThreePosts} />
-  <!-- <CTA /> -->
 </Base>
