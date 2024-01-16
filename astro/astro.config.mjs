@@ -6,7 +6,7 @@ import robotsTxt from 'astro-robots-txt';
 import { astroImageTools } from 'astro-imagetools';
 
 export default defineConfig({
-  trailingSlash: 'always', // Use to always append '/' at end of url
+  trailingSlash: 'ignore', // Use to always append '/' at end of url
   markdown: {
     shikiConfig: {
       theme: 'monokai',
