@@ -18,7 +18,7 @@ const HeroAvatar = (props: IHeroAvatarProps) => (
       <div className="mt-3 flex gap-1"> { props.socialButtons.map((social) => <SocialLink 
           name={social.name} 
           href={social.href} 
-          alt={social.alt}
+          // alt={social.alt}
           icon_path={social.icon_path} />) }</div>
     </div>
 

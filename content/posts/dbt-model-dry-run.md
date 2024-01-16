@@ -54,7 +54,8 @@ In terms of requirements, the validation pipeline should have the following feat
 First of all, we should make sure that our target database supports `EXPLAIN` command or has some alternative feacture which covers the same functionality. In this article, I'll demostrate the approach on Databricks. 
 
 Second, we should have a version control system, like GitLab, GitHub, etc. The main requirement for these SVNs is to be able provide CI/CD features. And the overall pipeline should look similar to this figure
-<img src="/images/posts/dbt-pipeline.png" />
+
+<img src="/assets/images/posts/dbt-pipeline.png" />
 
 
 So, let's say we have databricks as an SQL Engine, and dbt-models are stored in the GitLab project. We want to validate the all dbt model changes in Merge Request which were opened by ourselves or teammates. If the validation fails, obviously, the MR's pipeline must fail and block the delivery process until the fail will be fixed. 

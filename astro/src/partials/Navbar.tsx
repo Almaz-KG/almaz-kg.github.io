@@ -1,11 +1,8 @@
-import {
-  Logo,
-  NavbarTwoColumns,
-  NavMenu,
-  NavMenuItem,
-  Section,
-} from 'astro-boilerplate-components';
-
+import { NavbarTwoColumns } from '@/components/nav/NavBarTwoColumns';
+import { NavMenuItem } from '@/components/nav/NavMenuItem';
+import { NavMenu } from '@/components/nav/NavMenu';
+import { Logo } from '@/components/Logo';
+import { Section } from '@/components/Section';
 import { AppConfig } from '@/utils/AppConfig';
 const { title } = AppConfig;
 

@@ -4,7 +4,6 @@ title: "[Podcast] Talk about Data Catalogs"
 pubDate: "2022-10-14"
 tags: ["podcast", "data", "data coffee", "catalogs"]
 imgAlt: data-catalogs.jpg
-# /Users/almaz/Desktop/PROJECTS/murzabekov.net/blog/astro/static/
 imgSrc: /assets/images/posts/data-catalogs.jpg
 ---
 

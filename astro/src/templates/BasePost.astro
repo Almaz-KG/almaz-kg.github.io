@@ -1,8 +1,7 @@
 ---
-import type { IFrontmatter } from 'astro-boilerplate-components';
+import type { IFrontmatter } from '@/components/types/IFrontMatter';
 
 import { BlogPost } from '@/partials/BlogPost';
-import { CTA } from '@/partials/CTA';
 import Base from '@/templates/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
 
@@ -16,8 +15,6 @@ const title = `${content.title} - ${AppConfig.site_name}`;
 
 <Base head={{ title, description: content.description }}>
   <BlogPost frontmatter={content}>
-    <slot></slot>
+    <slot />
   </BlogPost>
-
-  <!-- <CTA /> -->
 </Base>

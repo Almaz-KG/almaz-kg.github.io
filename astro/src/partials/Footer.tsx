@@ -1,4 +1,4 @@
-import { Section } from 'astro-boilerplate-components';
+import { Section } from '@/components/Section';
 
 import { AppConfig } from '@/utils/AppConfig';
 const { site_name } = AppConfig;

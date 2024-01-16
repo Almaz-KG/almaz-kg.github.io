@@ -1,5 +1,5 @@
-import { Section } from '../components/Section';
-import { HeroAvatar } from '../components/HeroAvatar'
+import { Section } from '@/components/Section';
+import { HeroAvatar } from '@/components/HeroAvatar'
 
 const socialLinks = [
   {
@@ -46,7 +46,7 @@ const Hero = () => (
         <img
           className="h-80 w-72"
           src="/assets/images/almaz.png"
-          alt="Avatar image"
+          alt="Avatar"
           loading="lazy"
         />
       }
