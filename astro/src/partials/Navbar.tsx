@@ -34,8 +34,8 @@ const Navbar = () => (
 
       <NavMenu>
         <NavMenuItem href="/posts/">Posts</NavMenuItem>
-        <NavMenuItem href="/">Search</NavMenuItem>
-        <NavMenuItem href="/">Tags</NavMenuItem>
+        {/* <NavMenuItem href="/">Search</NavMenuItem>
+        <NavMenuItem href="/">Tags</NavMenuItem> */}
         <NavMenuItem href="/">Books</NavMenuItem>
         <NavMenuItem href="/">Projects</NavMenuItem>
         <NavMenuItem href="/about">About</NavMenuItem>
