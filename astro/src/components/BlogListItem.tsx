@@ -11,7 +11,7 @@ const BlogListItem = (props: IBlogCardProps) => (
   <a className="hover:translate-y-1" href={props.instance.url}>
     <div className="overflow-hidden rounded-md bg-slate-800 flex">
       <img
-        className="h-20 w-20 pl-2 pt-2 object-cover object-center"
+        className="h-20 w-20 pl-2 pt-2 object-cover object-scale-down"
         src={props.instance.frontmatter.imgSrc}
         alt={props.instance.frontmatter.imgAlt}
         loading="lazy"

@@ -4,6 +4,7 @@ title: "[BitTorrent] A draft version of bittorrent client architecture"
 pubDate: 2022-12-15T00:00:00Z
 author: "Almaz Murzabekov"
 tags: ["projects", "bittorrent", "architecture", "draft", "rust"]
+imgSrc: /assets/images/posts/bittorrent_logo.png
 ---
 
 It's worth to start with a basic overview of how the final project will look in terms of the organization of the code, dependencies between components, and so on. Many times I failed projects because the architecture was super weak, and after several thousand code lines the project becomes an unsupportable mess. You'll not understand the exact meaning of the particular module or code logic, so very soon you'll give up on continuing the journey.

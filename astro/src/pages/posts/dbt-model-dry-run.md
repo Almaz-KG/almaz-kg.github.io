@@ -5,6 +5,7 @@ title: "[dbt] How to validate the compiled version of dbt models for SQL correct
 pubDate: "2023-01-03"
 description: ""
 tags: ["dbt", "howto", "sql", "dry-run"]
+imgSrc: /assets/images/posts/dbt_logo.png
 ---
 
 dbt is the `T` in `ELT (Extract Load Transform)`. It doesn’t extract or load data, but it’s extremely good at transforming data that’s already loaded into your warehouse. 

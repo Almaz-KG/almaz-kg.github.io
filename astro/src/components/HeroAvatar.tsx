@@ -16,6 +16,7 @@ const HeroAvatar = (props: IHeroAvatarProps) => (
       <p className="mt-6 text-xl leading-9">{props.description}</p>
 
       <div className="mt-3 flex gap-1"> { props.socialButtons.map((social) => <SocialLink 
+          id={social.name}
           name={social.name} 
           href={social.href} 
           alt={social.alt}

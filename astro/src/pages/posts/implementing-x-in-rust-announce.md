@@ -6,6 +6,7 @@ pubDate: "2022-12-12"
 tags: ["projects", "rust", "announce", "bittorrent", "bitcoin", "hdfs", "cassandra"]
 ShowToc: false
 ShowBreadCrumbs: true
+imgSrc: /assets/images/posts/rust_logo.png
 ---
 
 It has been quite a while since my last post. It took almost two months to come up with a new post and try to explain my future mid-term and long-term goals in Rust. I've been playing with the Rust programming language for a couple of months, with some basic projects, and now I feel quite confident to start some bigger and more advanced projects. Maybe, in the future, this activity will turn out to be a sharable resource for the whole Rust community, but for now, let's try to get our hands dirty with the implementation of several projects to feel how it is to be a Rust Developer as a whole.

@@ -4,6 +4,7 @@ author: "Almaz Murzabekov"
 title: "[Rust] Senior Rust Developer interview questions"
 pubDate: "2022-12-22"
 tags: ["question", "rust"]
+imgSrc: /assets/images/posts/ferris_logo.png
 ---
 
 If you are preparing for a Rust interview or if you are an interviewer looking for questions to ask potential candidates, this post is for you.
