@@ -21,7 +21,8 @@ type GetStaticPaths = {
 
 export async function getStaticPaths({ paginate }: GetStaticPaths) {
   const allPosts = await Astro.glob<IFrontmatter>('./*.md');
-  const sortedPosts = sortByDate(allPosts);
+  const publishedPosts = allPosts.filter((post: MarkdownInstance<IFrontmatter>) => post.frontmatter.draft !== true);
+  const sortedPosts = sortByDate(publishedPosts);
   return paginate(sortedPosts, { pageSize: 20 });
 }
 

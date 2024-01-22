@@ -9,7 +9,8 @@ import Base from '@/templates/Base.astro';
 
 const allPosts = await Astro.glob<IFrontmatter>('./posts/*.md');
 const sortedPosts = sortByDate(allPosts);
-const lastThreePosts = sortedPosts.slice(0, 15);
+const publishedPosts = sortedPosts.filter((post: MarkdownInstance<IFrontmatter>) => post.frontmatter.draft !== true);
+const lastPosts = publishedPosts.slice(0, 15);
 
 const { title } = AppConfig;
 const { description } = AppConfig;
@@ -17,5 +18,5 @@ const { description } = AppConfig;
 
 <Base head={{ title, description }}>
   <Hero />
-  <RecentPosts postList={lastThreePosts} />
+  <RecentPosts postList={lastPosts} />
 </Base>

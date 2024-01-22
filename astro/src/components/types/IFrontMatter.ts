@@ -5,6 +5,7 @@ export interface IFrontmatter {
     imgSrc: string;
     imgAlt: string;
     draft: boolean;
+    status?: string;
   }
   
   // Workaround to import Astro type. Otherwise, it'll have some compilation errors
