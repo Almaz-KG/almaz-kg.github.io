@@ -56,11 +56,10 @@ imgSrc: /assets/images/books/bookshelf.png
 1. [Managing the Unmanageable: Rules, Tools, and Insights for Managing Software People and Teams](https://www.amazon.com/dp/0135667364/)
 1. [Pragmatic Thinking and Learning](https://www.amazon.com/dp/1934356050)
 1. [The art of quiet influence eastern wisdom and mindfulness for work and life Confucius](https://www.amazon.com/dp/B07H7F8HDW/)
+1. [Empowered Ordinary People, Extraordinary Products](https://www.amazon.com/dp/111969129X)
 
 ### Optional readings
 1. [Hooked How to Build Habit-Forming Products](https://www.amazon.com/dp/B00HZY1N0K)
 1. [Release It! Design and Deploy Production–Ready Software](https://www.amazon.co.uk/dp/1680502395)
-1. [Flow Architectures - The Future of Streaming and Event-Driven Integration](https://www.amazon.com/dp/1492075892)
 1. [Building Evolutionary Architectures: Automated Software Governance](https://www.amazon.co.uk/dp/1492097543/)
-1. [Empowered Ordinary People, Extraordinary Products](https://www.amazon.com/dp/111969129X)
 1. [Distributed Systems](https://www.amazon.co.uk/dp/9081540637)
