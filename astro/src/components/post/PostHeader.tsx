@@ -14,6 +14,8 @@ const PostHeader = (props: IPostHeaderProps) => (
     <div className="mt-2 text-center text-sm text-gray-400">
       By {props.author} on{' '}
       {format(new Date(props.content.pubDate), 'LLL d, yyyy')}
+      {' '} 
+      {props.content.updateDate? <div>Updated{' '}{format(new Date(props.content.updateDate), 'LLL d, yyyy')}</div>:null}
     </div>
   </>
 );
