@@ -50,6 +50,17 @@ imgSrc: /assets/images/books/bookshelf.png
         <p className="ml-auto pl-2 text-align-right">Design It! is the perfect introduction to software architecture for programmers who are ready to grow their design skills. Lead your team as a software architect, ask the right stakeholders the right questions, explore design options, and help your team implement a system that promotes the right -ilities. Share your design decisions, facilitate collaborative design workshops that are fast, effective, and fun-and develop more awesome software! With dozens of design methods, examples, and practical know-how, Design It! shows you how to become a software architect.</p>
     </div>
 </div>
+<div>
+    <h1 className="text-sm font-bold"><a href="https://www.amazon.com/dp/1492040347" target="blank">5. Database Internals: A Deep Dive into How Distributed Data Systems Work </a></h1>
+    <div className="flex md:flex-row md:justify-center">    
+        <div>
+            <p className="justify-items: stretch">Throughout the book, you’ll explore relevant material gleaned from numerous books, papers, blog posts, and the source code of several open source databases. These resources are listed at the end of parts one and two. You’ll discover that the most significant distinctions among many modern databases reside in subsystems that determine how storage is organized and how data is distributed.</p>
+        </div>
+        <div className="shrink-0">
+            <img className="h-80 w-72" src="/assets/images/books/2024/database_internals_book_cover.jpg" />
+        </div>
+    </div>
+</div>
 
 
 ### Nice to read in 2024
