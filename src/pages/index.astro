@@ -1,0 +1,22 @@
+---
+import type { IFrontmatter } from '@/components/types/IFrontMatter'
+
+import { Hero } from '@/partials/Hero';
+import { RecentPosts } from '@/partials/RecentPosts';
+import { AppConfig } from '@/utils/AppConfig';
+import { sortByDate } from '@/utils/Posts';
+import Base from '@/templates/Base.astro';
+
+const allPosts = await Astro.glob<IFrontmatter>('./posts/*.md');
+const sortedPosts = sortByDate(allPosts);
+const publishedPosts = sortedPosts.filter((post: MarkdownInstance<IFrontmatter>) => post.frontmatter.draft !== true);
+const lastPosts = publishedPosts.slice(0, 15);
+
+const { title } = AppConfig;
+const { description } = AppConfig;
+---
+
+<Base head={{ title, description }}>
+  <Hero />
+  <RecentPosts postList={lastPosts} />
+</Base>

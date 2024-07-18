@@ -1,0 +1,19 @@
+---
+import Base from '@/templates/Base.astro';
+import { Section } from '@/components/Section';
+import { SocialLinks } from '@/components/SocialLinks';
+
+---
+
+<Base head={{ title: "Not found" , description: "Not found description" }}>
+  <Section>
+    <SocialLinks />
+    <div class="text-white flex justify-center h-screen text-center">
+      <div class="container mx-auto mt-48">
+        <h1 class="error-code text-9xl font-bold">404</h1>
+        <p class="text-2xl mt-4">YOU WANDERED TOO FAR</p>
+        <a href="/" class="inline-block mt-6 px-6 py-3 border-2 border-white text-white text-lg hover:bg-white hover:text-black transition duration-300">GO HOME</a>
+      </div>
+    </div>
+  </Section>
+</Base>
