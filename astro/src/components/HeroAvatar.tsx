@@ -1,11 +1,10 @@
 import type { ReactNode } from 'react';
-import { SocialLink } from './SocialLink';
+import { SocialLinks } from './SocialLinks';
 
 type IHeroAvatarProps = {
   title: ReactNode;
   description: ReactNode;
   avatar: ReactNode;
-  socialButtons: Array<{ name: string, href: string, alt: string, icon_path: string }>;
 };
 
 const HeroAvatar = (props: IHeroAvatarProps) => (
@@ -15,12 +14,7 @@ const HeroAvatar = (props: IHeroAvatarProps) => (
 
       <p className="mt-6 text-xl leading-9">{props.description}</p>
 
-      <div className="mt-3 flex gap-1"> { props.socialButtons.map((social) => <SocialLink 
-          id={social.name}
-          name={social.name} 
-          href={social.href} 
-          alt={social.alt}
-          icon_path={social.icon_path} />) }</div>
+      <SocialLinks />
     </div>
 
     <div className="shrink-0">{props.avatar}</div>
