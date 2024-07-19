@@ -25,13 +25,13 @@ jobs:
         npm install
         npm run build
 
-    - id: 'auth'
+    - name: GCP Auth
       uses: 'google-github-actions/auth@v2'
       with:
         service_account: 'github-runner-blog-publisher-s@gcp-almaz-murzabekov-net.iam.gserviceaccount.com'
-        credentials_json: '${{ secrets.GCP_SECRET }}
+        credentials_json: '${{ secrets.GCP_SECRET }}'
 
-    - id: 'upload-folder'
+    - name: Upload to Cloud Storage
       uses: 'google-github-actions/upload-cloud-storage@v2'
       with:
         path: 'dist/'
