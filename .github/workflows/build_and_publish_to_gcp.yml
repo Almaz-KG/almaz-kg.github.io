@@ -3,18 +3,17 @@ name: Build an Publish to GCP
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build_and_publish:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Use Node.js 22.x
-      uses: actions/setup-node@v3
-      with:
-        node-version: 22.x
+    - name: Install, build, and upload your site
+      uses: withastro/action@v2
     
     - name: Build
       run: |
