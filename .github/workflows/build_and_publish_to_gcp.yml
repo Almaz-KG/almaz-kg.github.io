@@ -1,0 +1,39 @@
+name: Build an Publish to GCP
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: Build
+      run: |
+        npm install
+        npm run build
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        service_account: 'github-runner-blog-publisher-s@gcp-almaz-murzabekov-net.iam.gserviceaccount.com'
+        credentials_json: '${{ secrets.GCP_SECRET }}
+
+    - id: 'upload-folder'
+      uses: 'google-github-actions/upload-cloud-storage@v2'
+      with:
+        path: 'dist/'
+        destination: 'almaz.murzabekov.net'
+        parent: false
