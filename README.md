@@ -1,8 +1,8 @@
 # almaz.murzabekov.net
 
-## Almaz's personal blog posts
 
-# Astro Boilerplate with TypeScript and Tailwind CSS [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ixartz)](https://twitter.com/ixartz)
+
+## Astro Boilerplate with TypeScript and Tailwind CSS [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ixartz)](https://twitter.com/ixartz)
 
 🚀 Astro Boilerplate is starter code for your blog or portfolio based on Astro
 with Tailwind CSS 3.0. ⚡️ Made with Astro, TypeScript, ESLint, Prettier,
