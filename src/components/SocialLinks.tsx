@@ -30,12 +30,12 @@ const socialLinks = [
 const SocialLinks = () => (
   <>
     <div className="mt-3 flex gap-1"> { socialLinks.map((social) => <SocialLink 
-          id={social.name}
-          name={social.name} 
-          href={social.href} 
-          alt={social.alt}
-          icon_path={social.icon_path} />) }
-      </div>
+      id={social.name}
+      name={social.name} 
+      href={social.href} 
+      alt={social.alt}
+      icon_path={social.icon_path} />) }
+    </div>
   </>
 );
 

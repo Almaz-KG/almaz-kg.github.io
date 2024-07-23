@@ -5,6 +5,7 @@ title: "[Growth] Personal growth road map"
 pubDate: "2024-01-17"
 tags: ["personal-growth", "improvement", "challenges"]
 imgSrc: /assets/images/posts/personal-development.png
+draft: true
 ---
 
 ## Personal Growth 101
