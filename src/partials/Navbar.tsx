@@ -37,7 +37,7 @@ const Navbar = () => (
         {/* <NavMenuItem href="/">Search</NavMenuItem>
         <NavMenuItem href="/">Tags</NavMenuItem> */}
         <NavMenuItem href="/books/">Books</NavMenuItem>
-        <NavMenuItem href="/">Projects</NavMenuItem>
+        <NavMenuItem href="/projects/">Projects</NavMenuItem>
         <NavMenuItem href="/about">About</NavMenuItem>
       </NavMenu>
     </NavbarTwoColumns>

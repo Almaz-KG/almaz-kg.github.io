@@ -1,0 +1,51 @@
+---
+import type {
+  FrontmatterPage,
+  IFrontmatter,
+} from '@/components/types/IFrontMatter';
+
+import { NewerOlderPagination } from '@/components/pagination/NewerOlderPagination';
+import { PaginationHeader } from '@/components/pagination/PaginationHeader';
+
+import { Section } from '@/components/Section'
+
+
+import { BlogList } from '@/components/BlogList';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { sortByDate } from '@/utils/Posts';
+
+type GetStaticPaths = {
+  paginate: any;
+}; // Overrides `GetStaticPathsOptions` types from Astro
+
+export async function getStaticPaths({ paginate }: GetStaticPaths) {
+  const allPosts = await Astro.glob<IFrontmatter>('./*.md');
+  const publishedPosts = allPosts.filter((post: MarkdownInstance<IFrontmatter>) => post.frontmatter.draft !== true);
+  const sortedPosts = sortByDate(publishedPosts);
+  return paginate(sortedPosts, { pageSize: 20 });
+}
+
+interface Props {
+  page: FrontmatterPage;
+}
+
+const { page } = Astro.props as Props;
+const titleSuffix = ` - ${AppConfig.site_name}`;
+const titleBase = `Blog page ${page.currentPage}`;
+const title = titleBase + titleSuffix;
+const description = ""
+---
+
+<Base head={{ title, description }}>
+  <Section>
+    <PaginationHeader
+      title='Projects, I&apos;m working on'
+      description=''
+    />
+  </Section>
+
+  <Section>
+    <BlogList postList={page.data} />
+  </Section>
+</Base>
