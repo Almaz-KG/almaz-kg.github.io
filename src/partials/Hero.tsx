@@ -11,10 +11,12 @@ const Hero = () => (
       }
       avatar={
         <img
-          className="h-80 w-72"
+          className="mt-0"
           src="/assets/images/almaz.png"
           alt="Avatar"
           loading="lazy"
+          width={350}
+          height={350}
         />
       }
     />
