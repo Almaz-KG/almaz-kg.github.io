@@ -7,7 +7,7 @@ const Hero = () => (
       title={
         <> Exploring the Digital Landscape </> }
       description={
-        <> A personal blog on Data Engineering, Modern Data Stack, Rust, Frontend and all the beyond</>
+        <> A personal blog on Data Engineering, Modern Data Stack, Rust, Frontend and beyond</>
       }
       avatar={
         <img
