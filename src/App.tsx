@@ -16,7 +16,6 @@ export default function App() {
         <Hero />
         <About />
         <Focus />
-        {/* <Stack /> — mounting it means renumbering Projects/Shelf/Contact */}
         <Projects />
         <Shelf />
         <Contact />

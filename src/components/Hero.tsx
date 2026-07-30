@@ -41,35 +41,58 @@ function Typewriter() {
 export function Hero() {
   return (
     <div id="top" className="relative mx-auto w-full max-w-6xl px-5 pt-32 pb-10 sm:px-8 sm:pt-40">
-      <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr]">
-        <div>
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="group relative shrink-0">
-              <span className="absolute -inset-2 rounded-full bg-[conic-gradient(from_140deg,rgba(182,255,46,0.35),rgba(47,240,208,0.25),rgba(139,123,255,0.35),rgba(182,255,46,0.35))] opacity-70 blur-lg transition-opacity duration-500 group-hover:opacity-100" />
-              <div className="relative rounded-full bg-gradient-to-br from-lime/70 via-aqua/40 to-violet/70 p-[1.5px]">
-                <div className="overflow-hidden rounded-full bg-gradient-to-br from-lime/20 via-ink-3 to-violet/20">
-                  <img
-                    src={avatar}
-                    alt="Almaz Murzabekov"
-                    width={320}
-                    height={320}
-                    decoding="async"
-                    className="h-14 w-14 scale-[1.04] object-cover transition-transform duration-500 group-hover:scale-110 sm:h-16 sm:w-16"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="inline-flex items-center gap-2 rounded-full border border-lime/25 bg-lime/[0.07] px-3 py-1.5 font-mono text-[11px] tracking-wider text-lime/90 uppercase">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-75" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-lime" />
-              </span>
-              Available for challenging data problems
+      <div className="mb-10 flex flex-wrap items-center gap-4">
+        <div className="group relative shrink-0">
+          <span className="absolute -inset-2 rounded-full bg-[conic-gradient(from_140deg,rgba(182,255,46,0.35),rgba(47,240,208,0.25),rgba(139,123,255,0.35),rgba(182,255,46,0.35))] opacity-70 blur-lg transition-opacity duration-500 group-hover:opacity-100" />
+          <div className="relative rounded-full bg-gradient-to-br from-lime/70 via-aqua/40 to-violet/70 p-[1.5px]">
+            <div className="overflow-hidden rounded-full bg-gradient-to-br from-lime/20 via-ink-3 to-violet/20">
+              <img
+                src={avatar}
+                alt="Almaz Murzabekov"
+                width={320}
+                height={320}
+                decoding="async"
+                className="h-14 w-14 scale-[1.04] object-cover transition-transform duration-500 group-hover:scale-110 sm:h-16 sm:w-16"
+              />
             </div>
           </div>
+        </div>
 
-          <h1 className="mt-7 text-[clamp(2.9rem,9vw,6.5rem)] leading-[0.92] font-semibold tracking-[-0.04em]">
+        <div className="inline-flex items-center gap-2 rounded-full border border-lime/25 bg-lime/[0.07] px-3 py-1.5 font-mono text-[11px] tracking-wider text-lime/90 uppercase">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-lime" />
+          </span>
+          Available for challenging data problems
+        </div>
+
+        <a
+          href="/cv.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className="group ml-auto inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 font-mono text-[11px] tracking-wider text-white/55 uppercase transition-colors hover:border-lime/40 hover:bg-lime/[0.07] hover:text-lime"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-y-0.5"
+          >
+            <path d="M12 3v12" />
+            <path d="m7 11 5 5 5-5" />
+            <path d="M5 20h14" />
+          </svg>
+          Resume
+        </a>
+      </div>
+
+      <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr]">
+        <div>
+          <h1 className="text-[clamp(2.9rem,9vw,6.5rem)] leading-[0.92] font-semibold tracking-[-0.04em]">
             <span className="block">Almaz</span>
             <span className="text-gradient block">Murzabekov</span>
           </h1>
@@ -146,7 +169,7 @@ export function Hero() {
                 {"\n"}
                 {"  "}autoland=<span className="text-citrus">True</span>)
                 {"\n\n"}
-                <span className="text-lime">✔ 128 models · 0 manual edits · shipped</span>
+                <span className="text-lime">✔ 128 models</span>
               </code>
             </pre>
           </div>
