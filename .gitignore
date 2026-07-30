@@ -5,3 +5,7 @@ _site/
 public/
 
 **/.DS_Store
+
+.claude/
+.cursor/
+CLAUDE.md
