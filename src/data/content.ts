@@ -213,13 +213,6 @@ export const BOOKS: Book[] = [
     cover: "/assets/images/books/covers/design-it.jpg",
   },
   {
-    title: "Atomic Habits",
-    author: "James Clear",
-    tone: "aqua",
-    href: "https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299",
-    cover: "/assets/images/books/covers/atomic-habits.jpg",
-  },
-  {
     title: "Systems Performance",
     author: "Brendan Gregg",
     tone: "violet",
@@ -262,13 +255,6 @@ export const BOOKS: Book[] = [
     cover: "/assets/images/books/covers/sqlite-forensics.jpg",
   },
   {
-    title: "Build a Large Language Model (From Scratch)",
-    author: "Sebastian Raschka",
-    tone: "violet",
-    href: "https://www.amazon.com/Build-Large-Language-Model-Scratch/dp/1633437167",
-    cover: "/assets/images/books/covers/build-a-large-language-model.jpg",
-  },
-  {
     title: "Operating Systems: Three Easy Pieces",
     author: "Arpaci-Dusseau",
     tone: "citrus",
@@ -281,6 +267,13 @@ export const BOOKS: Book[] = [
     tone: "lime",
     href: "https://www.amazon.com/Principles-Distributed-Database-Systems-Tamer/dp/3030262529",
     cover: "/assets/images/books/covers/principles-of-distributed-database-systems.jpg",
+  },
+  {
+    title: "Build a Large Language Model (From Scratch)",
+    author: "Sebastian Raschka",
+    tone: "violet",
+    href: "https://www.amazon.com/Build-Large-Language-Model-Scratch/dp/1633437167",
+    cover: "/assets/images/books/covers/build-a-large-language-model.jpg",
   },
 ];
 
