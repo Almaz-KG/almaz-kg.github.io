@@ -1,4 +1,4 @@
-
+import type { Tone } from "@/utils/tones";
 
 export const ROLES = [
   "Data & Infra Engineer",
@@ -94,7 +94,7 @@ export const STACK_GROUPS = [
   },
 ];
 
-export const PROJECTS: {
+export type Project = {
   title: string;
   year: string;
   kind: string;
@@ -106,7 +106,9 @@ export const PROJECTS: {
   logo: string;
   /** Homepage screenshot, cropped to the hero. */
   shot: string;
-}[] = [
+};
+
+export const PROJECTS: Project[] = [
   {
     title: "db-academy.io",
     year: "2024 →",
@@ -165,13 +167,16 @@ export const SIDE_PROJECTS: { title: string; kind: string; note: string; href?: 
   },
 ];
 
-export const BOOKS: {
+export type Book = {
   title: string;
   author: string;
-  tone: string;
+  /** Accent colour of the plate behind the cover. */
+  tone: Tone;
   href: string;
   cover: string;
-}[] = [
+};
+
+export const BOOKS: Book[] = [
   {
     title: "Designing Data-Intensive Applications",
     author: "Martin Kleppmann",

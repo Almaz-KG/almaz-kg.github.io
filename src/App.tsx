@@ -1,15 +1,17 @@
-import { Backdrop, CursorGlow } from "./components/Backdrop";
-import { Hero } from "./components/Hero";
-import { About, Focus } from "./components/Sections";
-import { Contact, Footer, Projects } from "./components/Sections2";
-import { Shelf } from "./components/Shelf";
-import { ScrollProgress } from "./components/ScrollProgress";
+import { Backdrop } from "@/components/layout/Backdrop";
+import { Footer } from "@/components/layout/Footer";
+import { ScrollProgress } from "@/components/layout/ScrollProgress";
+import { Hero } from "@/components/hero/Hero";
+import { About } from "@/components/sections/About";
+import { Contact } from "@/components/sections/Contact";
+import { Focus } from "@/components/sections/Focus";
+import { Projects } from "@/components/sections/Projects";
+import { Shelf } from "@/components/sections/Shelf";
 
 export default function App() {
   return (
     <div className="grain relative min-h-screen overflow-x-hidden">
       <Backdrop />
-      <CursorGlow />
       <ScrollProgress />
 
       <main className="relative z-20">
