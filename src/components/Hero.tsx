@@ -29,7 +29,9 @@ function Typewriter() {
   }, [text, del, i]);
 
   return (
-    <span className="font-mono text-lime">
+    <span
+      className="inline-block text-left font-mono text-lime"
+    >
       {text}
       <span className="animate-blink ml-0.5 inline-block w-[2px] translate-y-[2px] bg-lime align-middle text-transparent">
         |
@@ -41,7 +43,7 @@ function Typewriter() {
 export function Hero() {
   return (
     <div id="top" className="relative mx-auto w-full max-w-6xl px-5 pt-32 pb-10 sm:px-8 sm:pt-40">
-      <div className="mb-10 flex flex-wrap items-center gap-4">
+      <div className="mb-10 flex flex-wrap items-center gap-x-4 gap-y-3">
         <div className="group relative shrink-0">
           <span className="absolute -inset-2 rounded-full bg-[conic-gradient(from_140deg,rgba(182,255,46,0.35),rgba(47,240,208,0.25),rgba(139,123,255,0.35),rgba(182,255,46,0.35))] opacity-70 blur-lg transition-opacity duration-500 group-hover:opacity-100" />
           <div className="relative rounded-full bg-gradient-to-br from-lime/70 via-aqua/40 to-violet/70 p-[1.5px]">
@@ -58,7 +60,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="inline-flex items-center gap-2 rounded-full border border-lime/25 bg-lime/[0.07] px-3 py-1.5 font-mono text-[11px] tracking-wider text-lime/90 uppercase">
+        <div className="order-last flex w-full items-center gap-2 rounded-full border border-lime/25 bg-lime/[0.07] px-3 py-1.5 font-mono text-[11px] tracking-wider text-lime/90 uppercase sm:order-none sm:w-auto">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-75" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-lime" />
@@ -70,7 +72,7 @@ export function Hero() {
           href="/cv.pdf"
           target="_blank"
           rel="noreferrer"
-          className="group ml-auto inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 font-mono text-[11px] tracking-wider text-white/55 uppercase transition-colors hover:border-lime/40 hover:bg-lime/[0.07] hover:text-lime"
+          className="group ml-auto inline-flex shrink-0 items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3.5 py-2.5 font-mono text-[11px] tracking-wider text-white/55 uppercase transition-colors hover:border-lime/40 hover:bg-lime/[0.07] hover:text-lime sm:px-3 sm:py-1.5"
         >
           <svg
             viewBox="0 0 24 24"

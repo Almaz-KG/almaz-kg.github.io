@@ -41,8 +41,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      # dist/ is index.html (everything inlined by vite-plugin-singlefile) plus
-      # the verbatim copy of static/.
       - name: Configure Pages
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5

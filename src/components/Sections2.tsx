@@ -1,19 +1,11 @@
 import { Reveal, Section, SectionHeading, Pill, TiltCard } from "./ui";
-import { OPEN_SOURCE, PROJECTS, SIDE_PROJECTS, SITE, SOCIALS } from "../data/content";
+import { PROJECTS, SITE, SOCIALS } from "../data/content";
 
 /* --------------------------------- projects --------------------------------- */
 
 const PROJECT_GLOW = ["rgba(182,255,46,0.16)", "rgba(139,123,255,0.18)"];
 
 const TRAFFIC_LIGHTS = ["#ff5f57", "#febc2e", "#28c840"];
-
-function GitHubMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden className={className}>
-      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
-    </svg>
-  );
-}
 
 export function Projects() {
   return (
@@ -112,86 +104,6 @@ export function Projects() {
             </TiltCard>
           </Reveal>
         ))}
-      </div>
-
-      <div className="mt-20 grid gap-5 lg:grid-cols-[1.35fr_1fr]">
-        <div className="rounded-3xl border border-white/8 p-7 sm:p-9">
-          <Reveal className="font-mono text-[11px] tracking-[0.28em] text-white/40 uppercase">
-            Also in the workshop
-          </Reveal>
-
-          <ul className="mt-7 divide-y divide-white/8 border-y border-white/8">
-            {SIDE_PROJECTS.map((s, i) => {
-              const Row = s.href ? "a" : "div";
-              return (
-                <Reveal key={s.title} as="li" delay={i * 60}>
-                  <Row
-                    {...(s.href ? { href: s.href, target: "_blank", rel: "noreferrer" } : {})}
-                    className="group flex items-baseline gap-4 py-4 sm:gap-6"
-                  >
-                    <span className="font-mono text-[11px] text-white/25">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-base text-white/85 transition-colors group-hover:text-lime">
-                        {s.title}
-                      </span>
-                      <span className="mt-1 block text-sm text-white/45">{s.note}</span>
-                    </span>
-                    <span className="hidden font-mono text-[10px] tracking-[0.2em] text-white/30 uppercase sm:block">
-                      {s.kind}
-                    </span>
-                    {s.href && (
-                      <span className="text-white/30 transition-colors group-hover:text-lime">↗</span>
-                    )}
-                  </Row>
-                </Reveal>
-              );
-            })}
-          </ul>
-        </div>
-
-        <Reveal delay={120} className="h-full">
-          <TiltCard
-            glow="rgba(47,240,208,0.16)"
-            className="h-full"
-            innerClassName="flex h-full flex-col p-7 sm:p-9"
-          >
-            <div className="flex items-center justify-between gap-4">
-              <span className="font-mono text-[11px] tracking-[0.28em] text-white/40 uppercase">
-                Open source
-              </span>
-              <GitHubMark className="h-5 w-5 shrink-0 text-white/25 transition-colors group-hover:text-white/50" />
-            </div>
-
-            <div className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">
-              <span className="text-white/30">@</span>
-              <span className="text-gradient">{OPEN_SOURCE.handle}</span>
-            </div>
-
-            <div className="mt-7 grid grid-cols-3 divide-x divide-white/8 border-y border-white/8">
-              {OPEN_SOURCE.facts.map((f) => (
-                <div key={f.label} className="px-3 py-4 first:pl-0 last:pr-0">
-                  <div className="text-lg font-semibold tracking-tight text-white">{f.value}</div>
-                  <div className="mt-1 font-mono text-[10px] leading-snug tracking-wide text-white/35 uppercase">
-                    {f.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="mt-6 flex-1 leading-relaxed text-white/55">{OPEN_SOURCE.note}</p>
-
-            <a
-              href={OPEN_SOURCE.href}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-7 inline-flex items-center gap-2 text-sm text-lime transition-transform hover:translate-x-1"
-            >
-              Browse the repos <span>↗</span>
-            </a>
-          </TiltCard>
-        </Reveal>
       </div>
     </Section>
   );

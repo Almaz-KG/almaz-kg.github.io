@@ -1,9 +1,16 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
 @theme {
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  /* The "* Fallback" entries are metric-matched re-cuts of a local font, so
+     text laid out before the webfont arrives occupies the same space and the
+     swap does not shift the page. See fonts.css. */
+  --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace,
+    monospace;
+  --font-serif: "Instrument Serif", "Instrument Serif Fallback", ui-serif,
+    Georgia, serif;
 
   --color-ink: #07070c;
   --color-ink-2: #0c0c14;
