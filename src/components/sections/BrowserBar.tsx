@@ -9,13 +9,7 @@ type BrowserBarProps = {
 /** Fake browser chrome: traffic lights plus the project's host in the address bar. */
 export function BrowserBar({ href, title }: BrowserBarProps) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={`Open ${title}`}
-      className="block"
-    >
+    <a href={href} target="_blank" rel="noreferrer" aria-label={`Open ${title}`} className="block">
       <div className="flex items-center gap-3 border-b border-white/8 bg-white/[0.03] px-4 py-3">
         <span className="flex shrink-0 gap-1.5">
           {TRAFFIC_LIGHTS.map((c) => (

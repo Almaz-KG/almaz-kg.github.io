@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { Reveal, Section, SectionHeading } from "@/components/ui";
 import { BOOKS } from "@/data/content";
+import { sectionIndex } from "@/data/sections";
 import { useCarousel } from "@/utils/hooks/useCarousel";
 import { BookCard } from "./BookCard";
 import { ShelfArrow } from "./ShelfArrow";
@@ -17,7 +18,7 @@ export function Shelf() {
     <Section id="shelf">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <SectionHeading
-          index="04"
+          index={sectionIndex("shelf")}
           kicker="Bookshelf"
           title={
             <>
@@ -52,11 +53,7 @@ export function Shelf() {
         </div>
       </Reveal>
 
-      <ShelfScrollbar
-        progress={progress}
-        thumbSize={thumbSize}
-        label={`${BOOKS.length} books`}
-      />
+      <ShelfScrollbar progress={progress} thumbSize={thumbSize} label={`${BOOKS.length} books`} />
     </Section>
   );
 }

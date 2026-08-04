@@ -29,14 +29,24 @@ export function useTypewriter(
       return () => clearTimeout(t);
     }
 
-    if (deleting && text === "") {
-      setDeleting(false);
-      setIndex((v) => v + 1);
-      return;
-    }
-
     const t = setTimeout(
-      () => setText(deleting ? word.slice(0, text.length - 1) : word.slice(0, text.length + 1)),
+      () => {
+        if (!deleting) {
+          setText(word.slice(0, text.length + 1));
+          return;
+        }
+
+        const next = word.slice(0, text.length - 1);
+        setText(next);
+
+        // Move on in the same tick that erases the last character. Waiting for an
+        // empty render to schedule the switch would work too, but it makes the
+        // effect set state the moment it runs, which is a cascading render.
+        if (next === "") {
+          setDeleting(false);
+          setIndex((v) => v + 1);
+        }
+      },
       deleting ? deleteMs : typeMs,
     );
     return () => clearTimeout(t);

@@ -2,16 +2,20 @@ import { AvailabilityBadge } from "./AvailabilityBadge";
 import { HeroAvatar } from "./HeroAvatar";
 import { HeroSocials } from "./HeroSocials";
 import { ResumeLink } from "./ResumeLink";
+import { BlogLink } from "./BlogLink";
 import { TerminalCard } from "./TerminalCard";
 import { Typewriter } from "./Typewriter";
 
 export function Hero() {
+  // The badge row is the top of the page, so the padding above it is ordinary
+  // breathing room rather than clearance for a fixed header.
   return (
-    <div id="top" className="relative mx-auto w-full max-w-6xl px-5 pt-32 pb-10 sm:px-8 sm:pt-40">
+    <div id="top" className="relative mx-auto w-full max-w-6xl px-5 pt-14 pb-10 sm:px-8 sm:pt-20">
       <div className="mb-10 flex flex-wrap items-center gap-x-4 gap-y-3">
         <HeroAvatar />
         <AvailabilityBadge />
         <ResumeLink />
+        <BlogLink />
       </div>
 
       <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr]">

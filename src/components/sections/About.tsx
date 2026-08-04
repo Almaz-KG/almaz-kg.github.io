@@ -1,5 +1,6 @@
 import { Reveal, Section, SectionHeading } from "@/components/ui";
 import { STATS } from "@/data/content";
+import { sectionIndex } from "@/data/sections";
 import { EducationTimeline } from "./EducationTimeline";
 import { StatCard } from "./StatCard";
 
@@ -8,7 +9,7 @@ export function About() {
     <Section id="about">
       <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr]">
         <SectionHeading
-          index="01"
+          index={sectionIndex("about")}
           kicker="About"
           title={
             <>
@@ -28,9 +29,9 @@ export function About() {
           <Reveal delay={80} className="leading-relaxed text-white/50">
             These days that means cloud-native platforms on GCP — Airflow and dbt for the pipelines,
             Terraform for the ground they stand on, and multi-agent systems on Vertex AI that take
-            the tedious half of ingestion off my hands. With AI everywhere, the bottleneck moved back
-            to where I live: the data. In my free time you&apos;ll find me learning something new —
-            usually Rust, systems design, or a book from the shelf below.
+            the tedious half of ingestion off my hands. With AI everywhere, the bottleneck moved
+            back to where I live: the data. In my free time you&apos;ll find me learning something
+            new — usually Rust, systems design, or a book from the shelf below.
           </Reveal>
 
           <Reveal delay={140}>

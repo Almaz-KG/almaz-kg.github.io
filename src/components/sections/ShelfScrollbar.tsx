@@ -16,7 +16,9 @@ export function ShelfScrollbar({ progress, thumbSize, label }: ShelfScrollbarPro
           style={{ width: `${thumbSize * 100}%`, left: `${progress * (1 - thumbSize) * 100}%` }}
         />
       </div>
-      <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 uppercase">{label}</span>
+      <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 uppercase">
+        {label}
+      </span>
     </div>
   );
 }

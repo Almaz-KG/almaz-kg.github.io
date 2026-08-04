@@ -9,6 +9,12 @@
       content="Almaz Murzabekov — Senior Data &amp; Infra Engineer with 10+ years building high-load, big-data platforms. GCP, Vertex AI agents, dbt, Airflow, Databricks, Spark and Rust."
     />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Almaz Murzabekov - Notes"
+      href="/rss.xml"
+    />
     <link rel="apple-touch-icon" href="/favicon.png" />
     <meta property="og:title" content="Almaz Murzabekov - Senior Data &amp; Infra Engineer" />
     <meta
@@ -30,6 +36,34 @@
       crossorigin
     />
     <title>Almaz Murzabekov - Senior Data &amp; Infra Engineer</title>
+    <script>
+      /*
+       * Decides the surface and the theme before the first paint, so a light
+       * post never flashes dark on its way in. Deliberately inline and
+       * synchronous: a deferred module would run after the browser has already
+       * painted the body background once.
+       */
+      (function () {
+        var root = document.documentElement;
+        var stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch (e) {
+          /* private mode, or storage disabled */
+        }
+
+        var dark =
+          stored === "dark" ||
+          (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+        root.dataset.theme = dark ? "dark" : "light";
+        // Only the blog is themeable; the landing page is always dark.
+        root.dataset.surface =
+          location.pathname === "/blog" || location.pathname.indexOf("/blog/") === 0
+            ? "reading"
+            : "home";
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

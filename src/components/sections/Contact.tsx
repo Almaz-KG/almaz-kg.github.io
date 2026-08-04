@@ -1,5 +1,6 @@
 import { Reveal, Section } from "@/components/ui";
 import { SITE } from "@/data/content";
+import { sectionIndex } from "@/data/sections";
 import { SocialGrid } from "./SocialGrid";
 
 export function Contact() {
@@ -10,7 +11,7 @@ export function Contact() {
         <div className="animate-spin-slow absolute -top-40 -right-40 h-96 w-96 rounded-full border border-dashed border-white/10" />
 
         <Reveal className="font-mono text-[11px] tracking-[0.28em] text-lime uppercase">
-          05 — Contact
+          {sectionIndex("contact")} - Contact
         </Reveal>
 
         <Reveal delay={70}>

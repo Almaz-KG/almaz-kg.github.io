@@ -30,10 +30,8 @@ export function TerminalCard() {
             {"\n"}
             {"  "}])
             {"\n\n"}
-            staging.run(source=<span className="text-aqua">&quot;raw.sensor_feed&quot;</span>,
-            {"\n"}
-            {"  "}autoland=<span className="text-citrus">True</span>)
-            {"\n\n"}
+            staging.run(source=<span className="text-aqua">&quot;raw.sensor_feed&quot;</span>,{"\n"}
+            {"  "}autoland=<span className="text-citrus">True</span>){"\n\n"}
             <span className="text-lime">✔ 128 models</span>
           </code>
         </pre>

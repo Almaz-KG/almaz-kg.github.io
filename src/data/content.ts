@@ -9,9 +9,8 @@ export const ROLES = [
   "AI Data Enabler",
   "MLOps Engineer",
   "Database Developer",
-  "Founder"
+  "Founder",
 ];
-
 
 export const SITE = {
   name: "Almaz Murzabekov",
@@ -67,33 +66,6 @@ export const FOCUS = [
   },
 ] as const;
 
-export const STACK_GROUPS = [
-  {
-    title: "Processing",
-    items: ["Apache Spark", "Spark SQL", "Spark Streaming", "Delta Lake House", "Databricks"],
-  },
-  {
-    title: "Cloud & Infra",
-    items: ["Google Cloud Platform", "BigQuery", "Cloud Run", "Terraform", "Docker", "Kubernetes"],
-  },
-  {
-    title: "Pipelines & Metadata",
-    items: ["Airflow (Composer)", "dbt", "Kafka", "GitHub Actions", "Atlan", "OpenMetadata"],
-  },
-  {
-    title: "AI & Agents",
-    items: ["Google ADK", "Vertex AI Agent Engine", "Vertex AI", "Multi-agent ETL"],
-  },
-  {
-    title: "Languages",
-    items: ["Python", "Rust", "SQL", "Java", "TypeScript"],
-  },
-  {
-    title: "Frontend",
-    items: ["React 19", "Next.js", "TypeScript", "Tailwind CSS"],
-  },
-];
-
 export type Project = {
   title: string;
   year: string;
@@ -129,41 +101,6 @@ export const PROJECTS: Project[] = [
     repo: "https://github.com/nookat-io/nookat",
     logo: "/assets/images/projects/nookat-io-logo.webp",
     shot: "/assets/images/projects/nookat-io.webp",
-  },
-];
-
-export const OPEN_SOURCE = {
-  handle: "Almaz-KG",
-  href: "https://github.com/Almaz-KG/",
-  note: "Everything past those two is public homework: benchmarks I could not let go of, parsers rebuilt to find out how they actually work, and CLIs that solved exactly one problem on exactly one laptop. Kept in the open on purpose — the half-finished ones teach more than the polished ones.",
-  facts: [
-    { value: "2012", label: "first public commit" },
-    { value: "★ 18", label: "stars on nookat" },
-    { value: "Rust", label: "current weapon" },
-  ],
-};
-
-export const SIDE_PROJECTS: { title: string; kind: string; note: string; href?: string }[] = [
-  {
-    title: "Implementing X in Rust",
-    kind: "Open-source series",
-    note: "BitTorrent client, parsers, storage engines — rebuilt in public.",
-  },
-  {
-    title: "one-billion-row-challenge",
-    kind: "Benchmark rabbit hole",
-    note: "1BRC in a few languages, mostly to settle an argument.",
-    href: "https://github.com/Almaz-KG/one-billion-row-challenge",
-  },
-  {
-    title: "Data catalog rollouts",
-    kind: "Platform work",
-    note: "Atlan, Atlas and OpenMetadata turning table sprawl into a product.",
-  },
-  {
-    title: "This site",
-    kind: "Yak shaving",
-    note: "Rewritten more times than it has been read.",
   },
 ];
 

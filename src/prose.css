@@ -1,0 +1,450 @@
+/**
+ * Reading typography for rendered post bodies.
+ *
+ * `plugins/blog.ts` emits plain semantic HTML with no classes on it, so every
+ * rule here is an element selector under `.prose`. Keeping it in one file, in
+ * markup order, means the way a post looks is readable top to bottom instead of
+ * scattered across the components that happen to render it.
+ */
+
+@layer base {
+  :root {
+    /* The reading measure, and how far a figure or a code block may reach past
+       it. Everything on a post page lines up against these two values.
+
+       Deliberately in rem rather than ch: the post title, the byline and the
+       body are set at different sizes, and a ch-based measure would give each
+       of them a different width and a visibly different left edge. */
+    --measure: 42rem;
+    --breakout: 5rem;
+  }
+}
+
+@layer components {
+  /* Aligns page furniture - title, byline, footer - with the text column. */
+  .measure {
+    width: 100%;
+    max-width: var(--measure);
+    margin-inline: auto;
+  }
+
+  /* The width a figure or code block is allowed to occupy. */
+  .measure-wide {
+    width: 100%;
+    max-width: calc(var(--measure) + 2 * var(--breakout));
+    margin-inline: auto;
+  }
+
+  /*
+   * The text column is one track of a grid rather than a centred max-width, so
+   * figures, code and tables can break out sideways without being pulled out of
+   * the document flow. `> *` is the text column; the exceptions follow.
+   */
+  .prose {
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(0, 1fr)
+      [wide-start] minmax(0, var(--breakout))
+      [content-start] min(var(--measure), 100%) [content-end]
+      minmax(0, var(--breakout)) [wide-end]
+      minmax(0, 1fr) [full-end];
+
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--color-copy) 74%, transparent);
+    overflow-wrap: break-word;
+  }
+
+  .prose > * {
+    grid-column: content;
+    margin-block: 0;
+  }
+
+  .prose > figure,
+  .prose > .code-block,
+  .prose > .table-scroll {
+    grid-column: wide;
+  }
+
+  .prose > * + * {
+    margin-top: 1.4em;
+  }
+
+  /* Headings ------------------------------------------------------------- */
+
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    position: relative;
+    color: var(--color-copy);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-wrap: balance;
+    /* Clears the sticky post header when jumped to from the contents. */
+    scroll-margin-top: 6rem;
+  }
+
+  .prose > h2 {
+    margin-top: 3.25rem;
+    font-size: clamp(1.6rem, 1.25rem + 1.4vw, 2.1rem);
+  }
+
+  .prose > h3 {
+    margin-top: 2.5rem;
+    font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.45rem);
+  }
+
+  .prose > h4 {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    color: color-mix(in srgb, var(--color-copy) 88%, transparent);
+  }
+
+  .prose h2 + *,
+  .prose h3 + *,
+  .prose h4 + * {
+    margin-top: 0.9em;
+  }
+
+  /* Sits in the left gutter on wide screens and only on hover, so it never
+     competes with the heading itself. */
+  .prose .heading-anchor {
+    position: absolute;
+    top: 0;
+    left: -1.25em;
+    padding-right: 0.5em;
+    color: var(--color-lime);
+    font-family: var(--font-mono);
+    font-weight: 400;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+
+  .prose :is(h2, h3, h4):hover .heading-anchor,
+  .prose .heading-anchor:focus-visible {
+    opacity: 0.65;
+  }
+
+  @media (max-width: 80rem) {
+    .prose .heading-anchor {
+      display: none;
+    }
+  }
+
+  /* Inline --------------------------------------------------------------- */
+
+  .prose strong {
+    color: var(--color-copy);
+    font-weight: 600;
+  }
+
+  .prose em {
+    font-style: italic;
+  }
+
+  .prose a {
+    color: var(--color-copy);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-lime) 55%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition:
+      color 0.18s ease,
+      text-decoration-color 0.18s ease;
+  }
+
+  .prose a:hover {
+    color: var(--color-lime);
+    text-decoration-color: var(--color-lime);
+  }
+
+  .prose :not(pre) > code {
+    /* Tight horizontally: wider padding leaves a visible gap between a code
+       span and the comma that follows it. */
+    padding: 0.15em 0.3em;
+    border: 1px solid var(--color-hair);
+    border-radius: 0.375rem;
+    /* Tints of the text colour rather than of white, so the chip stays a shade
+       of the surface it sits on in either theme. */
+    background: color-mix(in srgb, var(--color-copy) 5%, transparent);
+    color: var(--color-aqua);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    white-space: nowrap;
+  }
+
+  .prose kbd {
+    padding: 0.1em 0.45em;
+    border: 1px solid var(--color-hair);
+    border-bottom-width: 2px;
+    border-radius: 0.3rem;
+    background: color-mix(in srgb, var(--color-copy) 7%, transparent);
+    color: var(--color-copy);
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+  }
+
+  .prose mark {
+    padding: 0.05em 0.2em;
+    border-radius: 0.25rem;
+    background: color-mix(in srgb, var(--color-lime) 28%, transparent);
+    color: var(--color-copy);
+  }
+
+  /* Lists ---------------------------------------------------------------- */
+
+  .prose ul,
+  .prose ol {
+    padding-left: 1.5rem;
+  }
+
+  .prose li + li {
+    margin-top: 0.5em;
+  }
+
+  .prose li > ul,
+  .prose li > ol {
+    margin-top: 0.5em;
+  }
+
+  .prose ul > li {
+    list-style: none;
+    position: relative;
+  }
+
+  .prose ul > li::before {
+    content: "";
+    position: absolute;
+    top: 0.72em;
+    left: -1rem;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-lime) 70%, transparent);
+  }
+
+  .prose ol {
+    list-style: decimal;
+  }
+
+  .prose ol > li::marker {
+    color: color-mix(in srgb, var(--color-lime) 70%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  /* Task lists come out of GFM with a checkbox in the item. */
+  .prose li:has(> input[type="checkbox"])::before {
+    display: none;
+  }
+
+  .prose input[type="checkbox"] {
+    margin-right: 0.5em;
+    accent-color: var(--color-lime);
+  }
+
+  /* Quotes and rules ------------------------------------------------------ */
+
+  .prose blockquote {
+    padding-left: 1.5rem;
+    border-left: 2px solid color-mix(in srgb, var(--color-lime) 60%, transparent);
+    color: color-mix(in srgb, var(--color-copy) 88%, transparent);
+    font-family: var(--font-serif);
+    font-size: 1.3em;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .prose blockquote p + p {
+    margin-top: 0.6em;
+  }
+
+  .prose hr {
+    margin-block: 3rem;
+    border: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-copy) 18%, transparent) 30%,
+      color-mix(in srgb, var(--color-copy) 18%, transparent) 70%,
+      transparent
+    );
+  }
+
+  /* Figures --------------------------------------------------------------- */
+
+  .prose figure {
+    margin-block: 2.5rem;
+  }
+
+  .prose figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-hair);
+    border-radius: 1rem;
+    background: var(--color-inset);
+  }
+
+  .prose figcaption {
+    margin-top: 0.75rem;
+    color: var(--color-faint);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* Inline images keep the text rhythm and never overflow. */
+  .prose p > img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    vertical-align: middle;
+  }
+
+  /* Code ------------------------------------------------------------------ */
+
+  .prose .code-block {
+    overflow: hidden;
+    border: 1px solid var(--color-hair);
+    border-radius: 1rem;
+    background: var(--color-inset);
+  }
+
+  .prose .code-title {
+    padding: 0.6rem 1.1rem;
+    border-bottom: 1px solid var(--color-hair);
+    background: color-mix(in srgb, var(--color-copy) 3%, transparent);
+    color: var(--color-faint);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+  }
+
+  .prose pre {
+    overflow-x: auto;
+    margin: 0;
+    padding: 1.1rem 1.25rem;
+    /* Shiki inlines the theme background; the panel above owns it instead. */
+    background: transparent !important;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    tab-size: 2;
+  }
+
+  .prose pre code {
+    font-family: var(--font-mono);
+  }
+
+  /*
+   * Shiki ships both themes on every token as `--shiki-light` / `--shiki-dark`
+   * (see THEMES in plugins/render.ts), so switching the theme is a repaint
+   * rather than a re-highlight.
+   */
+  .prose pre.shiki,
+  .prose pre.shiki span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+  }
+
+  html[data-theme="light"] .prose pre.shiki,
+  html[data-theme="light"] .prose pre.shiki span {
+    color: var(--shiki-light);
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
+  }
+
+  /* Tables ---------------------------------------------------------------- */
+
+  .prose .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--color-hair);
+    border-radius: 1rem;
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .prose th {
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--color-hair);
+    background: color-mix(in srgb, var(--color-copy) 4%, transparent);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .prose td {
+    padding: 0.75rem 1.1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 60%, transparent);
+    vertical-align: top;
+  }
+
+  .prose tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  /* Callouts -------------------------------------------------------------- */
+
+  .prose .callout {
+    --callout: var(--color-aqua);
+    padding: 1.1rem 1.35rem;
+    border: 1px solid color-mix(in srgb, var(--callout) 28%, transparent);
+    border-left-width: 3px;
+    border-radius: 0.875rem;
+    background: color-mix(in srgb, var(--callout) 7%, transparent);
+    font-size: 0.975rem;
+  }
+
+  .prose .callout::before {
+    content: var(--callout-label);
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--callout);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .prose .callout > * + * {
+    margin-top: 0.8em;
+  }
+
+  .prose .callout-note {
+    --callout: var(--color-aqua);
+    --callout-label: "Note";
+  }
+
+  .prose .callout-tip {
+    --callout: var(--color-lime);
+    --callout-label: "Tip";
+  }
+
+  .prose .callout-warn {
+    --callout: var(--color-citrus);
+    --callout-label: "Careful";
+  }
+
+  /* The first paragraph of a post, set larger as a lead-in. */
+  .prose > p:first-child {
+    color: color-mix(in srgb, var(--color-copy) 88%, transparent);
+    font-size: 1.2rem;
+    line-height: 1.65;
+  }
+}

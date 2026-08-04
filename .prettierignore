@@ -1,0 +1,9 @@
+node_modules/
+dist/
+_site/
+package-lock.json
+
+# Blog posts are prose, and prose is edited by hand. Prettier normalises
+# markdown in ways that fight the way these files are written - one sentence per
+# line, deliberate emphasis characters - so it stays out of them entirely.
+content/

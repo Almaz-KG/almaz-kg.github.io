@@ -1,5 +1,6 @@
 import { Reveal, Section, SectionHeading } from "@/components/ui";
 import { FOCUS } from "@/data/content";
+import { sectionIndex } from "@/data/sections";
 import { TONES } from "@/utils/tones";
 import { FocusCard } from "./FocusCard";
 
@@ -7,7 +8,7 @@ export function Focus() {
   return (
     <Section id="focus">
       <SectionHeading
-        index="02"
+        index={sectionIndex("focus")}
         kicker="What I do"
         title={
           <>

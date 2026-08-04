@@ -1,5 +1,6 @@
 import { Reveal, Section, SectionHeading } from "@/components/ui";
 import { PROJECTS } from "@/data/content";
+import { sectionIndex } from "@/data/sections";
 import { TONE_GLOW } from "@/utils/tones";
 import { ProjectCard } from "./ProjectCard";
 
@@ -10,7 +11,7 @@ export function Projects() {
   return (
     <Section id="projects">
       <SectionHeading
-        index="03"
+        index={sectionIndex("projects")}
         kicker="Projects"
         title={
           <>

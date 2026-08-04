@@ -1,16 +1,14 @@
 @import "tailwindcss";
 @import "./fonts.css";
+@import "./prose.css";
 
 @theme {
   /* The "* Fallback" entries are metric-matched re-cuts of a local font, so
      text laid out before the webfont arrives occupies the same space and the
      swap does not shift the page. See fonts.css. */
-  --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif,
-    system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace,
-    monospace;
-  --font-serif: "Instrument Serif", "Instrument Serif Fallback", ui-serif,
-    Georgia, serif;
+  --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, monospace;
+  --font-serif: "Instrument Serif", "Instrument Serif Fallback", ui-serif, Georgia, serif;
 
   --color-ink: #07070c;
   --color-ink-2: #0c0c14;
@@ -20,6 +18,71 @@
   --color-violet: #8b7bff;
   --color-citrus: #ff7a45;
   --color-bone: #ecebe6;
+
+  /*
+   * Surface tokens. These are the only colours the blog is built from, and
+   * every one of them is re-declared below for the reading surface - so the
+   * same `bg-sheet` or `text-copy/60` renders dark on the landing page and
+   * light in a post, with no per-theme class names in the components.
+   */
+  --color-page: #07070c; /* the page itself */
+  --color-sheet: #0e0e16; /* the panel the text sits on */
+  --color-inset: #0b0b12; /* panels within the sheet: code, callouts */
+  --color-hair: #23232f; /* every border */
+  --color-copy: #ecebe6; /* primary text */
+
+  /*
+   * Secondary text is a token rather than `text-copy/45`, because an alpha is
+   * the same number in both themes and does not mean the same thing in both:
+   * 45% of near-white on a dark sheet still reads, 45% of near-black on white
+   * lands around 2.6:1. These two are picked per theme to clear 4.5:1 at the
+   * 11px the meta lines are set in.
+   */
+  --color-muted: #a6a6b0; /* descriptions, decks, secondary copy */
+  --color-faint: #83838f; /* mono meta, captions, nav labels */
+}
+
+/*
+ * The reading surface: /blog and every post.
+ *
+ * Set on <html> by the inline script in index.html, from the URL and the
+ * stored theme, so the first paint is already the right colour. `App` keeps it
+ * in sync across client-side navigation.
+ *
+ * The landing page never carries this attribute: it is a dark neon design, not
+ * a themeable one, and a light version of it would be a different site.
+ */
+html[data-surface="reading"] {
+  /* Cooler and a step lighter than the landing page's near-black, so arriving
+     here reads as changing rooms rather than scrolling further. The gap between
+     page and sheet is deliberately wider than it would be on a light theme:
+     dark surfaces need more separation to register as separate at all. */
+  --color-page: #0c0e14;
+  --color-sheet: #151922;
+  --color-inset: #0e1117;
+  --color-hair: #262b36;
+  --color-copy: #ecebe6;
+  --color-muted: #a8a8b4;
+  --color-faint: #83838f;
+}
+
+html[data-surface="reading"][data-theme="light"] {
+  --color-page: #f2f2f5;
+  --color-sheet: #ffffff;
+  --color-inset: #f6f6f9;
+  --color-hair: #e0e0e7;
+  --color-copy: #16161c;
+  --color-muted: #52525c;
+  --color-faint: #6a6a76;
+
+  /* The neon accents are unreadable on white, so the reading surface gets
+     darker cuts of the same four hues. Every `text-lime`, `border-aqua/30`
+     and gradient in the blog picks these up automatically. */
+  --color-lime: #4e7a0b;
+  --color-aqua: #0a7365; /* darker than it looks like it needs: this is the
+                            colour of inline code, at 0.85em */
+  --color-violet: #5b4bd6;
+  --color-citrus: #c9490f;
 }
 
 @layer base {
@@ -32,28 +95,35 @@
   }
 
   body {
-    background-color: var(--color-ink);
-    color: var(--color-bone);
+    /* Driven by the surface tokens so the overscroll area and the scrollbar
+       gutter match the page instead of staying black behind a light post. */
+    background-color: var(--color-page);
+    color: var(--color-copy);
     font-family: var(--font-display);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Tells the browser which way to render form controls and the scrollbar. */
+  html[data-surface="reading"][data-theme="light"] {
+    color-scheme: light;
+  }
+
   ::selection {
     background: var(--color-lime);
-    color: #07070c;
+    color: var(--color-sheet);
   }
 
   ::-webkit-scrollbar {
     width: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #07070c;
+    background: var(--color-page);
   }
   ::-webkit-scrollbar-thumb {
-    background: #23232f;
+    background: var(--color-hair);
     border-radius: 999px;
-    border: 3px solid #07070c;
+    border: 3px solid var(--color-page);
   }
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-lime);
@@ -77,11 +147,7 @@
   }
 
   .glass {
-    background: linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.015)
-    );
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
     backdrop-filter: blur(14px);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
@@ -168,15 +234,6 @@
   }
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @keyframes blink {
   0%,
   49% {
@@ -199,9 +256,6 @@
 }
 .animate-float-slower {
   animation: float-slower 24s ease-in-out infinite;
-}
-.animate-marquee {
-  animation: marquee 38s linear infinite;
 }
 .animate-blink {
   animation: blink 1.05s step-end infinite;
