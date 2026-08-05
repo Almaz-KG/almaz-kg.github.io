@@ -53,6 +53,9 @@
     line-height: 1.75;
     color: color-mix(in srgb, var(--color-copy) 74%, transparent);
     overflow-wrap: break-word;
+
+    /* Numbers the chapter rules drawn above every `h2`. */
+    counter-reset: chapter;
   }
 
   .prose > * {
@@ -85,18 +88,68 @@
     scroll-margin-top: 6rem;
   }
 
+  /*
+   * An `h2` starts a chapter, so it gets a band of air roughly four times the
+   * paragraph rhythm - enough that the break is visible before you have read a
+   * word of the heading - and a numbered rule sitting in that band.
+   *
+   * The rule is drawn with the heading's own pseudo-elements, positioned out of
+   * flow, so it costs the layout nothing: `scroll-margin-top` still lands on the
+   * heading text, and the hover anchor still lines up with the first line.
+   */
   .prose > h2 {
-    margin-top: 3.25rem;
+    counter-increment: chapter;
+    margin-top: clamp(5rem, 1.7rem + 8.3vw, 7rem);
     font-size: clamp(1.6rem, 1.25rem + 1.4vw, 2.1rem);
   }
 
+  .prose > h2::before {
+    content: counter(chapter, decimal-leading-zero);
+    position: absolute;
+    top: -2.4rem;
+    left: 0;
+    color: var(--color-lime);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 0.28em;
+  }
+
+  .prose > h2::after {
+    content: "";
+    position: absolute;
+    top: -2.05rem;
+    left: 2.75rem;
+    right: 0;
+    height: 1px;
+    /* Held for most of the column and released at the end, so the rule reads as
+       a boundary rather than as a stray underline that stopped early. */
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-copy) 18%, transparent) 0%,
+      color-mix(in srgb, var(--color-copy) 18%, transparent) 62%,
+      transparent 100%
+    );
+  }
+
+  /* Two thirds of the band where something above is already doing the work:
+     the lead paragraph and the cover open the first chapter, and an
+     author-written `---` is a break in its own right, so a full band after
+     either one reads as a second pause for nothing. */
+  .prose > h2:first-of-type,
+  .prose > hr + h2 {
+    margin-top: clamp(3.5rem, 1.8rem + 4.2vw, 4.5rem);
+  }
+
+  /* A sub-section is a pause inside a chapter, not a new one: clearly more than
+     the paragraph rhythm, clearly less than the band above an `h2`. */
   .prose > h3 {
-    margin-top: 2.5rem;
+    margin-top: 3.5rem;
     font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.45rem);
   }
 
   .prose > h4 {
-    margin-top: 2rem;
+    margin-top: 2.25rem;
     font-size: 1.1rem;
     color: color-mix(in srgb, var(--color-copy) 88%, transparent);
   }
