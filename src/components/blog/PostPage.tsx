@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import avatar from "@/assets/almaz-avatar.webp";
 import { SITE } from "@/data/content";
 import { formatDate, type PostModule } from "@/data/posts";
 import { useHead } from "@/utils/head";
 import { usePost } from "@/utils/hooks/usePost";
+import { scrollToIdSettling } from "@/utils/scroll";
 import { BlogNav } from "./BlogNav";
 import { NotFound } from "./NotFound";
 import { PostCover } from "./PostCover";
@@ -46,6 +48,13 @@ function PostView({ post }: { post: PostModule }) {
     publishedAt: meta.date,
     modifiedAt: meta.updated,
   });
+
+  // A deep link names a heading that does not exist yet: the body is a lazy
+  // chunk, so the browser looked for the fragment and gave up long before this
+  // markup was committed. Asking again now is the whole fix.
+  useEffect(() => {
+    scrollToIdSettling(window.location.hash.slice(1));
+  }, []);
 
   return (
     <>

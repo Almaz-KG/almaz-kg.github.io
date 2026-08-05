@@ -12,6 +12,7 @@
  */
 
 import { useSyncExternalStore } from "react";
+import { scrollToId } from "./scroll";
 
 type Listener = () => void;
 
@@ -71,8 +72,9 @@ export function navigate(to: string, options: { replace?: boolean } = {}): void 
   }
 
   // An anchor, on the other hand, cannot be measured until the route it lives
-  // in has been laid out.
-  afterRender(() => document.getElementById(hash)?.scrollIntoView());
+  // in has been laid out. It may not be measurable even then: a post body is a
+  // lazy chunk, and `PostPage` re-runs this once the body has arrived.
+  afterRender(() => scrollToId(hash, { animate: false }));
 }
 
 /** Runs once the new route has been committed, laid out and painted. */
@@ -82,10 +84,17 @@ function afterRender(task: () => void): void {
 
 window.addEventListener("popstate", () => {
   const restore = scrollPositions.get(getSnapshot()) ?? 0;
+  const hash = window.location.hash.slice(1);
   emit();
+
   // Waits for layout, or the page is still too short to scroll back to where
   // the reader left it.
-  afterRender(() => window.scrollTo({ top: restore, behavior: "instant" }));
+  afterRender(() => {
+    // Going forward into a `#section` entry means going back to that section,
+    // not to wherever the route was last left.
+    if (hash && scrollToId(hash, { animate: false })) return;
+    window.scrollTo({ top: restore, behavior: "instant" });
+  });
 });
 
 /**
@@ -110,9 +119,23 @@ window.addEventListener("click", (event) => {
   // Real files - /rss.xml, /cv.pdf - are served by the host, not routed.
   if (/\.[a-z0-9]+$/i.test(url.pathname)) return;
 
-  // `#section` on the current page is the browser's job, not the router's.
-  if (url.hash && normalize(url.pathname) === getSnapshot()) return;
-
   event.preventDefault();
+
+  // `#section` on the current page moves within the route rather than between
+  // routes: no re-render, and the scroll is animated because the reader stays
+  // on a page they are already reading. The browser would do this itself, but
+  // only as reliably as `scroll-behavior` - see utils/scroll.ts.
+  if (url.hash && normalize(url.pathname) === getSnapshot()) {
+    if (url.hash !== window.location.hash) {
+      // Remembered before the hash entry is pushed, so going back returns to
+      // the paragraph the reader left rather than to the top of the post.
+      scrollPositions.set(getSnapshot(), window.scrollY);
+      window.history.pushState(null, "", url.hash);
+    }
+
+    scrollToId(url.hash.slice(1));
+    return;
+  }
+
   navigate(url.pathname + url.hash);
 });

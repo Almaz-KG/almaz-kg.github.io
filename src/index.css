@@ -90,9 +90,13 @@ html[data-surface="reading"][data-theme="light"] {
     -webkit-tap-highlight-color: transparent;
   }
 
-  html {
-    scroll-behavior: smooth;
-  }
+  /*
+   * No `scroll-behavior: smooth` here. It looks like the cheap way to animate
+   * contents links, but it hands the animation to a layer that is allowed to
+   * switch it off, and a browser that will not animate the scroll does not
+   * fall back to jumping - it does not scroll at all. utils/scroll.ts owns
+   * this instead, and every scroll it performs is `behavior: "instant"`.
+   */
 
   body {
     /* Driven by the surface tokens so the overscroll area and the scrollbar
