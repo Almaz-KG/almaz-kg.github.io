@@ -20,7 +20,11 @@ export default function App() {
   useEffect(() => setSurface(isHome ? "home" : "reading"), [isHome]);
 
   return (
-    <div className={cn("relative min-h-screen overflow-x-hidden", isHome && "grain")}>
+    // No `overflow-x` here. It computes to `overflow: hidden auto`, making this
+    // a scroll container that never scrolls, and `position: sticky` inside one
+    // of those never sticks. `body { overflow-x: hidden }` already clips the
+    // landing page's blobs, and it propagates to the viewport instead.
+    <div className={cn("relative min-h-screen", isHome && "grain")}>
       {/* The drifting blobs, the grid and the grain are the landing page's
           personality. A post is meant to be read, so it gets a flat surface and
           none of them. */}
