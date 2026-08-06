@@ -1,8 +1,6 @@
 import { Hero } from "@/components/hero/Hero";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
-import { Focus } from "@/components/sections/Focus";
-import { Projects } from "@/components/sections/Projects";
 import { Shelf } from "@/components/sections/Shelf";
 import { Writing } from "@/components/sections/Writing";
 import { SITE } from "@/data/content";
@@ -20,8 +18,9 @@ export function Home() {
     <>
       <Hero />
       <About />
-      <Focus />
-      <Projects />
+      {/* `Focus` and `Projects` are parked, not deleted - see PARKED_SECTIONS in
+          data/sections.ts. The writing takes the space they held, which says the
+          same thing about the work without claiming anything. */}
       <Writing />
       <Shelf />
       <Contact />

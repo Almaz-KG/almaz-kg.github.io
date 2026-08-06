@@ -5,9 +5,14 @@ import { sectionIndex } from "@/data/sections";
 import { TONE_GLOW } from "@/utils/tones";
 import { cn } from "@/utils/cn";
 
-/** The three newest notes, linking through to the blog. Hidden when empty. */
+/**
+ * The newest notes, linking through to the blog. Hidden when empty.
+ *
+ * Two rows rather than one: this section stands where `Focus` and `Projects`
+ * used to, so it carries the middle of the page on its own now.
+ */
 export function Writing() {
-  const latest = POSTS.slice(0, 3);
+  const latest = POSTS.slice(0, 6);
   if (latest.length === 0) return null;
 
   return (
@@ -24,7 +29,8 @@ export function Writing() {
       />
 
       {/* Columns follow the post count, so an early blog with two notes does not
-          sit next to an empty third column. */}
+          sit next to an empty third column, and a single one spans the measure
+          rather than sitting in a narrow column with dead space beside it. */}
       <div
         className={cn(
           "mt-14 grid gap-4",
