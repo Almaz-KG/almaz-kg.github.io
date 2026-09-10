@@ -19,7 +19,10 @@ export function Hero() {
       </div>
 
       <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr]">
-        <div>
+        {/* A query container so the subtitle can lay itself out against the room
+            it actually has. Viewport breakpoints cannot see that this column
+            narrows to 524px the moment the two-column grid kicks in at lg. */}
+        <div className="@container">
           <h1 className="text-[clamp(2.9rem,9vw,6.5rem)] leading-[0.92] font-semibold tracking-[-0.04em]">
             <span className="block">Almaz</span>
             <span className="text-gradient block">Murzabekov</span>
@@ -27,7 +30,9 @@ export function Hero() {
 
           <p className="mt-6 text-lg text-white/60 sm:text-xl">
             <Typewriter />
-            <span className="mx-2 text-white/20">/</span>
+            {/* The slash only separates something. On a narrow column the role
+                sits on its own line, so there is nothing to its left. */}
+            <span className="mx-2 hidden text-white/20 @min-[36rem]:inline">/</span>
             <span>10+ years wrangling big data</span>
           </p>
 

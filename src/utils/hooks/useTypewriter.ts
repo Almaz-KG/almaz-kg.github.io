@@ -7,6 +7,13 @@ type Options = {
   deleteMs?: number;
   /** How long a finished word sits on screen before it is erased. */
   holdMs?: number;
+  /**
+   * Set to false to freeze mid-word. Every typed character can rewrap the line
+   * it sits in, which moves everything below it, so an off-screen typewriter is
+   * not just wasted work: on a phone it shoves the page around under the reader
+   * as they scroll. Safari has no scroll anchoring to absorb that.
+   */
+  active?: boolean;
 };
 
 /**
@@ -15,13 +22,15 @@ type Options = {
  */
 export function useTypewriter(
   words: readonly string[],
-  { typeMs = 68, deleteMs = 34, holdMs = 1700 }: Options = {},
+  { typeMs = 68, deleteMs = 34, holdMs = 1700, active = true }: Options = {},
 ) {
   const [index, setIndex] = useState(0);
   const [text, setText] = useState("");
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    if (!active) return;
+
     const word = words[index % words.length];
 
     if (!deleting && text === word) {
@@ -50,7 +59,7 @@ export function useTypewriter(
       deleting ? deleteMs : typeMs,
     );
     return () => clearTimeout(t);
-  }, [words, index, text, deleting, typeMs, deleteMs, holdMs]);
+  }, [words, index, text, deleting, typeMs, deleteMs, holdMs, active]);
 
   return text;
 }
