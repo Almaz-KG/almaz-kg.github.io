@@ -19,8 +19,8 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    // Compiles content/posts/*.md and emits rss.xml, sitemap.xml and the
-    // 404.html history fallback. See plugins/blog.ts.
+    // Compiles content/posts/*.md and emits rss.xml and sitemap.xml. See
+    // plugins/blog.ts; the per-route HTML comes from scripts/prerender.ts.
     blog({
       dir: "content/posts",
       site: SITE,

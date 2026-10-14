@@ -4,10 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#07070c" />
-    <meta
-      name="description"
-      content="Almaz Murzabekov — Senior Data &amp; Infra Engineer with 10+ years building high-load, big-data platforms. GCP, Vertex AI agents, dbt, Airflow, Databricks, Spark and Rust."
-    />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
     <link
       rel="alternate"
@@ -16,11 +12,6 @@
       href="/rss.xml"
     />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <meta property="og:title" content="Almaz Murzabekov - Senior Data &amp; Infra Engineer" />
-    <meta
-      property="og:description"
-      content="10+ years building high-load, big-data platforms. GCP, Vertex AI agents, dbt, Airflow, Spark, Rust."
-    />
     <link
       rel="preload"
       href="/assets/fonts/space-grotesk-var-latin.woff2"
@@ -35,7 +26,12 @@
       type="font/woff2"
       crossorigin
     />
-    <title>Almaz Murzabekov - Senior Data &amp; Infra Engineer</title>
+    <!--
+      Title, description, canonical, Open Graph and JSON-LD are per route, so
+      the build writes them here for each pre-rendered page (scripts/prerender.ts)
+      and useHead keeps them right after client-side navigation.
+    -->
+    <!--app-head-->
     <script>
       /*
        * Decides the surface and the theme before the first paint, so a light
@@ -66,7 +62,7 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app-html--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

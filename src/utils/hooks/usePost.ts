@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { findPost, loadPost, type PostModule } from "@/data/posts";
+import { findPost, loadPost, peekPost, type PostModule } from "@/data/posts";
 
 type PostState =
   { status: "loading" } | { status: "ready"; post: PostModule } | { status: "missing" };
@@ -9,16 +9,20 @@ type PostState =
  *
  * The import is per-post, so navigating between notes downloads only the note
  * being opened. An unknown slug resolves to `missing`, which the page renders
- * as a 404 rather than an error.
+ * as a 404 rather than an error. A body that is already in memory - the one the
+ * page was pre-rendered with, or one read earlier - is returned straight away.
  */
 export function usePost(slug: string): PostState {
   // The body is the only part that has to be fetched. Whether the slug exists
   // at all is a lookup in the build-time index, so it is answered during render
   // instead of being pushed through state by the effect below.
   const known = findPost(slug) !== undefined;
+  const cached = peekPost(slug);
   const [loaded, setLoaded] = useState<{ slug: string; post: PostModule } | null>(null);
 
   useEffect(() => {
+    if (peekPost(slug)) return;
+
     const load = loadPost(slug);
     if (!load) return;
 
@@ -38,6 +42,7 @@ export function usePost(slug: string): PostState {
   }, [slug]);
 
   if (!known) return { status: "missing" };
+  if (cached) return { status: "ready", post: cached };
   // The slug is carried alongside the module so that navigating from one post
   // to another reports `loading` immediately, rather than showing the previous
   // body for the render before the new chunk arrives.

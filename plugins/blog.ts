@@ -9,8 +9,10 @@
  *     never downloads a word of them.
  *   - `virtual:blog`, the metadata-only index the listing and teaser render
  *     from. Titles and dates are small enough to ship eagerly; bodies are not.
- *   - `rss.xml`, `sitemap.xml` and the `404.html` history fallback, written
- *     into the build output.
+ *   - `rss.xml` and `sitemap.xml`, written into the build output.
+ *
+ * Turning routes into HTML files is not done here; `scripts/prerender.ts`
+ * renders the built app once per route after the bundle exists.
  */
 
 import fs from "node:fs/promises";
@@ -178,16 +180,15 @@ export function blog(options: BlogOptions): Plugin {
     },
 
     async writeBundle() {
+      // The server bundle the pre-render runs is built by this config too. The
+      // feed and the sitemap belong to the site, not to that.
+      if (config.build.ssr) return;
+
       const posts = await readPosts();
       const outDir = path.resolve(config.root, config.build.outDir);
 
       await fs.writeFile(path.join(outDir, "rss.xml"), renderFeed(posts, options), "utf8");
       await fs.writeFile(path.join(outDir, "sitemap.xml"), renderSitemap(posts, options), "utf8");
-
-      // GitHub Pages has no rewrite rules, so a hard load of /blog/<slug> is a
-      // 404. Serving the app as the 404 body lets the router take over and
-      // render the right page.
-      await fs.copyFile(path.join(outDir, "index.html"), path.join(outDir, "404.html"));
     },
 
     async closeBundle() {

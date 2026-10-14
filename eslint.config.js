@@ -9,7 +9,7 @@ import prettier from "eslint-config-prettier";
  * Flat config. Three layers, in order:
  *
  *   1. what runs in the browser  - src, React rules on
- *   2. what runs in Node         - the Vite plugins and the build config
+ *   2. what runs in Node         - the Vite plugins, the build config and scripts
  *   3. what turns rules off      - eslint-config-prettier, always last
  *
  * Type-aware linting is deliberately not enabled. `tsc --noEmit` already runs
@@ -20,7 +20,7 @@ import prettier from "eslint-config-prettier";
 export default tseslint.config(
   // Flat config does not read .gitignore, so build output has to be listed here
   // as well.
-  { ignores: ["dist/**", "_site/**", "node_modules/**"] },
+  { ignores: ["dist/**", "dist-ssr/**", "_site/**", "node_modules/**"] },
 
   js.configs.recommended,
   tseslint.configs.recommended,
@@ -58,8 +58,15 @@ export default tseslint.config(
     },
   },
 
+  // The pre-render's entry point runs once in Node and is never hot-reloaded,
+  // so the Fast Refresh export rule has nothing to protect there.
   {
-    files: ["plugins/**/*.ts", "vite.config.ts", "eslint.config.js"],
+    files: ["src/entry-server.tsx"],
+    rules: { "react-refresh/only-export-components": "off" },
+  },
+
+  {
+    files: ["plugins/**/*.ts", "scripts/**/*.ts", "vite.config.ts", "eslint.config.js"],
     languageOptions: {
       ecmaVersion: 2022,
       globals: globals.node,

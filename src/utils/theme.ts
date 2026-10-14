@@ -61,9 +61,19 @@ export function setTheme(theme: Theme): void {
   emit();
 }
 
+/**
+ * The pre-rendered HTML cannot know the reader's theme, so it is rendered as
+ * dark and corrected right after hydration. Anything visual that depends on the
+ * theme should therefore key off `data-theme` in CSS, not off this value, or it
+ * shows the wrong state until the script runs.
+ */
+function getServerSnapshot(): Theme {
+  return "dark";
+}
+
 /** The current theme, and a way to flip it. Re-renders on every change. */
 export function useTheme(): { theme: Theme; toggle: () => void } {
-  const theme = useSyncExternalStore(subscribe, getSnapshot);
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   return { theme, toggle: () => setTheme(theme === "dark" ? "light" : "dark") };
 }
 
@@ -84,11 +94,14 @@ function syncThemeColor(): void {
 }
 
 // Follows the system while the reader has not chosen for themselves. Once they
-// have, their choice outranks the OS until they change it again.
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
-  if (storedTheme()) return;
+// have, their choice outranks the OS until they change it again. Guarded
+// because the build pre-renders the app in Node, where there is no window.
+if (typeof window !== "undefined") {
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+    if (storedTheme()) return;
 
-  document.documentElement.dataset.theme = event.matches ? "dark" : "light";
-  syncThemeColor();
-  emit();
-});
+    document.documentElement.dataset.theme = event.matches ? "dark" : "light";
+    syncThemeColor();
+    emit();
+  });
+}

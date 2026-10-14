@@ -2,6 +2,7 @@ _site/
 
 **/node_modules/**
 **/dist/**
+**/dist-ssr/**
 public/
 
 **/.DS_Store

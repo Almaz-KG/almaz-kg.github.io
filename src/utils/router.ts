@@ -7,8 +7,10 @@
  * that plain `<a href="/blog/...">` anchors, including the ones inside rendered
  * markdown, navigate without a reload.
  *
- * Deep links work on GitHub Pages because the build writes `404.html` as a copy
- * of `index.html`; see `plugins/blog.ts`.
+ * Every route is pre-rendered to its own HTML file at build time, so a deep link
+ * is answered by the host directly; see `scripts/prerender.ts`. This module is
+ * imported by that render too, so nothing at its top level may assume a
+ * browser.
  */
 
 import { useSyncExternalStore } from "react";
@@ -43,9 +45,33 @@ function getSearch(): string {
   return window.location.search;
 }
 
+/**
+ * The path the HTML on screen was rendered for: the route being pre-rendered
+ * on the server, and the same route again while the browser hydrates it.
+ *
+ * The two are not always the current path. `404.html` is rendered once, for
+ * `/404`, and served for every unknown address, so hydration has to start from
+ * the path that markup describes and only then move to the real one. React
+ * does exactly that when the server snapshot and the live one differ.
+ */
+let renderedPath: string | undefined;
+
+export function setRenderedPath(path: string): void {
+  renderedPath = normalize(path);
+}
+
+function getServerSnapshot(): string {
+  return renderedPath ?? getSnapshot();
+}
+
+/** Pre-rendered pages have no query string; a filter applies after hydration. */
+function getServerSearch(): string {
+  return "";
+}
+
 /** The current path, re-rendering the component whenever it changes. */
 export function usePath(): string {
-  return useSyncExternalStore(subscribe, getSnapshot);
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 /**
@@ -53,7 +79,7 @@ export function usePath(): string {
  * re-rendering the component whenever it changes.
  */
 export function useSearchParam(name: string): string | null {
-  return new URLSearchParams(useSyncExternalStore(subscribe, getSearch)).get(name);
+  return new URLSearchParams(useSyncExternalStore(subscribe, getSearch, getServerSearch)).get(name);
 }
 
 /**
@@ -103,7 +129,12 @@ function afterRender(task: () => void): void {
   requestAnimationFrame(() => requestAnimationFrame(task));
 }
 
-window.addEventListener("popstate", () => {
+if (typeof window !== "undefined") {
+  window.addEventListener("popstate", onPopState);
+  window.addEventListener("click", onClick);
+}
+
+function onPopState(): void {
   const restore = scrollPositions.get(getSnapshot()) ?? 0;
   const hash = window.location.hash.slice(1);
   emit();
@@ -116,14 +147,14 @@ window.addEventListener("popstate", () => {
     if (hash && scrollToId(hash, { animate: false })) return;
     window.scrollTo({ top: restore, behavior: "instant" });
   });
-});
+}
 
 /**
  * Turns same-origin left clicks into client-side navigation, and leaves
  * everything else - new tabs, downloads, external hosts, in-page anchors - to
  * the browser.
  */
-window.addEventListener("click", (event) => {
+function onClick(event: MouseEvent): void {
   if (event.defaultPrevented || event.button !== 0) return;
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
@@ -159,4 +190,4 @@ window.addEventListener("click", (event) => {
   }
 
   navigate(url.pathname + url.search + url.hash);
-});
+}

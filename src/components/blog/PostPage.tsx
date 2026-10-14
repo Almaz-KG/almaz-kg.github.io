@@ -47,6 +47,19 @@ function PostView({ post }: { post: PostModule }) {
     type: "article",
     publishedAt: meta.date,
     modifiedAt: meta.updated,
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: meta.title,
+      description: meta.description,
+      url: `${SITE.blog}/blog/${meta.slug}`,
+      mainEntityOfPage: `${SITE.blog}/blog/${meta.slug}`,
+      datePublished: meta.date,
+      dateModified: meta.updated ?? meta.date,
+      keywords: meta.tags.join(", "),
+      ...(meta.cover ? { image: `${SITE.blog}${meta.cover}` } : {}),
+      author: { "@type": "Person", name: SITE.name, url: `${SITE.blog}/` },
+    },
   });
 
   // A deep link names a heading that does not exist yet: the body is a lazy

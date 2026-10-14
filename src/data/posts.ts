@@ -37,7 +37,26 @@ export function findPost(slug: string): PostMeta | undefined {
  */
 export function loadPost(slug: string): Promise<PostModule> | undefined {
   if (!findPost(slug)) return undefined;
-  return BY_SLUG.get(slug)?.();
+
+  return BY_SLUG.get(slug)?.().then((post) => {
+    LOADED.set(slug, post);
+    return post;
+  });
+}
+
+/** Bodies that have already arrived, so a revisit renders without a fetch. */
+const LOADED = new Map<string, PostModule>();
+
+/**
+ * A post body that is already in memory, synchronously.
+ *
+ * This is what lets a pre-rendered post hydrate: the pre-render and the
+ * browser both `loadPost` before rendering, and the first render then reads
+ * the body from here instead of starting at a loading skeleton that would not
+ * match the HTML on screen.
+ */
+export function peekPost(slug: string): PostModule | undefined {
+  return LOADED.get(slug);
 }
 
 /** The posts published either side of `slug`, for the read-next footer. */

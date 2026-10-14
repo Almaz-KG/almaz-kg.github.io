@@ -147,14 +147,22 @@ Give diagrams their own opaque background - a dark figure on a white sheet reads
 
 ## Build output
 
-`dist/index.html` plus hashed JS and CSS, the contents of `static/`, and three files written by the blog plugin:
+`npm run build` is three steps: the client bundle, a server bundle of the same app in `dist-ssr/`, and `scripts/prerender.ts`, which renders every route to its own HTML file.
+
+`dist/` ends up with hashed JS and CSS, the contents of `static/`, two files written by the blog plugin:
 
 - `rss.xml` - the feed, newest first
 - `sitemap.xml` - every route, dated from front matter
-- `404.html` - a copy of `index.html`
 
-GitHub Pages has no rewrite rules, so `404.html` is what makes a hard load of `/blog/<slug>` resolve to the app instead of a stock error page.
-The router then renders the requested route.
+and the pre-rendered pages:
+
+- `index.html`, `blog.html`, `blog/<slug>.html` - one per route, with its text and its own title, description, canonical URL, Open Graph tags and JSON-LD
+- `404.html` - the not-found page, marked `noindex`
+- `posts/<slug>/index.html` and a few more - meta-refresh redirects from the addresses the previous Hugo site published
+
+GitHub Pages has no rewrite rules and answers an extensionless path with `<path>.html`, so every route is a real file served with a 200.
+Before this, every route but `/` was answered by `404.html` with the status 404, and search engines indexed nothing.
+The browser hydrates the pre-rendered markup rather than rendering from scratch, so anything that differs between the two has to be decided in CSS or after hydration; see `src/utils/router.ts` and `src/components/blog/ThemeToggle.tsx`.
 
 Those files are written by `writeBundle`, which only runs on a build, so the dev server serves `/rss.xml` and `/sitemap.xml` from a middleware instead - rendered per request from the same functions.
 Without it those paths would fall through to Vite's SPA fallback, get `index.html`, and be answered by the router's 404 page: a link that works in production, failing locally in a way that looks like a bug in the link.

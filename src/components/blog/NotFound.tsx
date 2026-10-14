@@ -10,6 +10,7 @@ export function NotFound() {
     title: "Not found - Almaz Murzabekov",
     description: "This page does not exist.",
     path,
+    noindex: true,
   });
 
   return (
