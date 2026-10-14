@@ -39,18 +39,35 @@ function getSnapshot(): string {
   return normalize(window.location.pathname);
 }
 
+function getSearch(): string {
+  return window.location.search;
+}
+
 /** The current path, re-rendering the component whenever it changes. */
 export function usePath(): string {
   return useSyncExternalStore(subscribe, getSnapshot);
 }
 
-/** `to` may carry a hash, e.g. `/#projects` from a link inside a post. */
-export function navigate(to: string, options: { replace?: boolean } = {}): void {
-  const [rawPath, hash] = to.split("#");
-  const target = normalize(rawPath || "/");
-  const href = hash ? `${target}#${hash}` : target;
+/**
+ * One query parameter of the current URL, e.g. the tag in `/blog?tag=rust`,
+ * re-rendering the component whenever it changes.
+ */
+export function useSearchParam(name: string): string | null {
+  return new URLSearchParams(useSyncExternalStore(subscribe, getSearch)).get(name);
+}
 
-  if (target === getSnapshot() && !hash && !options.replace) return;
+/**
+ * `to` may carry a query and a hash, e.g. `/blog?tag=rust` from a project card
+ * or `/#projects` from a link inside a post.
+ */
+export function navigate(to: string, options: { replace?: boolean } = {}): void {
+  const url = new URL(to, window.location.origin);
+  const target = normalize(url.pathname);
+  const hash = url.hash.slice(1);
+  const href = `${target}${url.search}${url.hash}`;
+
+  const samePath = target === getSnapshot();
+  if (samePath && url.search === getSearch() && !hash && !options.replace) return;
 
   scrollPositions.set(getSnapshot(), window.scrollY);
 
@@ -63,6 +80,10 @@ export function navigate(to: string, options: { replace?: boolean } = {}): void 
   emit();
 
   if (!hash) {
+    // A new query on the same route - a filter changing - keeps the reader
+    // where they are rather than throwing them back to the top.
+    if (samePath) return;
+
     // Synchronously, before the browser paints the new route: deferring this by
     // even one frame shows the incoming page scrolled to wherever the outgoing
     // one happened to be. `instant` because the alternative is watching a
@@ -125,7 +146,7 @@ window.addEventListener("click", (event) => {
   // routes: no re-render, and the scroll is animated because the reader stays
   // on a page they are already reading. The browser would do this itself, but
   // only as reliably as `scroll-behavior` - see utils/scroll.ts.
-  if (url.hash && normalize(url.pathname) === getSnapshot()) {
+  if (url.hash && normalize(url.pathname) === getSnapshot() && url.search === getSearch()) {
     if (url.hash !== window.location.hash) {
       // Remembered before the hash entry is pushed, so going back returns to
       // the paragraph the reader left rather than to the top of the post.
@@ -137,5 +158,5 @@ window.addEventListener("click", (event) => {
     return;
   }
 
-  navigate(url.pathname + url.hash);
+  navigate(url.pathname + url.search + url.hash);
 });

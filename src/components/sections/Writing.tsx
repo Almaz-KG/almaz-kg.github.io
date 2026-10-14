@@ -8,8 +8,8 @@ import { cn } from "@/utils/cn";
 /**
  * The newest notes, linking through to the blog. Hidden when empty.
  *
- * Two rows rather than one: this section stands where `Focus` and `Projects`
- * used to, so it carries the middle of the page on its own now.
+ * Two rows rather than one: with `Focus` parked, this section carries the
+ * middle of the page.
  */
 export function Writing() {
   const latest = POSTS.slice(0, 6);

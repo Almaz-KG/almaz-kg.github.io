@@ -2,7 +2,7 @@
 
 Source for [almaz.murzabekov.net](https://almaz.murzabekov.net), a personal site, portfolio and blog built as a React app.
 
-The landing page is one long scroll composed of independent sections (intro, focus areas, projects, writing, reading shelf, contact).
+The landing page is one long scroll composed of independent sections (intro, about, writing, projects, contact).
 The blog lives at `/blog`, and every post is a markdown file compiled during the build.
 
 ## Stack
@@ -192,7 +192,7 @@ src/
 static/               # publicDir, copied verbatim into dist/
 ```
 
-Landing-page content edits (a project or a book) belong in `src/data/content.ts`, not in JSX.
+Landing-page content edits (a project, a stat, a social link) belong in `src/data/content.ts`, not in JSX.
 Shared primitives in `src/components/ui/` cover section spacing, headings, scroll-in reveals and card effects, so new sections reuse them rather than reimplementing layout.
 
 Motion is driven by CSS animations and transitions wherever possible so that a `prefers-reduced-motion` block can neutralise it cleanly.

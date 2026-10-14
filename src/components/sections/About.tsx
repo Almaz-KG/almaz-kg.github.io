@@ -31,7 +31,7 @@ export function About() {
             Terraform for the ground they stand on, and multi-agent systems on Vertex AI that take
             the tedious half of ingestion off my hands. With AI everywhere, the bottleneck moved
             back to where I live: the data. In my free time you&apos;ll find me learning something
-            new — usually Rust, systems design, or a book from the shelf below.
+            new — usually Rust, systems design, or how LLMs work from the inside.
           </Reveal>
 
           <Reveal delay={140}>

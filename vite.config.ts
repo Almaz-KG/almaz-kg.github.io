@@ -13,8 +13,8 @@ const SITE = "https://almaz.murzabekov.net";
 // https://vite.dev/config/
 export default defineConfig({
   // `static/` is served at the site root in dev and copied verbatim into dist/
-  // on build. Files here are referenced by absolute path, e.g. the book covers
-  // at /assets/images/books/covers/*.jpg and the webfonts at /assets/fonts/.
+  // on build. Files here are referenced by absolute path, e.g. the post
+  // images at /assets/images/posts/ and the webfonts at /assets/fonts/.
   publicDir: "static",
   plugins: [
     react(),

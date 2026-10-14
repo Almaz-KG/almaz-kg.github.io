@@ -2,6 +2,7 @@ import { Reveal, Section, SectionHeading } from "@/components/ui";
 import { PROJECTS } from "@/data/content";
 import { sectionIndex } from "@/data/sections";
 import { TONE_GLOW } from "@/utils/tones";
+import { cn } from "@/utils/cn";
 import { ProjectCard } from "./ProjectCard";
 
 /** Cards alternate between these two glows. */
@@ -15,13 +16,15 @@ export function Projects() {
         kicker="Projects"
         title={
           <>
-            My <span className="text-gradient">personal</span> projects.
+            What I&apos;m <span className="text-gradient">building</span> now.
           </>
         }
-        intro="These are the ones with users, releases and the occasional bug report. Everything else lives further down the page."
       />
 
-      <div className="mt-14 grid gap-5 lg:grid-cols-2">
+      {/* A lone project spans the measure rather than sitting in half of it.
+          `grid-cols-1` is `minmax(0, 1fr)`: the implicit track would grow to the
+          browser bar's unbroken address and push the card off a phone screen. */}
+      <div className={cn("mt-14 grid grid-cols-1 gap-5", PROJECTS.length > 1 && "lg:grid-cols-2")}>
         {PROJECTS.map((p, i) => (
           <Reveal key={p.title} delay={i * 80} className="h-full">
             <ProjectCard project={p} glow={GLOWS[i % GLOWS.length]} />

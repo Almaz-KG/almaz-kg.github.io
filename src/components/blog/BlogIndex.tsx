@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { POSTS, POST_TAGS } from "@/data/posts";
 import { Reveal } from "@/components/ui";
 import { useHead } from "@/utils/head";
+import { navigate, useSearchParam } from "@/utils/router";
 import { cn } from "@/utils/cn";
 import { BlogNav } from "./BlogNav";
 import { PostCard } from "./PostCard";
@@ -13,7 +13,16 @@ const DESCRIPTION =
 export function BlogIndex() {
   useHead({ title: TITLE, description: DESCRIPTION, path: "/blog" });
 
-  const [tag, setTag] = useState<string | null>(null);
+  // The filter lives in the URL, so a project card can link straight to its
+  // notes and a filtered view can be shared.
+  const tag = useSearchParam("tag");
+  const setTag = (name: string | null) =>
+    navigate(name ? `/blog?tag=${encodeURIComponent(name)}` : "/blog", { replace: true });
+
+  // A tag nothing is filed under yet - a project whose first note is still
+  // being written - still shows as the active chip above the empty state,
+  // rather than leaving "All" lit over a list that is not all.
+  const tags = tag && !POST_TAGS.includes(tag) ? [...POST_TAGS, tag] : POST_TAGS;
   const visible = tag ? POSTS.filter((post) => post.tags.includes(tag)) : POSTS;
   const [featured, ...rest] = visible;
 
@@ -31,19 +40,18 @@ export function BlogIndex() {
 
           <Reveal delay={80}>
             <h1 className="mt-5 text-4xl leading-[1.05] font-semibold tracking-tight text-balance text-copy sm:text-5xl md:text-6xl">
-              Things I write down so I stop <span className="text-gradient">re-deriving</span> them.
+              Things I write down.
             </h1>
           </Reveal>
 
           <Reveal delay={140}>
             <p className="mt-5 text-base leading-relaxed text-muted md:text-lg">
-              Working notes on data platforms, distributed systems and Rust. Mostly the things that
-              took me a week to understand and five minutes to explain afterwards.
+              Working notes on data platforms, distributed systems, AI and Rust.
             </p>
           </Reveal>
         </header>
 
-        {POST_TAGS.length > 0 && (
+        {tags.length > 0 && (
           <Reveal delay={200}>
             <nav
               aria-label="Filter notes by tag"
@@ -53,7 +61,7 @@ export function BlogIndex() {
                 All
               </TagButton>
 
-              {POST_TAGS.map((name) => (
+              {tags.map((name) => (
                 <TagButton key={name} active={tag === name} onClick={() => setTag(name)}>
                   {name}
                 </TagButton>

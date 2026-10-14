@@ -18,7 +18,7 @@ export function Hero() {
         <BlogLink />
       </div>
 
-      <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr]">
+      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.35fr_1fr]">
         {/* A query container so the subtitle can lay itself out against the room
             it actually has. Viewport breakpoints cannot see that this column
             narrows to 524px the moment the two-column grid kicks in at lg. */}

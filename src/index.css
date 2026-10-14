@@ -174,28 +174,6 @@ html[data-surface="reading"][data-theme="light"] {
     display: none;
   }
 
-  /* fades the leading/trailing edges of a horizontal track so cards scroll out
-     of view instead of getting cut off. --fade-l / --fade-r are driven from JS
-     so an edge only fades while there is actually more to scroll that way. */
-  .edge-fade {
-    --fade-l: 0%;
-    --fade-r: 0%;
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 var(--fade-l),
-      #000 calc(100% - var(--fade-r)),
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 var(--fade-l),
-      #000 calc(100% - var(--fade-r)),
-      transparent 100%
-    );
-  }
-
   .reveal {
     opacity: 0;
     transform: translateY(28px);

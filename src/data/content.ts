@@ -1,5 +1,3 @@
-import type { Tone } from "@/utils/tones";
-
 export const ROLES = [
   "Data & Infra Engineer",
   "Lakehouse Builder",
@@ -71,146 +69,31 @@ export type Project = {
   year: string;
   kind: string;
   body: string;
-  stack: string[];
+  /**
+   * Where the card leads. A site path such as `/blog?tag=...` stays in this tab
+   * and is routed client-side; a full URL opens a new one.
+   */
   href: string;
+  /** Label of the main link, e.g. "Read the notes". */
+  cta: string;
+  stack?: string[];
   repo?: string;
   /** Square logo mark, transparent background. */
-  logo: string;
-  /** Homepage screenshot, cropped to the hero. */
-  shot: string;
+  logo?: string;
 };
 
+/**
+ * A project whose notes live on the blog links to the index filtered by its
+ * tag, so filing a post under it is adding that tag to the post's front matter.
+ */
 export const PROJECTS: Project[] = [
   {
-    title: "db-academy.io",
-    year: "2024 →",
-    kind: "Education platform",
-    body: "A learning platform for data engineers — structured courses on databases, distributed systems and the modern data stack, written the way I wish someone had explained them to me.",
-    stack: ["Next.js", "TypeScript", "Tailwind", "Python"],
-    href: "https://db-academy.io",
-    logo: "/assets/images/projects/db-academy-io-logo.webp",
-    shot: "/assets/images/projects/db-academy-io.webp",
-  },
-  {
-    title: "nookat.io",
-    year: "2025 →",
-    kind: "Desktop app",
-    body: "A lightweight container manager for people who like Docker but not the eight terminal tabs it usually takes. Native desktop app built on Tauri, Rust and React.",
-    stack: ["Rust", "Tauri", "React", "TypeScript"],
-    href: "https://nookat.io",
-    repo: "https://github.com/nookat-io/nookat",
-    logo: "/assets/images/projects/nookat-io-logo.webp",
-    shot: "/assets/images/projects/nookat-io.webp",
-  },
-];
-
-export type Book = {
-  title: string;
-  author: string;
-  /** Accent colour of the plate behind the cover. */
-  tone: Tone;
-  href: string;
-  cover: string;
-};
-
-export const BOOKS: Book[] = [
-  {
-    title: "Designing Data-Intensive Applications",
-    author: "Martin Kleppmann",
-    tone: "lime",
-    href: "https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable/dp/1449373321",
-    cover: "/assets/images/books/covers/designing-data-intensive-applications.jpg",
-  },
-  {
-    title: "Fundamentals of Data Engineering",
-    author: "Reis & Housley",
-    tone: "aqua",
-    href: "https://www.amazon.com/Fundamentals-Data-Engineering-Robust-Systems/dp/1098108302",
-    cover: "/assets/images/books/covers/fundamentals-of-data-engineering.jpg",
-  },
-  {
-    title: "Database Internals",
-    author: "Alex Petrov",
-    tone: "violet",
-    href: "https://www.amazon.com/Database-Internals-Deep-Distributed-Systems/dp/1492040347",
-    cover: "/assets/images/books/covers/database-internals.jpg",
-  },
-  {
-    title: "The Staff Engineer's Path",
-    author: "Tanya Reilly",
-    tone: "citrus",
-    href: "https://www.amazon.com/Staff-Engineers-Path-Individual-Contributors/dp/1098118731",
-    cover: "/assets/images/books/covers/the-staff-engineers-path.jpg",
-  },
-  {
-    title: "Design It! Programmer to Architect",
-    author: "Michael Keeling",
-    tone: "lime",
-    href: "https://www.amazon.com/Design-Programmer-Architect-Pragmatic-Programmers/dp/1680502093",
-    cover: "/assets/images/books/covers/design-it.jpg",
-  },
-  {
-    title: "Systems Performance",
-    author: "Brendan Gregg",
-    tone: "violet",
-    href: "https://www.amazon.com/Systems-Performance-Brendan-Gregg/dp/0136820158",
-    cover: "/assets/images/books/covers/systems-performance.jpg",
-  },
-  {
-    title: "Advanced Algorithms and Data Structures",
-    author: "Marcello La Rocca",
-    tone: "lime",
-    href: "https://www.amazon.com/Advanced-Algorithms-Structures-Marcello-Rocca/dp/1617295485",
-    cover: "/assets/images/books/covers/advanced-algorithms-and-data-structures.jpg",
-  },
-  {
-    title: "Software Architecture: The Hard Parts",
-    author: "Neal Ford",
-    tone: "aqua",
-    href: "https://www.amazon.com/Software-Architecture-Trade-Off-Distributed-Architectures/dp/1492086894",
-    cover: "/assets/images/books/covers/software-architecture-the-hard-parts.jpg",
-  },
-  {
-    title: "Fundamentals of Database Systems",
-    author: "Elmasri & Navathe",
-    tone: "citrus",
-    href: "https://www.amazon.com/Fundamentals-Database-Systems-Ramez-Elmasri/dp/0133970779",
-    cover: "/assets/images/books/covers/fundamentals-of-database-systems.jpg",
-  },
-  {
-    title: "Algorithms and Data Structures for Massive Datasets",
-    author: "Dzejla Medjedovic",
-    tone: "lime",
-    href: "https://www.amazon.com/Algorithms-Data-Structures-Massive-Datasets/dp/1617298034",
-    cover: "/assets/images/books/covers/algorithms-for-massive-datasets.jpg",
-  },
-  {
-    title: "SQLite Forensics",
-    author: "Paul Sanderson",
-    tone: "aqua",
-    href: "https://www.amazon.com/SQLite-Forensics-Paul-Sanderson/dp/1980293074",
-    cover: "/assets/images/books/covers/sqlite-forensics.jpg",
-  },
-  {
-    title: "Operating Systems: Three Easy Pieces",
-    author: "Arpaci-Dusseau",
-    tone: "citrus",
-    href: "https://www.amazon.com/Operating-Systems-Three-Easy-Pieces/dp/198508659X",
-    cover: "/assets/images/books/covers/operating-systems-three-easy-pieces.jpg",
-  },
-  {
-    title: "Principles of Distributed Database Systems",
-    author: "Özsu & Valduriez",
-    tone: "lime",
-    href: "https://www.amazon.com/Principles-Distributed-Database-Systems-Tamer/dp/3030262529",
-    cover: "/assets/images/books/covers/principles-of-distributed-database-systems.jpg",
-  },
-  {
-    title: "Build a Large Language Model (From Scratch)",
-    author: "Sebastian Raschka",
-    tone: "violet",
-    href: "https://www.amazon.com/Build-Large-Language-Model-Scratch/dp/1633437167",
-    cover: "/assets/images/books/covers/build-a-large-language-model.jpg",
+    title: "Building My Own LLM",
+    year: "2026 ->",
+    kind: "Build log",
+    body: "Building a language model from scratch, one component at a time. The notes from the way live on the blog.",
+    href: "/blog?tag=building-own-llm",
+    cta: "Read the notes",
   },
 ];
 
