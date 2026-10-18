@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import avatar from "@/assets/almaz-avatar.webp";
 import { SITE } from "@/data/content";
 import { formatDate, type PostModule } from "@/data/posts";
 import { useHead } from "@/utils/head";
+import { mountDeck } from "@/utils/deck";
 import { usePost } from "@/utils/hooks/usePost";
 import { scrollToIdSettling } from "@/utils/scroll";
 import { BlogNav } from "./BlogNav";
@@ -32,12 +33,23 @@ export function PostPage({ slug }: { slug: string }) {
 const ARTICLE =
   "mx-auto grid w-full max-w-6xl gap-12 px-5 pt-24 pb-24 sm:px-8 sm:pt-28 xl:max-w-[78rem] xl:grid-cols-[minmax(0,1fr)_13rem]";
 
+/**
+ * A post that walks through a talk shows its slides in a viewer, and the sheet
+ * is sized to hug it: `--deck-w` (src/deck.css) plus the article's and the
+ * sheet's horizontal padding and the sheet's border. There is no contents
+ * rail - the slides are the post's own map, the slider pages through them and
+ * each one is linkable.
+ */
+const DECK_ARTICLE =
+  "mx-auto w-full max-w-[min(88rem,calc(var(--deck-w)+10rem+2px))] px-5 pt-24 pb-24 sm:px-8 sm:pt-28";
+
 /** The reading sheet. Its inner width is exactly one `measure-wide`. */
 const SHEET =
   "min-w-0 rounded-[1.75rem] border border-hair bg-sheet px-5 py-12 sm:px-8 sm:py-14 md:px-12";
 
 function PostView({ post }: { post: PostModule }) {
   const { meta, html, toc } = post;
+  const body = useRef<HTMLDivElement>(null);
 
   useHead({
     title: `${meta.title} - ${SITE.name}`,
@@ -69,13 +81,18 @@ function PostView({ post }: { post: PostModule }) {
     scrollToIdSettling(window.location.hash.slice(1));
   }, []);
 
+  useEffect(() => (meta.deck && body.current ? mountDeck(body.current) : undefined), [meta.deck]);
+
   return (
     <>
       <BlogNav title={meta.title} current="post" />
 
-      <article className={ARTICLE}>
+      <article className={meta.deck ? DECK_ARTICLE : ARTICLE}>
         <div className={SHEET}>
-          <header className="measure">
+          {/* A deck post's sheet is sized to its slide viewer, and the header spans
+              the same width, so the title and the rule under it end where the
+              slides do. */}
+          <header className={meta.deck ? "w-full" : "measure"}>
             <PostMetaLine post={meta} />
 
             <h1 className="mt-4 text-4xl leading-[1.08] font-semibold tracking-tight text-balance text-copy sm:text-5xl">
@@ -100,7 +117,7 @@ function PostView({ post }: { post: PostModule }) {
           </header>
 
           {meta.cover && (
-            <figure className="measure-wide mt-12">
+            <figure className={meta.deck ? "mt-12" : "measure-wide mt-12"}>
               <PostCover post={meta} className="aspect-[21/9] w-full" />
               {meta.coverAlt && (
                 <figcaption className="mt-3 text-center font-mono text-xs text-faint">
@@ -113,13 +130,19 @@ function PostView({ post }: { post: PostModule }) {
           {/*
             The HTML is compiled from this repository's own markdown at build
             time, never from user input, so there is nothing here to sanitise.
+            A deck post's body carries its own `.prose` wrappers around the
+            text only, so the reading styles never reach into a slide.
           */}
-          <div className="prose mt-14" dangerouslySetInnerHTML={{ __html: html }} />
+          <div
+            ref={body}
+            className={meta.deck ? "mt-14" : "prose mt-14"}
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
 
           <PostFooter post={meta} />
         </div>
 
-        <Toc entries={toc} />
+        {!meta.deck && <Toc entries={toc} />}
       </article>
     </>
   );

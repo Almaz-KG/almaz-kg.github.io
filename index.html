@@ -53,6 +53,7 @@
           (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
         root.dataset.theme = dark ? "dark" : "light";
+        root.dataset.js = "";
         // Only the blog is themeable; the landing page is always dark.
         root.dataset.surface =
           location.pathname === "/blog" || location.pathname.indexOf("/blog/") === 0

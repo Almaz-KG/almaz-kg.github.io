@@ -19,6 +19,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import type { Plugin, ResolvedConfig } from "vite";
 import { optionalList, parseFrontmatter, readingTime, requireString, slugify } from "./frontmatter";
+import { hasDeck, layoutDeck, markSlides } from "./deck";
 import { disposeHighlighter, renderMarkdown } from "./render";
 import type { PostMeta, PostStatus, PostTone } from "./types";
 
@@ -168,7 +169,9 @@ export function blog(options: BlogOptions): Plugin {
       }
 
       const { body } = parseFrontmatter(code, name);
-      const { html, toc } = await renderMarkdown(body, name);
+      const rendered = await renderMarkdown(meta.deck ? markSlides(body) : body, name);
+      const html = meta.deck ? layoutDeck(rendered.html, meta.deck, name) : rendered.html;
+      const { toc } = rendered;
 
       return {
         code:
@@ -227,6 +230,13 @@ function toMeta(raw: string, file: string): PostMeta {
     throw new Error(`${file}: \`coverFit\` must be "contain" or "cover", got "${coverFit}".`);
   }
 
+  const deck = typeof data.deck === "string" ? data.deck.trim() : undefined;
+  if (deck && !hasDeck(deck)) {
+    throw new Error(
+      `${file}: unknown \`deck\` "${deck}"; decks are registered in plugins/deck/index.ts.`,
+    );
+  }
+
   return {
     slug: slugify(slug),
     title: requireString(data, "title", file),
@@ -237,6 +247,7 @@ function toMeta(raw: string, file: string): PostMeta {
     ...(cover ? { cover } : {}),
     ...(typeof data.coverAlt === "string" ? { coverAlt: data.coverAlt } : {}),
     coverFit,
+    ...(deck ? { deck } : {}),
     // Without an explicit tone, the slug picks one, so a post keeps the same
     // accent colour no matter what else is published around it.
     tone: (tone as PostTone) || TONES[hash(slug) % TONES.length],

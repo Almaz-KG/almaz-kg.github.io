@@ -41,12 +41,20 @@ export async function render(path: string): Promise<{ html: string; head: string
 
   // `prerender`, not `renderToString`: the blog is behind `lazy`, and only the
   // static renderer waits for suspended trees instead of emitting fallbacks.
+  //
+  // Waiting is not enough on its own: a resolved boundary bigger than
+  // `progressiveChunkSize` (about 12.8 kB) is still written out of line, as a
+  // `<div hidden>` that an inline script swaps in for the fallback. A long post
+  // then pre-renders as an empty page to anything that does not run scripts,
+  // which is exactly who this file exists for. There is nothing to stream, so
+  // no boundary is ever too big to inline.
   const { prelude } = await prerenderToNodeStream(
     <HeadProvider value={(collected) => (head = collected)}>
       <StrictMode>
         <App />
       </StrictMode>
     </HeadProvider>,
+    { progressiveChunkSize: Number.POSITIVE_INFINITY },
   );
 
   let html = "";

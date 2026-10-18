@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./fonts.css";
 @import "./prose.css";
+@import "./deck.css";
 
 @theme {
   /* The "* Fallback" entries are metric-matched re-cuts of a local font, so

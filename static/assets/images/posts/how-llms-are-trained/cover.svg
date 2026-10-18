@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2100 900" width="2100" height="900">
+  <!--
+    Source of cover.jpg, the post's cover and link preview. Drawn on the XKE
+    deck's dark palette and type. Link previews do not take SVG, so the JPEG is
+    what ships; rendered at 2100x900 (21:9) from this file with the site's
+    webfonts loaded, which is why the font URLs are root-relative.
+
+    The frame is cropped to 21:9 on the post, ~1.91:1 in link previews and
+    16:10 in the notes list, so everything that matters sits between x=230
+    and x=1870.
+  -->
+  <defs>
+    <style>
+      @font-face { font-family: "Inter Tight"; font-weight: 500 700; src: url("/assets/fonts/inter-tight-var-latin.woff2") format("woff2"); }
+      @font-face { font-family: "JetBrains Mono"; font-weight: 400 700; src: url("/assets/fonts/jetbrains-mono-var-latin.woff2") format("woff2"); }
+      .k { font-family: "JetBrains Mono", monospace; font-size: 24px; letter-spacing: 0.24em; }
+      .h { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 132px; letter-spacing: -0.035em; fill: #f3f2f8; }
+      .s { font-family: "Inter Tight", sans-serif; font-weight: 500; font-size: 34px; fill: #8c8da1; }
+    </style>
+    <radialGradient id="glow-a" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#4ecfc4" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#4ecfc4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow-c" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f0849f" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#f0849f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="2100" height="900" fill="#0c0d13"/>
+  <ellipse cx="420" cy="260" rx="560" ry="420" fill="url(#glow-a)"/>
+  <ellipse cx="1820" cy="200" rx="520" ry="400" fill="url(#glow-c)"/>
+
+  <!-- title -->
+  <text class="k" x="236" y="250" fill="#8c8da1">XKE S1 · 29 SEPTEMBER 2026</text>
+  <text class="h" x="230" y="410">How LLMs</text>
+  <text class="h" x="230" y="545">are trained</text>
+  <!-- the deck's marker, under the last word -->
+  <path d="M440 578 C 510 567 580 582 640 573 C 700 564 770 578 834 569"
+        fill="none" stroke="#4ecfc4" stroke-width="12" stroke-linecap="round"/>
+  <text class="s" x="232" y="680">pretraining → fine-tuning → reinforcement learning</text>
+
+  <!-- the chart: one model getting better across three stages -->
+  <g transform="translate(1180 0)">
+    <line x1="0" y1="760" x2="690" y2="760" stroke="#242634" stroke-width="3"/>
+    <line x1="0" y1="170" x2="0" y2="760" stroke="#242634" stroke-width="3"/>
+
+    <line x1="0" y1="380" x2="690" y2="380" stroke="#8c8da1" stroke-width="3" stroke-dasharray="14 12"/>
+    <text class="k" x="24" y="358" fill="#8c8da1" font-size="20">BEST HUMAN</text>
+
+    <path d="M0 740 C 90 720 170 600 260 500" fill="none" stroke="#4ecfc4" stroke-width="9" stroke-linecap="round"/>
+    <path d="M260 500 C 330 425 400 412 470 405" fill="none" stroke="#e9b168" stroke-width="9" stroke-linecap="round"/>
+    <path d="M470 405 C 560 396 620 300 690 190" fill="none" stroke="#f0849f" stroke-width="9" stroke-linecap="round"/>
+
+    <circle cx="260" cy="500" r="12" fill="#0c0d13" stroke="#e9b168" stroke-width="6"/>
+    <circle cx="470" cy="405" r="12" fill="#0c0d13" stroke="#f0849f" stroke-width="6"/>
+    <circle cx="690" cy="190" r="14" fill="#f0849f"/>
+
+    <text class="k" x="40" y="812" fill="#4ecfc4" font-size="20">PRETRAINING</text>
+    <text class="k" x="330" y="812" fill="#e9b168" font-size="20">SFT</text>
+    <text class="k" x="560" y="812" fill="#f0849f" font-size="20">RL</text>
+  </g>
+</svg>

@@ -50,6 +50,12 @@ export type PostMeta = {
   coverAlt?: string;
   /** `contain` pads a logo inside the frame; `cover` fills it. Default `cover`. */
   coverFit: "contain" | "cover";
+  /**
+   * A talk the post walks through, slide by slide: the name of a deck under
+   * `content/decks/`. Such a post is laid out as slides beside their text
+   * rather than as a single reading column. See `plugins/deck/index.ts`.
+   */
+  deck?: string;
   tone: PostTone;
   /** Whole minutes, floor 1. */
   readingTime: number;
