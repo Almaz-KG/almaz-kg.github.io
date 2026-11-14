@@ -147,7 +147,7 @@ export const PROJECTS: Project[] = [
     description:
       "Twenty drills on PyTorch for LLM work, from broadcasting to a transformer block, AdamW and a KV cache.",
     repo: "https://github.com/Almaz-KG/pytorch-exercises-for-llm-developers",
-    isPublic: false,
+    isPublic: true,
   },
   {
     id: "pytorch-distributed-exercises",
