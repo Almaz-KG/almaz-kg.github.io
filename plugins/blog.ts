@@ -9,7 +9,8 @@
  *     never downloads a word of them.
  *   - `virtual:blog`, the metadata-only index the listing and teaser render
  *     from. Titles and dates are small enough to ship eagerly; bodies are not.
- *   - `rss.xml` and `sitemap.xml`, written into the build output.
+ *   - `rss.xml` and `sitemap.xml`, written into the build output, and the
+ *     `<link rel="alternate">` that announces the feed on every page.
  *
  * Turning routes into HTML files is not done here; `scripts/prerender.ts`
  * renders the built app once per route after the bundle exists.
@@ -21,6 +22,7 @@ import type { Plugin, ResolvedConfig } from "vite";
 import { optionalList, parseFrontmatter, readingTime, requireString, slugify } from "./frontmatter";
 import { hasDeck, layoutDeck, markSlides } from "./deck";
 import { disposeHighlighter, renderMarkdown } from "./render";
+import { smartQuotes } from "./typography";
 import type { PostMeta, PostStatus, PostTone } from "./types";
 
 const VIRTUAL_ID = "virtual:blog";
@@ -131,6 +133,23 @@ export function blog(options: BlogOptions): Plugin {
       });
     },
 
+    // Every page announces the feed, under the feed's own title, so the title
+    // is declared once (see vite.config.ts) rather than again in index.html.
+    transformIndexHtml() {
+      return [
+        {
+          tag: "link",
+          attrs: {
+            rel: "alternate",
+            type: "application/rss+xml",
+            title: options.title,
+            href: "/rss.xml",
+          },
+          injectTo: "head",
+        },
+      ];
+    },
+
     resolveId(id) {
       if (id === VIRTUAL_ID) return RESOLVED_VIRTUAL_ID;
     },
@@ -239,8 +258,10 @@ function toMeta(raw: string, file: string): PostMeta {
 
   return {
     slug: slugify(slug),
-    title: requireString(data, "title", file),
-    description: requireString(data, "description", file),
+    // Set the same way as the body, wherever they appear: the index, the
+    // title block, the feed and the link previews.
+    title: smartQuotes(requireString(data, "title", file)),
+    description: smartQuotes(requireString(data, "description", file)),
     date,
     ...(updated ? { updated } : {}),
     tags: optionalList(data, "tags"),

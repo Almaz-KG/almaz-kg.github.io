@@ -72,7 +72,7 @@ async function main(): Promise<void> {
   }
 
   for (const [from, to] of Object.entries(LEGACY_REDIRECTS)) {
-    await write(path.join(from, "index.html"), redirectPage(`${server.SITE.blog}${to}`));
+    await write(path.join(from, "index.html"), redirectPage(`${server.SITE.url}${to}`));
   }
 
   console.log(

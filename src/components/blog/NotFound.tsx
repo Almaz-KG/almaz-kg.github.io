@@ -1,5 +1,6 @@
 import { Dot } from "@/components/doc/Dot";
 import { TitleBlock } from "@/components/doc/TitleBlock";
+import { SITE } from "@/data/content";
 import { useHead } from "@/utils/head";
 import { usePath } from "@/utils/router";
 
@@ -8,7 +9,7 @@ export function NotFound() {
   const path = usePath();
 
   useHead({
-    title: "Not found - Almaz Murzabekov",
+    title: `Not found - ${SITE.name}`,
     description: "This page does not exist.",
     path,
     noindex: true,

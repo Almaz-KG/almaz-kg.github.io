@@ -1,8 +1,6 @@
 import avatar from "@/assets/almaz-avatar.webp";
-import { Dot } from "@/components/doc/Dot";
-import { SITE, SOCIALS } from "@/data/content";
+import { SITE } from "@/data/content";
 import { neighbours, type PostMeta } from "@/data/posts";
-import { linkProps } from "@/utils/links";
 import { ShareRow } from "./ShareRow";
 
 /**
@@ -42,21 +40,13 @@ export function PostFooter({ post }: { post: PostMeta }) {
           loading="lazy"
           className="h-16 w-16 border border-hair object-cover"
         />
-        <div className="text-[1rem] leading-normal">
-          <p>
-            <span className="small-caps font-semibold">{SITE.name}</span> builds data platforms that
-            do not fit on one machine, and writes down the parts that took longer to understand than
-            they should have.
-          </p>
-          <p className="mt-1.5">
-            {SOCIALS.map((social, i) => (
-              <span key={social.label}>
-                {i > 0 && <Dot />}
-                <a {...linkProps(social.href)}>{social.label}</a>
-              </span>
-            ))}
-          </p>
-        </div>
+        {/* The contact links are in the running head of every page, so the
+            note does not repeat them. */}
+        <p className="text-[1rem] leading-normal">
+          <span className="small-caps font-semibold">{SITE.name}</span> builds data platforms that
+          do not fit on one machine, and writes down the parts that took longer to understand than
+          they should have.
+        </p>
       </div>
 
       {(previous || next) && (

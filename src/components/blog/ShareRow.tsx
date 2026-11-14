@@ -5,7 +5,7 @@ import type { PostMeta } from "@/data/posts";
 /** Where to send the note, as one line of text links and a copy-link action. */
 export function ShareRow({ post }: { post: PostMeta }) {
   const [copied, setCopied] = useState(false);
-  const url = `${SITE.blog}/blog/${post.slug}`;
+  const url = `${SITE.url}/blog/${post.slug}`;
 
   const targets = [
     { label: "X", href: `https://x.com/intent/post?text=${enc(post.title)}&url=${enc(url)}` },

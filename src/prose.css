@@ -81,8 +81,7 @@
   }
 
   /* The number is the heading's link. The anchor is empty in the markup and
-     positioned by `.hang-number` in index.css, which this shares, so a note's
-     sections hang in the margin exactly where the home page's do. */
+     hangs in the margin by the rule in index.css. */
   .prose h2 > .heading-anchor::before {
     content: counter(chapter);
   }
@@ -315,8 +314,10 @@
 
   /* Tables ---------------------------------------------------------------- */
 
-  /* Ruled like the tables on the home page (`.ruled` in index.css): a heavy
-     rule above and below, a light one under the head, no vertical lines. A
+  /* Ruled the way a paper sets a table: a heavy rule above and below, a light
+     one under the head, no vertical lines. The rules are 2px and 1px, not the
+     1.5px and 0.75px a printer would use: at 1x both of those snap to one
+     device pixel, and heavy, light and heavy become three identical lines. A
      table too wide for the column scrolls inside its rules. */
   .prose .table-scroll {
     overflow-x: auto;

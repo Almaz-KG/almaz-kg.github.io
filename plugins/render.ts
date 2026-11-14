@@ -9,6 +9,7 @@
 import { Marked, type Token, type Tokens, type TokenizerAndRendererExtension } from "marked";
 import { createCssVariablesTheme, createHighlighter, type Highlighter } from "shiki";
 import { slugify } from "./frontmatter";
+import { smartQuotes, smartQuotesHtml } from "./typography";
 
 /** Loaded up front because shiki needs its grammars before the first render. */
 const LANGUAGES = [
@@ -133,8 +134,10 @@ export async function renderMarkdown(
         const text = this.parser.parseInline(token.tokens);
         const id = uniqueId(slugify(token.text), seenIds);
 
+        // The id comes from the text as typed, so a link to a section does not
+        // change with its quotes; the contents shows the text as set.
         if (token.depth === 2 || token.depth === 3) {
-          toc.push({ id, text: token.text, depth: token.depth });
+          toc.push({ id, text: smartQuotes(token.text), depth: token.depth });
         }
 
         // The anchor comes first and is empty: src/prose.css draws the
@@ -199,7 +202,7 @@ export async function renderMarkdown(
 
   const html = await marked.parse(body);
 
-  return { html: wrapTables(html), toc };
+  return { html: smartQuotesHtml(wrapTables(html)), toc };
 }
 
 /**

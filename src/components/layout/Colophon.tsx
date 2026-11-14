@@ -13,18 +13,13 @@ export function Colophon() {
     <footer className="page mt-20 pb-12">
       <div className="column">
         <div className="border-t border-hair pt-5 text-[0.875rem] leading-relaxed text-faint">
-          <p>Set in Libertinus Serif and Inconsolata. Built with React, Vite and AI companions.</p>
+          <p>Built with React, Vite and AI companions.</p>
 
           <p className="mt-1">
             © {REVISION.date.slice(0, 4) || "2026"} {SITE.name}
             {REVISION.date && (
               <>
                 <Dot />
-                Revision{" "}
-                <a href={`${SITE.source}/commit/${REVISION.sha}`} className="font-mono">
-                  {REVISION.sha}
-                </a>
-                ,{" "}
                 <time dateTime={REVISION.date} className="whitespace-nowrap">
                   {formatDate(REVISION.date)}
                 </time>

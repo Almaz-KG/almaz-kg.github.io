@@ -5,7 +5,7 @@ import { POSTS } from "@/data/posts";
 /** How many notes the home page lists before pointing at the index. */
 const SHOWN = 5;
 
-/** The latest notes. Absent while none is published; see data/sections.ts. */
+/** The latest notes. Absent while none is published. */
 export function Notes() {
   if (POSTS.length === 0) return null;
 

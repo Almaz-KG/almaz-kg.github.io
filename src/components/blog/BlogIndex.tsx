@@ -1,35 +1,40 @@
 import type { MouseEvent } from "react";
 import { NoteList } from "@/components/doc/NoteList";
 import { TitleBlock } from "@/components/doc/TitleBlock";
+import { NOTES, SITE } from "@/data/content";
 import { POSTS, POST_TAGS } from "@/data/posts";
 import { useHead } from "@/utils/head";
 import { navigate, useSearchParam } from "@/utils/router";
 import { cn } from "@/utils/cn";
 
-const TITLE = "Notes - Almaz Murzabekov";
-const DESCRIPTION =
-  "Notes on data platforms, distributed systems, Rust and the parts of infrastructure that only make sense once you have been burned by them.";
-
 export function BlogIndex() {
-  useHead({ title: TITLE, description: DESCRIPTION, path: "/blog" });
+  useHead({
+    title: `${NOTES.title} - ${SITE.name}`,
+    description: NOTES.description,
+    path: "/blog",
+  });
 
   // The filter lives in the URL, so a project can link straight to its notes
   // and a filtered view can be shared.
   const tag = useSearchParam("tag");
 
-  // A tag nothing is filed under yet - a project whose first note is still
-  // being written - still shows as the current filter above the empty state,
-  // rather than leaving "all" marked over a list that is not all.
-  const tags = tag && !POST_TAGS.includes(tag) ? [...POST_TAGS, tag] : POST_TAGS;
   const visible = tag ? POSTS.filter((post) => post.tags.includes(tag)) : POSTS;
+
+  // A keyword earns its place by grouping notes: one that picks out a single
+  // note only repeats that note's title, so the line lists the tags shared by
+  // two notes or more. The current filter always shows, whatever its count -
+  // including a tag nothing is filed under yet, a project whose first note is
+  // still being written - so "all" is never left marked over a list that is
+  // not all, and there is always a way back.
+  const tags = POST_TAGS.filter(
+    (name) => name === tag || POSTS.filter((post) => post.tags.includes(name)).length >= 2,
+  );
+  if (tag && !tags.includes(tag)) tags.push(tag);
 
   return (
     <div className="page">
       <div className="column">
-        <TitleBlock
-          title="Notes"
-          subtitle="Working notes on data platforms, distributed systems, AI and Rust."
-        />
+        <TitleBlock title={NOTES.title} subtitle={NOTES.subtitle} />
 
         {tags.length > 0 && (
           // Set as a paper's keywords line, each keyword a filter.

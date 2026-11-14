@@ -161,7 +161,7 @@ html[data-theme="dark"] {
 
 /*
  * The page: one centred text column, with a margin either side of it on wide
- * screens that the section numbers hang into, as they would on a printed page.
+ * screens that a note's section numbers hang into, as on a printed page.
  *
  * `--measure` is the reading width. Libertinus is a narrow face, so 36rem at
  * the body size is about 70 characters a line.
@@ -195,15 +195,13 @@ html[data-theme="dark"] {
     width: 100%;
   }
 
-  /* A section number: before the heading on a phone, hanging in the left
-     margin from `lg`, so the headings themselves line up with the text. The
-     numbered headings of a note (src/prose.css) are the same thing. */
-  .hang,
+  /* A note's section number (src/prose.css): before the heading on a phone,
+     hanging in the left margin from `lg`, so the headings themselves line up
+     with the text. */
   .prose :is(h2, h3) {
     position: relative;
   }
 
-  .hang-number,
   .prose :is(h2, h3) > .heading-anchor {
     margin-right: 0.6em;
     color: var(--color-accent);
@@ -220,79 +218,10 @@ html[data-theme="dark"] {
       padding-inline: var(--gutter);
     }
 
-    .hang-number,
     .prose :is(h2, h3) > .heading-anchor {
       position: absolute;
       right: 100%;
       margin-right: 1.1rem;
-    }
-  }
-
-  /*
-   * A table set the way a paper sets one: a heavy rule above, a light one
-   * under the head, a heavy one below, and no vertical lines at all.
-   *
-   * The rules are 2px and 1px, not the 1.5px and 0.75px a printer would use:
-   * on a screen at 1x both of those snap to one device pixel, and heavy, light
-   * and heavy become three identical lines.
-   *
-   * On a phone the columns do not fit, so each row becomes a short block and
-   * the head is dropped: the cells say what they are by their position.
-   */
-  .ruled {
-    width: 100%;
-    border-collapse: collapse;
-    border-top: 2px solid var(--color-copy);
-    border-bottom: 2px solid var(--color-copy);
-    font-variant-numeric: lining-nums tabular-nums;
-  }
-
-  .ruled thead th {
-    padding: 0.45rem 1rem 0.4rem 0;
-    border-bottom: 1px solid var(--color-copy);
-    font-weight: 600;
-    text-align: left;
-    vertical-align: bottom;
-  }
-
-  /* A row header (`<th scope="row">`) sits in the row like any cell; its
-     weight comes from the markup. */
-  .ruled tbody :is(th, td) {
-    padding: 0.45rem 1rem 0.45rem 0;
-    font-weight: inherit;
-    text-align: left;
-    vertical-align: baseline;
-  }
-
-  .ruled :is(th, td):last-child {
-    padding-right: 0;
-  }
-
-  .ruled tbody tr:first-child :is(th, td) {
-    padding-top: 0.6rem;
-  }
-
-  .ruled tbody tr:last-child :is(th, td) {
-    padding-bottom: 0.6rem;
-  }
-
-  @media (max-width: 39.99rem) {
-    .ruled thead {
-      display: none;
-    }
-
-    .ruled tbody tr {
-      display: block;
-      padding-block: 0.55rem;
-    }
-
-    .ruled tbody tr + tr {
-      border-top: 1px solid var(--color-hair);
-    }
-
-    .ruled tbody :is(th, td) {
-      display: block;
-      padding: 0 !important;
     }
   }
 }

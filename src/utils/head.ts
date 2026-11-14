@@ -40,7 +40,7 @@ const HeadCollector = createContext<((head: Head) => void) | null>(null);
 export const HeadProvider = HeadCollector.Provider;
 
 export function canonicalUrl(path: string): string {
-  return `${SITE.blog}${path === "/" ? "/" : path}`;
+  return `${SITE.url}${path === "/" ? "/" : path}`;
 }
 
 /** Every `<meta>` a route owns. A null value means "this route has none". */
@@ -55,7 +55,7 @@ function metaTags(head: Head): MetaTag[] {
     { attr: "property", key: "og:description", value: description },
     { attr: "property", key: "og:type", value: type },
     { attr: "property", key: "og:url", value: canonicalUrl(path) },
-    { attr: "property", key: "og:image", value: image ? `${SITE.blog}${image}` : null },
+    { attr: "property", key: "og:image", value: image ? `${SITE.url}${image}` : null },
     { attr: "name", key: "twitter:card", value: image ? "summary_large_image" : "summary" },
     { attr: "property", key: "article:published_time", value: publishedAt ?? null },
     { attr: "property", key: "article:modified_time", value: modifiedAt ?? null },

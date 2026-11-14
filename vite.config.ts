@@ -5,11 +5,10 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { blog } from "./plugins/blog";
+import { NOTES, SITE } from "./src/data/content";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-const SITE = "https://almaz.murzabekov.net";
 
 /**
  * The commit this build was made from, printed in the colophon as the
@@ -42,11 +41,10 @@ export default defineConfig({
     // plugins/blog.ts; the per-route HTML comes from scripts/prerender.ts.
     blog({
       dir: "content/posts",
-      site: SITE,
-      title: "Almaz Murzabekov - Notes",
-      description:
-        "Notes on data platforms, distributed systems, Rust and the parts of infrastructure that only make sense once you have been burned by them.",
-      author: "almaz@murzabekov.net (Almaz Murzabekov)",
+      site: SITE.url,
+      title: `${SITE.name} - ${NOTES.title}`,
+      description: NOTES.description,
+      author: `${SITE.email} (${SITE.name})`,
       // `npm run dev` renders drafts and scheduled posts with a badge, so they
       // can be read back while being written. Set this to false to make the dev
       // server show exactly what a build would. Builds never ship them either way.

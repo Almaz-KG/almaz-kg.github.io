@@ -44,13 +44,13 @@ function PostView({ meta, post }: { meta: PostMeta; post?: PostModule }) {
       "@type": "BlogPosting",
       headline: meta.title,
       description: meta.description,
-      url: `${SITE.blog}/blog/${meta.slug}`,
-      mainEntityOfPage: `${SITE.blog}/blog/${meta.slug}`,
+      url: `${SITE.url}/blog/${meta.slug}`,
+      mainEntityOfPage: `${SITE.url}/blog/${meta.slug}`,
       datePublished: meta.date,
       dateModified: meta.updated ?? meta.date,
       keywords: meta.tags.join(", "),
-      ...(meta.cover ? { image: `${SITE.blog}${meta.cover}` } : {}),
-      author: { "@type": "Person", name: SITE.name, url: `${SITE.blog}/` },
+      ...(meta.cover ? { image: `${SITE.url}${meta.cover}` } : {}),
+      author: { "@type": "Person", name: SITE.name, url: `${SITE.url}/` },
     },
   });
 
@@ -67,13 +67,12 @@ function PostView({ meta, post }: { meta: PostMeta; post?: PostModule }) {
   );
 
   // The cover is the note's link preview (`image` in useHead above), not a
-  // figure on the page: a report opens with its title and abstract.
+  // figure on the page. Nor is the description set here as an abstract: it is
+  // the note's card in the index and its link preview, and on the page the
+  // note opens with its own first paragraph, a concrete scene. Set above that
+  // paragraph, the description only says the same thing twice.
   const head = (
-    <TitleBlock
-      title={<Title text={meta.title} />}
-      meta={<PostMetaLine post={meta} updated />}
-      abstract={meta.description}
-    />
+    <TitleBlock title={<Title text={meta.title} />} meta={<PostMetaLine post={meta} updated />} />
   );
 
   /*
@@ -85,11 +84,11 @@ function PostView({ meta, post }: { meta: PostMeta; post?: PostModule }) {
   const content = html ? (
     <div
       ref={body}
-      className={cn("mt-14", !meta.deck && "prose")}
+      className={cn("mt-9", !meta.deck && "prose")}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   ) : (
-    <div className="mt-14 min-h-screen" />
+    <div className="mt-9 min-h-screen" />
   );
 
   if (meta.deck) {
