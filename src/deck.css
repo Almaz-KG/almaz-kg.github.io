@@ -64,28 +64,70 @@
     U+A720-A7FF;
 }
 
+/*
+ * JetBrains Mono is the slides' code face, not the site's: the slides are the
+ * talk's own design and keep the type they were presented in.
+ */
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/assets/fonts/jetbrains-mono-var-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/assets/fonts/jetbrains-mono-var-latin-ext.woff2") format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
 @layer components {
   /* ------------------------------------------------------------ the layout */
 
   /* The width of the slide viewer: as wide as the page allows, but never so
      tall that the text and the controls under the slide fall off the bottom of
-     the screen. The 22rem is the sticky nav, four or five lines of text and the
-     control bar. It does not go below 36rem, where a slide stops being
-     readable. `PostPage` sizes the whole sheet from this, so the title, the
-     introduction and the viewer share one column. */
+     the screen. The 22rem is a little air above the slide, the control bar
+     and six lines of text at the measure. It does not go below 36rem, where a
+     slide stops being readable. */
   :root {
     --deck-w: max(36rem, calc((100svh - 22rem) * 16 / 9));
   }
 
-  /* The introduction and the text under each slide run the full width of the
-     viewer, so every block on the page ends where the slides do. The viewer is
-     capped by the screen's height, which keeps these lines from growing much
-     past the length a reader can follow. */
-  .deck-lead,
-  .deck-text.prose {
-    grid-template-columns:
-      [full-start wide-start content-start] minmax(0, 1fr)
-      [content-end wide-end full-end];
+  /* A note with a deck is the one page wider than the column: the viewer is
+     a figure set across the page, and everything else - the title block, the
+     introduction, the text under each slide, the end matter - keeps the
+     column, centred on it, so every line of text on the page starts on the
+     same left edge. `PostPage` puts `.page-deck` on the article. */
+  .page.page-deck {
+    max-width: calc(max(var(--deck-w), var(--measure)) + 2 * var(--page-pad));
+  }
+
+  .page-deck > .column,
+  .page-deck .deck-lead,
+  .page-deck .deck-text {
+    width: 100%;
+    max-width: var(--measure);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 64rem) {
+    .page.page-deck {
+      max-width: calc(max(var(--deck-w), var(--measure) + 2 * var(--gutter)) + 2 * var(--page-pad));
+    }
+
+    .page-deck > .column {
+      max-width: calc(var(--measure) + 2 * var(--gutter));
+    }
   }
 
   .deck-lead + .deck {
@@ -94,6 +136,7 @@
 
   .deck {
     max-width: var(--deck-w);
+    margin-inline: auto;
   }
 
   /* Without a script the slides are listed one after another, each with its
@@ -107,7 +150,7 @@
     display: grid;
     align-content: start;
     gap: 1.5rem;
-    scroll-margin-top: 6rem;
+    scroll-margin-top: 1.5rem;
   }
 
   .deck-figure {
@@ -115,15 +158,14 @@
   }
 
   .deck-no {
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.22em;
+    font-size: 0.875rem;
     color: var(--color-faint);
   }
 
   .deck-no a {
-    color: var(--color-lime);
+    color: var(--color-accent);
     text-decoration: none;
   }
 
@@ -136,29 +178,40 @@
     display: none;
   }
 
-  /* Each passage is the middle of a longer text, not the opening of a post. */
-  .deck-text.prose > p:first-child {
-    color: inherit;
-    font-size: inherit;
-    line-height: inherit;
-  }
-
   /* ------------------------------------------------------------ the viewer */
 
-  /* With a script, every slide sits in the same grid cell and only the current
-     one is visible. The cell is as tall as the tallest slide-and-text pair, so
-     the controls under it stay put while the text above them changes length -
-     paging through forty slides never moves the button under the pointer. The
-     first slide is the current one until `src/utils/deck.ts` says otherwise,
-     so the first paint is already the viewer and not a list. */
+  /*
+   * With a script, every slide sits in the same grid cell and only the current
+   * one is visible. The first slide is the current one until
+   * `src/utils/deck.ts` says otherwise, so the first paint is already the
+   * viewer and not a list.
+   *
+   * The controls sit directly under the slide and the text under them. A
+   * slide is always 16:9 of the viewer's width, so the controls are at the
+   * same height for every slide - paging through forty slides never moves the
+   * button under the pointer - and the text, which does change length, is the
+   * last thing in the viewer, where a short one leaves no gap behind it.
+   *
+   * `.deck` is a size container so the controls can be placed at the slide's
+   * height (`--stage-h`: the stage's border plus 9/16 of what is inside it)
+   * without measuring anything in script.
+   */
+  html[data-js] .deck {
+    --stage-h: calc((100cqw - 2px) * 9 / 16 + 2px);
+    --controls-h: 3.75rem;
+    position: relative;
+    container-type: inline-size;
+  }
+
   html[data-js] .deck-track {
     gap: 0;
   }
 
-  /* Lands the viewer just under the sticky nav, which is what lets the slide,
-     its text and the controls all fit on one screen. */
+  /* Lands the viewer just under the top of the screen, which is what lets the
+     slide, the controls and its text all fit on one screen. */
   html[data-js] .deck-row {
-    scroll-margin-top: 4.5rem;
+    gap: calc(var(--controls-h) + 0.75rem);
+    scroll-margin-top: 1rem;
     grid-area: 1 / 1;
     visibility: hidden;
     opacity: 0;
@@ -195,22 +248,24 @@
   }
 
   html[data-js] .deck-controls {
+    position: absolute;
+    top: var(--stage-h);
+    right: 0;
+    left: 0;
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-top: 1.75rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--color-hair);
+    height: var(--controls-h);
   }
 
+  /* Square, hairline, like everything else that is not text. */
   .deck-btn {
     display: grid;
     place-items: center;
     flex: none;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
     border: 1px solid var(--color-hair);
-    border-radius: 999px;
     color: var(--color-copy);
     cursor: pointer;
     transition:
@@ -223,14 +278,14 @@
     height: 1rem;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.75;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    stroke-width: 1.5;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
   }
 
   .deck-btn:hover:not(:disabled) {
-    border-color: var(--color-lime);
-    color: var(--color-lime);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
   .deck-btn:disabled {
@@ -240,29 +295,29 @@
 
   .deck-btn:focus-visible,
   .deck-range:focus-visible {
-    outline: 2px solid var(--color-lime);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
 
+  /* `05 / 46`: data, at the size every other piece of data on the site is. */
   .deck-count {
     flex: none;
-    min-width: 4.75rem;
+    min-width: 4.5rem;
     text-align: center;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.16em;
+    font-size: 0.875rem;
     font-variant-numeric: tabular-nums;
     color: var(--color-faint);
   }
 
   .deck-count b {
-    font-weight: 500;
+    font-weight: 400;
     color: var(--color-copy);
   }
 
-  /* The slider. `--p` is how far through the talk the reader is, set by the
-     script, and fills the track up to the thumb; Firefox draws that part with
-     its own progress pseudo-element instead. */
+  /* The slider: a hairline track, filled in the accent up to a bar-shaped
+     thumb. `--p` is how far through the talk the reader is, set by the
+     script; Firefox draws that part with its own progress pseudo-element. */
   .deck-range {
     flex: 1;
     min-width: 0;
@@ -271,48 +326,42 @@
     background: transparent;
     cursor: pointer;
     appearance: none;
-    border-radius: 999px;
   }
 
   .deck-range::-webkit-slider-runnable-track {
-    height: 3px;
-    border-radius: 999px;
+    height: 2px;
     background: linear-gradient(
       to right,
-      var(--color-lime) var(--p, 0%),
+      var(--color-accent) var(--p, 0%),
       var(--color-hair) var(--p, 0%)
     );
   }
 
   .deck-range::-webkit-slider-thumb {
     appearance: none;
-    width: 0.875rem;
-    height: 0.875rem;
-    margin-top: calc((3px - 0.875rem) / 2);
-    border-radius: 999px;
-    background: var(--color-lime);
-    box-shadow: 0 0 0 4px var(--color-sheet);
+    width: 0.25rem;
+    height: 1rem;
+    margin-top: calc((2px - 1rem) / 2);
+    border-radius: 0;
+    background: var(--color-accent);
   }
 
   .deck-range::-moz-range-track {
-    height: 3px;
-    border-radius: 999px;
+    height: 2px;
     background: var(--color-hair);
   }
 
   .deck-range::-moz-range-progress {
-    height: 3px;
-    border-radius: 999px;
-    background: var(--color-lime);
+    height: 2px;
+    background: var(--color-accent);
   }
 
   .deck-range::-moz-range-thumb {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: 0.25rem;
+    height: 1rem;
     border: 0;
-    border-radius: 999px;
-    background: var(--color-lime);
-    box-shadow: 0 0 0 4px var(--color-sheet);
+    border-radius: 0;
+    background: var(--color-accent);
   }
 
   /* ------------------------------------------------------------- the stage */
@@ -321,7 +370,7 @@
     container-type: inline-size;
     overflow: hidden;
     border: 1px solid var(--color-hair);
-    border-radius: 1rem;
+    border-radius: 0;
   }
 
   .d-slide {

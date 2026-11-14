@@ -7,7 +7,7 @@
  */
 
 import { Marked, type Token, type Tokens, type TokenizerAndRendererExtension } from "marked";
-import { createHighlighter, type Highlighter } from "shiki";
+import { createCssVariablesTheme, createHighlighter, type Highlighter } from "shiki";
 import { slugify } from "./frontmatter";
 
 /** Loaded up front because shiki needs its grammars before the first render. */
@@ -52,13 +52,16 @@ const LANGUAGE_ALIASES: Record<string, string> = {
 };
 
 /**
- * Both themes are baked into the markup at build time. With `defaultColor:
- * false` shiki emits `--shiki-light` and `--shiki-dark` custom properties on
- * every token instead of a colour, and `prose.css` picks the pair that matches
- * the reader's theme. Toggling is then a CSS switch, with no re-highlighting
- * and no second copy of the code.
+ * Listings are set the way a paper sets them: in ink, with strings a step
+ * lighter and comments and punctuation receding, and no colour of their own.
+ *
+ * The theme writes `var(--shiki-token-*)` on every token instead of a colour,
+ * and src/prose.css maps those variables onto the site's colour roles, so a
+ * listing follows the light and dark themes with no second copy of the code
+ * and nothing re-highlighted.
  */
-const THEMES = { light: "github-light", dark: "github-dark-default" } as const;
+const THEME_NAME = "ink";
+const THEME = createCssVariablesTheme({ name: THEME_NAME, fontStyle: false });
 
 const CALLOUT_KINDS = ["note", "tip", "warn"] as const;
 type CalloutKind = (typeof CALLOUT_KINDS)[number];
@@ -73,7 +76,7 @@ let highlighterPromise: Promise<Highlighter> | null = null;
 
 function getHighlighter(): Promise<Highlighter> {
   highlighterPromise ??= createHighlighter({
-    themes: [THEMES.light, THEMES.dark],
+    themes: [THEME],
     langs: [...LANGUAGES],
   });
   return highlighterPromise;
@@ -121,8 +124,7 @@ export async function renderMarkdown(
 
       code.highlighted = highlighter.codeToHtml(code.text, {
         lang: known ? lang : "text",
-        themes: THEMES,
-        defaultColor: false,
+        theme: THEME_NAME,
       });
     },
 
@@ -135,13 +137,15 @@ export async function renderMarkdown(
           toc.push({ id, text: token.text, depth: token.depth });
         }
 
-        // The anchor sits inside the heading so it can be revealed on hover
-        // without shifting the text, and it is hidden from screen readers
-        // because the heading itself is already the landmark.
+        // The anchor comes first and is empty: src/prose.css draws the
+        // section number into it, so the number is the heading's own link, the
+        // way a numbered section in a spec is. It is hidden from screen readers
+        // because the heading itself is already the landmark, and a feed
+        // reader without the stylesheet shows nothing where it is.
         return (
-          `<h${token.depth} id="${id}">${text}` +
-          `<a class="heading-anchor" href="#${id}" aria-hidden="true" tabindex="-1">#</a>` +
-          `</h${token.depth}>\n`
+          `<h${token.depth} id="${id}">` +
+          `<a class="heading-anchor" href="#${id}" aria-hidden="true" tabindex="-1"></a>` +
+          `${text}</h${token.depth}>\n`
         );
       },
 
@@ -199,7 +203,7 @@ export async function renderMarkdown(
 }
 
 /**
- * Block extension for the coloured inserts the posts lean on:
+ * Block extension for the callouts the posts lean on (Note, Tip, Careful):
  *
  * ```
  * :::note

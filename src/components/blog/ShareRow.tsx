@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { SITE } from "@/data/content";
 import type { PostMeta } from "@/data/posts";
-import { cn } from "@/utils/cn";
 
-/** Share targets and a copy-link button, for the end of a post. */
+/** Where to send the note, as one line of text links and a copy-link action. */
 export function ShareRow({ post }: { post: PostMeta }) {
   const [copied, setCopied] = useState(false);
   const url = `${SITE.blog}/blog/${post.slug}`;
@@ -24,41 +23,36 @@ export function ShareRow({ post }: { post: PostMeta }) {
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
       // Clipboard access is denied in some browsers unless the page is focused;
-      // the share links above still work, so there is nothing to recover from.
+      // the share links still work, so there is nothing to recover from.
     }
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="mr-1 font-mono text-[11px] tracking-[0.2em] text-faint uppercase">
-        Share
-      </span>
-
-      {targets.map((target) => (
-        <a
-          key={target.label}
-          href={target.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={ACTION}
-        >
-          {target.label}
-        </a>
+    <p className="text-muted">
+      Share on{" "}
+      {targets.map((target, i) => (
+        <span key={target.label}>
+          <a href={target.href} target="_blank" rel="noopener noreferrer">
+            {target.label}
+          </a>
+          {i < targets.length - 2 ? ", " : i === targets.length - 2 ? " or " : ""}
+        </span>
       ))}
-
+      , or{" "}
       <button
         type="button"
         onClick={copy}
-        className={cn(ACTION, copied && "border-lime/50 text-lime")}
+        className="cursor-pointer text-accent underline decoration-accent/45 decoration-1 underline-offset-[0.18em] transition-[text-decoration-color] hover:decoration-current"
       >
-        {copied ? "Copied" : "Copy link"}
+        copy the link
       </button>
-    </div>
+      .{" "}
+      <span aria-live="polite" className="text-faint">
+        {copied ? "Copied." : ""}
+      </span>
+    </p>
   );
 }
-
-const ACTION =
-  "rounded-full border border-hair bg-copy/[0.04] px-3.5 py-1.5 font-mono text-[11px] text-muted transition-colors hover:border-lime/45 hover:text-copy";
 
 function enc(value: string): string {
   return encodeURIComponent(value);

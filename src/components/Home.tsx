@@ -1,12 +1,15 @@
-import { Hero } from "@/components/hero/Hero";
-import { About } from "@/components/sections/About";
-import { Contact } from "@/components/sections/Contact";
-import { Projects } from "@/components/sections/Projects";
-import { Writing } from "@/components/sections/Writing";
-import { SITE, SOCIALS } from "@/data/content";
+import { Dot } from "@/components/doc/Dot";
+import { TitleBlock } from "@/components/doc/TitleBlock";
+import { Contact } from "@/components/home/Contact";
+import { Notes } from "@/components/home/Notes";
+import { Projects } from "@/components/home/Projects";
+import { Record } from "@/components/home/Record";
+import { Stack } from "@/components/home/Stack";
+import { ABSTRACT, CV_HREF, ROLE_LINE, SITE, SOCIALS } from "@/data/content";
 import { useHead } from "@/utils/head";
+import { linkProps } from "@/utils/links";
 
-/** The one-page portfolio: the ordered stack of sections at `/`. */
+/** The home page: a title block, an abstract, and the numbered sections. */
 export function Home() {
   useHead({
     title: `${SITE.name} - ${SITE.role}`,
@@ -28,13 +31,32 @@ export function Home() {
   });
 
   return (
-    <>
-      <Hero />
-      <About />
-      {/* `Focus` is parked, not deleted - see PARKED_SECTIONS in data/sections.ts. */}
-      <Writing />
-      <Projects />
-      <Contact />
-    </>
+    <div className="page">
+      <div className="column">
+        <TitleBlock title={SITE.name} subtitle={ROLE_LINE} abstract={ABSTRACT}>
+          {/* The author line of a paper: where to reach the person. */}
+          <p className="mt-5 text-[1rem] sm:text-[1.0625rem]">
+            {[
+              ...SOCIALS.map((social) => ({
+                label: social.label === "Email" ? social.handle : social.label,
+                href: social.href,
+              })),
+              { label: "CV (PDF)", href: CV_HREF },
+            ].map((link, i) => (
+              <span key={link.href}>
+                {i > 0 && <Dot />}
+                <a {...linkProps(link.href)}>{link.label}</a>
+              </span>
+            ))}
+          </p>
+        </TitleBlock>
+
+        <Record />
+        <Stack />
+        <Notes />
+        <Projects />
+        <Contact />
+      </div>
+    </div>
   );
 }

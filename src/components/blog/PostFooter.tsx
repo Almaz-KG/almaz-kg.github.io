@@ -1,96 +1,87 @@
 import avatar from "@/assets/almaz-avatar.webp";
+import { Dot } from "@/components/doc/Dot";
 import { SITE, SOCIALS } from "@/data/content";
 import { neighbours, type PostMeta } from "@/data/posts";
+import { linkProps } from "@/utils/links";
 import { ShareRow } from "./ShareRow";
-import { Tag } from "./Tag";
 
-/** Tags, sharing, who wrote this, and where to go next. */
+/**
+ * The end matter of a note, in the order a paper has it: what it is filed
+ * under, who wrote it, and what to read next.
+ */
 export function PostFooter({ post }: { post: PostMeta }) {
   const { previous, next } = neighbours(post.slug);
 
   return (
-    <footer className="measure mt-20">
-      <div className="border-t border-hair pt-8">
-        {post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
-              <Tag key={tag}>{tag}</Tag>
-            ))}
-          </div>
-        )}
+    <footer className="mt-16 border-t border-hair pt-6">
+      {post.tags.length > 0 && (
+        <p className="text-muted">
+          Filed under{" "}
+          {post.tags.map((tag, i) => (
+            <span key={tag}>
+              {i > 0 && ", "}
+              <a href={`/blog?tag=${encodeURIComponent(tag)}`}>{tag}</a>
+            </span>
+          ))}
+          .
+        </p>
+      )}
 
-        <div className="mt-6">
-          <ShareRow post={post} />
-        </div>
+      <div className="mt-2">
+        <ShareRow post={post} />
       </div>
 
-      <div className="mt-10 flex flex-col gap-5 rounded-3xl border border-hair bg-inset p-6 sm:flex-row sm:items-start">
+      {/* An author's note, set the way a journal sets one: a small portrait
+          beside a paragraph, the name run in. */}
+      <div className="mt-10 grid grid-cols-[4rem_minmax(0,1fr)] gap-x-5">
         <img
           src={avatar}
           alt=""
           width={64}
           height={64}
           loading="lazy"
-          className="h-16 w-16 shrink-0 rounded-2xl object-cover"
+          className="h-16 w-16 border border-hair object-cover"
         />
-
-        <div>
-          <p className="font-semibold text-copy">{SITE.name}</p>
-          <p className="mt-2 text-sm leading-relaxed text-muted">
-            {SITE.role}. I build data platforms that survive production, and write down the parts
-            that took longer to understand than they should have.
+        <div className="text-[1rem] leading-normal">
+          <p>
+            <span className="small-caps font-semibold">{SITE.name}</span> builds data platforms that
+            do not fit on one machine, and writes down the parts that took longer to understand than
+            they should have.
           </p>
-
-          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-            {SOCIALS.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono text-[11px] tracking-wide text-faint transition-colors hover:text-lime"
-              >
-                {social.label.toLowerCase()}
-              </a>
+          <p className="mt-1.5">
+            {SOCIALS.map((social, i) => (
+              <span key={social.label}>
+                {i > 0 && <Dot />}
+                <a {...linkProps(social.href)}>{social.label}</a>
+              </span>
             ))}
-          </div>
+          </p>
         </div>
       </div>
 
       {(previous || next) && (
-        <nav aria-label="More notes" className="mt-10 grid gap-4 sm:grid-cols-2">
-          <NeighbourLink post={previous} direction="previous" />
-          <NeighbourLink post={next} direction="next" />
+        <nav aria-label="More notes" className="mt-10 space-y-1.5">
+          <Neighbour post={next} label="Newer" />
+          <Neighbour post={previous} label="Older" />
         </nav>
       )}
 
-      <div className="mt-10 flex justify-center">
-        <a
-          href="/blog"
-          className="font-mono text-[11px] tracking-[0.22em] text-faint uppercase transition-colors hover:text-lime"
-        >
-          ← all notes
-        </a>
-      </div>
+      <p className="mt-8">
+        <a href="/blog">All notes</a>
+      </p>
     </footer>
   );
 }
 
-function NeighbourLink({ post, direction }: { post?: PostMeta; direction: "previous" | "next" }) {
-  // Keeps the two-column grid balanced when a post is first or last.
-  if (!post) return <div className="hidden sm:block" />;
+function Neighbour({ post, label }: { post?: PostMeta; label: string }) {
+  if (!post) return null;
 
   return (
-    <a
-      href={`/blog/${post.slug}`}
-      className="group rounded-2xl border border-hair bg-inset p-5 transition-colors hover:border-lime/40"
-    >
-      <span className="font-mono text-[10px] tracking-[0.24em] text-faint uppercase">
-        {direction === "previous" ? "← Older" : "Newer →"}
-      </span>
-      <p className="mt-2 leading-snug font-medium text-balance text-copy transition-colors group-hover:text-lime">
+    <p>
+      <span className="small-caps mr-[0.4em] text-faint">{label}</span>
+      <a href={`/blog/${post.slug}`} className="link-quiet font-semibold">
         {post.title}
-      </p>
-    </a>
+      </a>
+    </p>
   );
 }

@@ -1,3 +1,4 @@
+import { execFileSync } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
 import tailwindcss from "@tailwindcss/vite";
@@ -10,12 +11,30 @@ const __dirname = path.dirname(__filename);
 
 const SITE = "https://almaz.murzabekov.net";
 
+/**
+ * The commit this build was made from, printed in the colophon as the
+ * document's revision. Read at config time, so the client bundle and the
+ * pre-render agree on it. A checkout without git history still builds.
+ */
+function revision(): { sha: string; date: string } {
+  try {
+    const out = execFileSync("git", ["log", "-1", "--format=%h%n%cs"], { cwd: __dirname });
+    const [sha, date] = out.toString().trim().split("\n");
+    return { sha, date };
+  } catch {
+    return { sha: "unknown", date: "" };
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   // `static/` is served at the site root in dev and copied verbatim into dist/
   // on build. Files here are referenced by absolute path, e.g. the post
   // images at /assets/images/posts/ and the webfonts at /assets/fonts/.
   publicDir: "static",
+  define: {
+    __SITE_REVISION__: JSON.stringify(revision()),
+  },
   plugins: [
     react(),
     tailwindcss(),

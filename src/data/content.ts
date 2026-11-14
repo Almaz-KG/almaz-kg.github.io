@@ -1,23 +1,21 @@
-export const ROLES = [
-  "Data & Infra Engineer",
-  "Lakehouse Builder",
-  "Rustacean",
-  "Pipeline Plumber",
-  "Agent Wrangler",
-  "AI Data Enabler",
-  "MLOps Engineer",
-  "Database Developer",
-  "Founder",
-];
-
 export const SITE = {
   name: "Almaz Murzabekov",
+  /** The job title in `<title>`, link previews and structured data. */
   role: "Senior Data & Infra Engineer",
   email: "almaz@murzabekov.net",
   blog: "https://almaz.murzabekov.net",
+  /** This site's own source, linked from the colophon. */
+  source: "https://github.com/Almaz-KG/almaz.murzabekov.net",
   tagline:
-    "Senior Data & Infra Engineer with 10+ years building high-load, big-data platforms — lately agentic ones.",
+    "Senior Data & Infra Engineer with 10+ years building high-load, big-data platforms, lately agentic ones.",
 };
+
+/** The line under the name in the title block. */
+export const ROLE_LINE = "Senior data and infrastructure engineer";
+
+/** The opening paragraph of the home page, set as the document's abstract. */
+export const ABSTRACT =
+  "I build data platforms that do not fit on one machine. More than ten years on high-load and big-data systems, pipelines at petabyte scale. These days that is GCP: Airflow and dbt for the pipelines, Terraform for the ground they stand on, and multi-agent systems on Vertex AI that take the tedious half of ingestion off my hands. With AI everywhere, the bottleneck moved back to the data, which is where I have always worked. I write down the parts that took longer to understand than they should have.";
 
 export const SOCIALS = [
   { label: "GitHub", href: "https://github.com/Almaz-KG/", handle: "@Almaz-KG" },
@@ -30,11 +28,33 @@ export const SOCIALS = [
   { label: "Email", href: "mailto:almaz@murzabekov.net", handle: "almaz@murzabekov.net" },
 ];
 
-export const STATS = [
-  { value: "10+", label: "years in data" },
-  { value: "PB", label: "scale pipelines" },
-  { value: "MSc", label: "Big Data Systems" },
-  { value: "Certs", label: "GCP Certifications" },
+export const CV_HREF = "/cv.pdf";
+
+/** Experience and education, newest first. `when` is free text: a range or a span. */
+export const RECORD: { when: string; what: string; where: string }[] = [
+  {
+    when: "10+ years",
+    what: "Data engineering",
+    where: "High-load and big-data platforms, pipelines at petabyte scale",
+  },
+  { when: "2019-2021", what: "MSc, Big Data Systems", where: "Higher School of Economics, Moscow" },
+  {
+    when: "2011-2015",
+    what: "BSc, Applied Informatics",
+    where: "Saratov State Technical University",
+  },
+];
+
+/** Certifications, listed under the record table. */
+export const CERTIFICATIONS = "Google Cloud certifications.";
+
+/** What the work is built with, by layer. */
+export const STACK: { layer: string; tools: string }[] = [
+  { layer: "Warehouse and lakehouse", tools: "BigQuery, Databricks, Spark, Delta Lake" },
+  { layer: "Pipelines", tools: "Airflow, dbt, Kafka, Structured Streaming" },
+  { layer: "Infrastructure", tools: "Terraform, Cloud Run, GitHub Actions, Workload Identity" },
+  { layer: "Agents", tools: "Google ADK, Vertex AI Agent Engine" },
+  { layer: "Languages", tools: "Python, SQL, Rust" },
 ];
 
 export const FOCUS = [
@@ -66,20 +86,17 @@ export const FOCUS = [
 
 export type Project = {
   title: string;
-  year: string;
+  /** When it started, and whether it is still going, e.g. "2026 onwards". */
+  when: string;
   kind: string;
   body: string;
   /**
-   * Where the card leads. A site path such as `/blog?tag=...` stays in this tab
+   * Where the entry leads. A site path such as `/blog?tag=...` stays in this tab
    * and is routed client-side; a full URL opens a new one.
    */
   href: string;
-  /** Label of the main link, e.g. "Read the notes". */
+  /** Label of the link, e.g. "Notes". */
   cta: string;
-  stack?: string[];
-  repo?: string;
-  /** Square logo mark, transparent background. */
-  logo?: string;
 };
 
 /**
@@ -88,24 +105,15 @@ export type Project = {
  */
 export const PROJECTS: Project[] = [
   {
-    title: "Building My Own LLM",
-    year: "2026 ->",
+    title: "Building my own LLM",
+    when: "2026 onwards",
     kind: "Build log",
-    body: "Building a language model from scratch, one component at a time. The notes from the way live on the blog.",
+    body: "A language model from scratch, one component at a time.",
     href: "/blog?tag=building-own-llm",
-    cta: "Read the notes",
+    cta: "Notes",
   },
 ];
 
-export const TIMELINE = [
-  {
-    period: "2019 — 2021",
-    title: "MSc, Big Data Systems",
-    org: "Higher School of Economics, Moscow",
-  },
-  {
-    period: "2011 — 2015",
-    title: "BSc, Applied Informatics",
-    org: "Saratov State Technical University",
-  },
-];
+/** The closing paragraph of the home page, before the address. */
+export const CONTACT_LINE =
+  "Consulting, collaboration, a podcast, or an argument about whether the medallion architecture is over-hyped: my inbox is open.";

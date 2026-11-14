@@ -2,49 +2,62 @@ import type { TocEntry } from "@/data/posts";
 import { useActiveHeading } from "@/utils/hooks/useActiveHeading";
 import { cn } from "@/utils/cn";
 
-/** Sticky contents rail, shown beside the text on wide screens only. */
+/**
+ * The note's contents, numbered the way its body numbers its sections
+ * (`chapter` and `section` counters in src/prose.css): 1, 1.1, 1.2, 2. The
+ * section being read is set in ink, the rest recede.
+ */
 export function Toc({ entries }: { entries: TocEntry[] }) {
   const active = useActiveHeading(entries);
 
   if (entries.length < 3) return null;
 
-  // The body numbers its chapters (see the `chapter` counter in prose.css), so
-  // the rail numbers the same ones - otherwise the two read as different maps.
-  let chapter = 0;
-
   return (
-    <aside className="hidden xl:block">
-      <nav aria-label="On this page" className="sticky top-24">
-        <p className="font-mono text-[10px] tracking-[0.24em] text-faint uppercase">On this page</p>
+    <nav aria-label="Contents" className="text-[0.9375rem] leading-snug">
+      <p className="small-caps font-semibold">Contents</p>
 
-        <ul className="mt-4 space-y-1 border-l border-hair">
-          {entries.map((entry) => {
-            const number = entry.depth === 2 ? String(++chapter).padStart(2, "0") : null;
+      <ol className="mt-3 space-y-1.5">
+        {numbered(entries).map(({ entry, number }) => {
+          const current = active === entry.id;
 
-            return (
-              <li key={entry.id} className={cn(number && chapter > 1 && "pt-3")}>
-                <a
-                  href={`#${entry.id}`}
+          return (
+            <li key={entry.id} className={cn(entry.depth === 3 && "pl-6")}>
+              <a
+                href={`#${entry.id}`}
+                aria-current={current ? "location" : undefined}
+                className={cn("link-quiet flex gap-2.5", current ? "text-copy" : "text-muted")}
+              >
+                <span
                   className={cn(
-                    "-ml-px flex items-baseline gap-2 border-l py-1 text-[13px] leading-snug transition-colors",
-                    // Sub-entries indent to where a chapter's title starts, past
-                    // its number, so the rail reads as one hanging column.
-                    entry.depth === 3 ? "pr-2 pl-9" : "pr-2 pl-4",
-                    active === entry.id
-                      ? "border-lime text-copy"
-                      : "border-transparent text-faint hover:text-copy",
+                    "figures-tabular shrink-0",
+                    entry.depth === 2 ? "w-4" : "w-6",
+                    current ? "text-accent" : "text-faint",
                   )}
                 >
-                  {number && (
-                    <span className="shrink-0 font-mono text-[10px] text-lime/80">{number}</span>
-                  )}
-                  <span>{entry.text}</span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-    </aside>
+                  {number}
+                </span>
+                <span className="text-pretty">{entry.text}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
   );
+}
+
+/** `1`, `1.1`, `1.2`, `2`: the numbers the body's counters give the same headings. */
+function numbered(entries: TocEntry[]): { entry: TocEntry; number: string }[] {
+  let chapter = 0;
+  let section = 0;
+
+  return entries.map((entry) => {
+    if (entry.depth === 2) {
+      chapter += 1;
+      section = 0;
+      return { entry, number: String(chapter) };
+    }
+    section += 1;
+    return { entry, number: `${chapter}.${section}` };
+  });
 }

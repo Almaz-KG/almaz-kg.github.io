@@ -3,92 +3,65 @@
 @import "./prose.css";
 @import "./deck.css";
 
+/*
+ * The site is set as a technical report: paper, ink, one hyperlink colour.
+ *
+ * Every colour below is a role, not a hue, and every one of them is declared
+ * again for the dark theme, so a component written with `text-muted` or
+ * `border-hair` is correct in both without a single `dark:` class.
+ */
 @theme {
-  /* The "* Fallback" entries are metric-matched re-cuts of a local font, so
-     text laid out before the webfont arrives occupies the same space and the
-     swap does not shift the page. See fonts.css. */
-  --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, monospace;
-  --font-serif: "Instrument Serif", "Instrument Serif Fallback", ui-serif, Georgia, serif;
+  /* The "* Fallback" faces are the system fonts re-cut to these metrics, so
+     text laid out before the webfont arrives does not move when it does.
+     See scripts/fonts.ts. */
+  --font-serif: "Libertinus Serif", "Libertinus Serif Fallback", ui-serif, Georgia, serif;
+  --font-mono: "Inconsolata", "Inconsolata Fallback", ui-monospace, monospace;
 
-  --color-ink: #07070c;
-  --color-ink-2: #0c0c14;
-  --color-ink-3: #12121c;
-  --color-lime: #b6ff2e;
-  --color-aqua: #2ff0d0;
-  --color-violet: #8b7bff;
-  --color-citrus: #ff7a45;
-  --color-bone: #ecebe6;
+  --color-page: #fcfcfa; /* the paper */
+  --color-sheet: #fcfcfa; /* kept equal to the page: the document has no cards */
+  --color-inset: #f3f2ee; /* code listings, the one tinted surface */
+  --color-hair: #dcdad3; /* hairline rules */
+  --color-copy: #18181b; /* ink: text, headings, the heavy table rules */
 
   /*
-   * Surface tokens. These are the only colours the blog is built from, and
-   * every one of them is re-declared below for the reading surface - so the
-   * same `bg-sheet` or `text-copy/60` renders dark on the landing page and
-   * light in a post, with no per-theme class names in the components.
+   * Secondary text is a token rather than `text-copy/60`: an alpha is the same
+   * number in both themes and does not mean the same thing in both. These are
+   * picked per theme to clear 4.5:1 on the page at the sizes they are set in.
    */
-  --color-page: #07070c; /* the page itself */
-  --color-sheet: #0e0e16; /* the panel the text sits on */
-  --color-inset: #0b0b12; /* panels within the sheet: code, callouts */
-  --color-hair: #23232f; /* every border */
-  --color-copy: #ecebe6; /* primary text */
+  --color-muted: #55555c; /* descriptions, the role line, secondary copy */
+  --color-faint: #6b6b72; /* dates, durations, captions */
 
-  /*
-   * Secondary text is a token rather than `text-copy/45`, because an alpha is
-   * the same number in both themes and does not mean the same thing in both:
-   * 45% of near-white on a dark sheet still reads, 45% of near-black on white
-   * lands around 2.6:1. These two are picked per theme to clear 4.5:1 at the
-   * 11px the meta lines are set in.
-   */
-  --color-muted: #a6a6b0; /* descriptions, decks, secondary copy */
-  --color-faint: #83838f; /* mono meta, captions, nav labels */
+  /* The hyperlink colour, and the only colour that is not ink. It marks what
+     can be followed, the section numbers, and focus. */
+  --color-accent: #1f4aa8;
 }
 
 /*
- * The reading surface: /blog and every post.
- *
- * Set on <html> by the inline script in index.html, from the URL and the
- * stored theme, so the first paint is already the right colour. `App` keeps it
- * in sync across client-side navigation.
- *
- * The landing page never carries this attribute: it is a dark neon design, not
- * a themeable one, and a light version of it would be a different site.
+ * The same document under a lamp. Set on <html> by the inline script in
+ * index.html before the first paint, from the stored choice or the system.
  */
-html[data-surface="reading"] {
-  /* Cooler and a step lighter than the landing page's near-black, so arriving
-     here reads as changing rooms rather than scrolling further. The gap between
-     page and sheet is deliberately wider than it would be on a light theme:
-     dark surfaces need more separation to register as separate at all. */
-  --color-page: #0c0e14;
-  --color-sheet: #151922;
-  --color-inset: #0e1117;
-  --color-hair: #262b36;
-  --color-copy: #ecebe6;
-  --color-muted: #a8a8b4;
-  --color-faint: #83838f;
-}
-
-html[data-surface="reading"][data-theme="light"] {
-  --color-page: #f2f2f5;
-  --color-sheet: #ffffff;
-  --color-inset: #f6f6f9;
-  --color-hair: #e0e0e7;
-  --color-copy: #16161c;
-  --color-muted: #52525c;
-  --color-faint: #6a6a76;
-
-  /* The neon accents are unreadable on white, so the reading surface gets
-     darker cuts of the same four hues. Every `text-lime`, `border-aqua/30`
-     and gradient in the blog picks these up automatically. */
-  --color-lime: #4e7a0b;
-  --color-aqua: #0a7365; /* darker than it looks like it needs: this is the
-                            colour of inline code, at 0.85em */
-  --color-violet: #5b4bd6;
-  --color-citrus: #c9490f;
+html[data-theme="dark"] {
+  --color-page: #141416;
+  --color-sheet: #141416;
+  --color-inset: #1c1c1f;
+  --color-hair: #303035;
+  --color-copy: #e8e6e1;
+  --color-muted: #aeaca6;
+  --color-faint: #95938d;
+  --color-accent: #93b4f5;
 }
 
 @layer base {
   * {
     -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
   }
 
   /*
@@ -100,151 +73,80 @@ html[data-surface="reading"][data-theme="light"] {
    */
 
   body {
-    /* Driven by the surface tokens so the overscroll area and the scrollbar
-       gutter match the page instead of staying black behind a light post. */
     background-color: var(--color-page);
     color: var(--color-copy);
-    font-family: var(--font-display);
-    overflow-x: hidden;
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    /* Kerning and the standard ligatures are on by default; old-style figures
+       are not, and running text reads better with them. Tables and dates turn
+       them back to lining, tabular figures where they line up in columns. */
+    font-variant-numeric: oldstyle-nums proportional-nums;
+    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Tells the browser which way to render form controls and the scrollbar. */
-  html[data-surface="reading"][data-theme="light"] {
-    color-scheme: light;
+  @media (min-width: 48rem) {
+    body {
+      font-size: 1.1875rem;
+    }
   }
 
   ::selection {
-    background: var(--color-lime);
-    color: var(--color-sheet);
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    color: var(--color-copy);
   }
 
-  ::-webkit-scrollbar {
-    width: 10px;
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 1px;
   }
-  ::-webkit-scrollbar-track {
-    background: var(--color-page);
+
+  /* A link in running text: the hyperlink colour, a hairline underline that
+     thickens on hover. Navigation links override the colour, not the line. */
+  a {
+    color: var(--color-accent);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    text-underline-offset: 0.18em;
+    transition: text-decoration-color 0.15s ease;
   }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-hair);
-    border-radius: 999px;
-    border: 3px solid var(--color-page);
+
+  a:hover {
+    text-decoration-color: currentColor;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-lime);
+
+  html {
+    scrollbar-color: var(--color-hair) var(--color-page);
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    background-image: linear-gradient(
-      100deg,
-      var(--color-lime) 0%,
-      var(--color-aqua) 42%,
-      var(--color-violet) 78%,
-      var(--color-citrus) 100%
-    );
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: hue-slide 9s ease-in-out infinite alternate;
+  /* Real small capitals from the font, not shrunken capitals. Labels, the
+     author's name, the running head. */
+  .small-caps {
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.045em;
   }
 
-  .glass {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
-    backdrop-filter: blur(14px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Numbers that line up in a column: dates, table cells, durations. */
+  .figures-tabular {
+    font-variant-numeric: lining-nums tabular-nums;
   }
 
-  .grain::after {
-    content: "";
-    position: fixed;
-    inset: -50%;
-    pointer-events: none;
-    z-index: 60;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* A link that is navigation rather than a reference: ink until hovered. */
+  .link-quiet {
+    color: inherit;
+    text-decoration-color: transparent;
   }
 
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  .link-quiet:hover {
+    color: var(--color-accent);
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
   }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition:
-      opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .reveal.is-in {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes hue-slide {
-  from {
-    background-position: 0% 50%;
-  }
-  to {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes float-slow {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(3%, -4%, 0) scale(1.08);
-  }
-}
-
-@keyframes float-slower {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1.05);
-  }
-  50% {
-    transform: translate3d(-4%, 3%, 0) scale(0.95);
-  }
-}
-
-@keyframes blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes spin-slow {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-float-slow {
-  animation: float-slow 18s ease-in-out infinite;
-}
-.animate-float-slower {
-  animation: float-slower 24s ease-in-out infinite;
-}
-.animate-blink {
-  animation: blink 1.05s step-end infinite;
-}
-.animate-spin-slow {
-  animation: spin-slow 26s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -255,8 +157,142 @@ html[data-surface="reading"][data-theme="light"] {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .reveal {
-    opacity: 1;
-    transform: none;
+}
+
+/*
+ * The page: one centred text column, with a margin either side of it on wide
+ * screens that the section numbers hang into, as they would on a printed page.
+ *
+ * `--measure` is the reading width. Libertinus is a narrow face, so 36rem at
+ * the body size is about 70 characters a line.
+ */
+@layer base {
+  :root {
+    --measure: 36rem;
+    --gutter: 3.5rem;
+    --page-pad: 1.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    :root {
+      --page-pad: 2rem;
+    }
+  }
+}
+
+@layer components {
+  /* Everything on every page sits in this box: the running head, the column,
+     the colophon. Below `lg` it is the measure; from `lg` it adds the margins. */
+  .page {
+    width: 100%;
+    max-width: calc(var(--measure) + 2 * var(--page-pad));
+    margin-inline: auto;
+    padding-inline: var(--page-pad);
+  }
+
+  /* The text column inside the page, inset by the margins on wide screens. */
+  .column {
+    width: 100%;
+  }
+
+  /* A section number: before the heading on a phone, hanging in the left
+     margin from `lg`, so the headings themselves line up with the text. The
+     numbered headings of a note (src/prose.css) are the same thing. */
+  .hang,
+  .prose :is(h2, h3) {
+    position: relative;
+  }
+
+  .hang-number,
+  .prose :is(h2, h3) > .heading-anchor {
+    margin-right: 0.6em;
+    color: var(--color-accent);
+    font-variant-numeric: lining-nums tabular-nums;
+    text-decoration: none;
+  }
+
+  @media (min-width: 64rem) {
+    .page {
+      max-width: calc(var(--measure) + 2 * var(--gutter) + 2 * var(--page-pad));
+    }
+
+    .column {
+      padding-inline: var(--gutter);
+    }
+
+    .hang-number,
+    .prose :is(h2, h3) > .heading-anchor {
+      position: absolute;
+      right: 100%;
+      margin-right: 1.1rem;
+    }
+  }
+
+  /*
+   * A table set the way a paper sets one: a heavy rule above, a light one
+   * under the head, a heavy one below, and no vertical lines at all.
+   *
+   * The rules are 2px and 1px, not the 1.5px and 0.75px a printer would use:
+   * on a screen at 1x both of those snap to one device pixel, and heavy, light
+   * and heavy become three identical lines.
+   *
+   * On a phone the columns do not fit, so each row becomes a short block and
+   * the head is dropped: the cells say what they are by their position.
+   */
+  .ruled {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid var(--color-copy);
+    border-bottom: 2px solid var(--color-copy);
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .ruled thead th {
+    padding: 0.45rem 1rem 0.4rem 0;
+    border-bottom: 1px solid var(--color-copy);
+    font-weight: 600;
+    text-align: left;
+    vertical-align: bottom;
+  }
+
+  /* A row header (`<th scope="row">`) sits in the row like any cell; its
+     weight comes from the markup. */
+  .ruled tbody :is(th, td) {
+    padding: 0.45rem 1rem 0.45rem 0;
+    font-weight: inherit;
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  .ruled :is(th, td):last-child {
+    padding-right: 0;
+  }
+
+  .ruled tbody tr:first-child :is(th, td) {
+    padding-top: 0.6rem;
+  }
+
+  .ruled tbody tr:last-child :is(th, td) {
+    padding-bottom: 0.6rem;
+  }
+
+  @media (max-width: 39.99rem) {
+    .ruled thead {
+      display: none;
+    }
+
+    .ruled tbody tr {
+      display: block;
+      padding-block: 0.55rem;
+    }
+
+    .ruled tbody tr + tr {
+      border-top: 1px solid var(--color-hair);
+    }
+
+    .ruled tbody :is(th, td) {
+      display: block;
+      padding: 0 !important;
+    }
   }
 }

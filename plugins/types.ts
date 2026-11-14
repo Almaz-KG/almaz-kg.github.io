@@ -11,7 +11,7 @@ import type { TocEntry } from "./render";
 
 export type { TocEntry };
 
-/** Accent colours, mirroring `src/utils/tones.ts`. */
+/** A colour name from the earlier design. Still accepted in front matter so existing posts validate; nothing renders it. */
 export type PostTone = "lime" | "aqua" | "violet" | "citrus";
 
 /**

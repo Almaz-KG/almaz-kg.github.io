@@ -10,7 +10,7 @@
  *
  * So the animation lives here, in a rAF loop over `behavior: "instant"` steps,
  * which every browser performs the same way. `scroll-margin-top` stays the
- * source of truth for the offset, so the sticky header clearance is still set
+ * source of truth for the offset, so the air left above a heading is still set
  * once in CSS next to the heading it belongs to.
  */
 
@@ -33,8 +33,8 @@ function onInterrupt(fn: () => void): () => void {
 }
 
 /**
- * Brings the element with `id` to the top of the viewport, clear of the sticky
- * header by its own `scroll-margin-top`. `animate` is off for history restores,
+ * Brings the element with `id` to the top of the viewport, less its own
+ * `scroll-margin-top`. `animate` is off for history restores,
  * which land rather than travel.
  *
  * Returns `false` when nothing has that id - a post body is a lazy chunk, so a

@@ -1,55 +1,35 @@
 import { useEffect, useRef } from "react";
-import avatar from "@/assets/almaz-avatar.webp";
+import { PostMetaLine } from "@/components/doc/PostMetaLine";
+import { TitleBlock } from "@/components/doc/TitleBlock";
 import { SITE } from "@/data/content";
-import { formatDate, type PostModule } from "@/data/posts";
+import { findPost, type PostMeta, type PostModule } from "@/data/posts";
+import { cn } from "@/utils/cn";
 import { useHead } from "@/utils/head";
 import { mountDeck } from "@/utils/deck";
 import { usePost } from "@/utils/hooks/usePost";
 import { scrollToIdSettling } from "@/utils/scroll";
-import { BlogNav } from "./BlogNav";
 import { NotFound } from "./NotFound";
-import { PostCover } from "./PostCover";
 import { PostFooter } from "./PostFooter";
-import { PostMetaLine } from "./PostMetaLine";
 import { Toc } from "./Toc";
 
 export function PostPage({ slug }: { slug: string }) {
   const state = usePost(slug);
+  const meta = findPost(slug);
 
-  if (state.status === "missing") return <NotFound />;
-  if (state.status === "loading") return <PostSkeleton />;
+  if (state.status === "missing" || !meta) return <NotFound />;
 
-  // Keyed on the slug so switching posts remounts rather than reconciling one
+  // Keyed on the slug so switching notes remounts rather than reconciling one
   // body into another, which would leave the old scroll position mid-article.
-  return <PostView key={slug} post={state.post} />;
+  // While the body's chunk is on its way the title block is already there:
+  // everything in it comes from the build-time index, not from the chunk.
+  return (
+    <PostView key={slug} meta={meta} post={state.status === "ready" ? state.post : undefined} />
+  );
 }
 
-/**
- * The article grid: the sheet in the first column, the contents rail in the
- * second. At xl the container is wider than the rest of the site, because that
- * is the only width at which the rail, the sheet's padding and a figure that
- * breaks out past the text all fit without fighting each other.
- */
-const ARTICLE =
-  "mx-auto grid w-full max-w-6xl gap-12 px-5 pt-24 pb-24 sm:px-8 sm:pt-28 xl:max-w-[78rem] xl:grid-cols-[minmax(0,1fr)_13rem]";
-
-/**
- * A post that walks through a talk shows its slides in a viewer, and the sheet
- * is sized to hug it: `--deck-w` (src/deck.css) plus the article's and the
- * sheet's horizontal padding and the sheet's border. There is no contents
- * rail - the slides are the post's own map, the slider pages through them and
- * each one is linkable.
- */
-const DECK_ARTICLE =
-  "mx-auto w-full max-w-[min(88rem,calc(var(--deck-w)+10rem+2px))] px-5 pt-24 pb-24 sm:px-8 sm:pt-28";
-
-/** The reading sheet. Its inner width is exactly one `measure-wide`. */
-const SHEET =
-  "min-w-0 rounded-[1.75rem] border border-hair bg-sheet px-5 py-12 sm:px-8 sm:py-14 md:px-12";
-
-function PostView({ post }: { post: PostModule }) {
-  const { meta, html, toc } = post;
+function PostView({ meta, post }: { meta: PostMeta; post?: PostModule }) {
   const body = useRef<HTMLDivElement>(null);
+  const html = post?.html;
 
   useHead({
     title: `${meta.title} - ${SITE.name}`,
@@ -76,94 +56,96 @@ function PostView({ post }: { post: PostModule }) {
 
   // A deep link names a heading that does not exist yet: the body is a lazy
   // chunk, so the browser looked for the fragment and gave up long before this
-  // markup was committed. Asking again now is the whole fix.
+  // markup was committed. Asking again once it is here is the whole fix.
   useEffect(() => {
-    scrollToIdSettling(window.location.hash.slice(1));
-  }, []);
+    if (html) scrollToIdSettling(window.location.hash.slice(1));
+  }, [html]);
 
-  useEffect(() => (meta.deck && body.current ? mountDeck(body.current) : undefined), [meta.deck]);
+  useEffect(
+    () => (meta.deck && html && body.current ? mountDeck(body.current) : undefined),
+    [meta.deck, html],
+  );
 
-  return (
-    <>
-      <BlogNav title={meta.title} current="post" />
+  // The cover is the note's link preview (`image` in useHead above), not a
+  // figure on the page: a report opens with its title and abstract.
+  const head = (
+    <TitleBlock
+      title={<Title text={meta.title} />}
+      meta={<PostMetaLine post={meta} updated />}
+      abstract={meta.description}
+    />
+  );
 
-      <article className={meta.deck ? DECK_ARTICLE : ARTICLE}>
-        <div className={SHEET}>
-          {/* A deck post's sheet is sized to its slide viewer, and the header spans
-              the same width, so the title and the rule under it end where the
-              slides do. */}
-          <header className={meta.deck ? "w-full" : "measure"}>
-            <PostMetaLine post={meta} />
+  /*
+   * The HTML is compiled from this repository's own markdown at build time,
+   * never from user input, so there is nothing here to sanitise. Until the
+   * chunk arrives the body holds a screen of space, so the colophon does not
+   * jump up under the title.
+   */
+  const content = html ? (
+    <div
+      ref={body}
+      className={cn("mt-14", !meta.deck && "prose")}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  ) : (
+    <div className="mt-14 min-h-screen" />
+  );
 
-            <h1 className="mt-4 text-4xl leading-[1.08] font-semibold tracking-tight text-balance text-copy sm:text-5xl">
-              {meta.title}
-            </h1>
-
-            <p className="mt-5 text-lg leading-relaxed text-muted">{meta.description}</p>
-
-            <div className="mt-7 flex items-center gap-3 border-t border-hair pt-6">
-              <img
-                src={avatar}
-                alt=""
-                width={36}
-                height={36}
-                className="h-9 w-9 rounded-full object-cover"
-              />
-              <div className="font-mono text-[11px] leading-relaxed text-faint">
-                <p className="text-muted">{SITE.name}</p>
-                {meta.updated && <p>updated {formatDate(meta.updated)}</p>}
-              </div>
-            </div>
-          </header>
-
-          {meta.cover && (
-            <figure className={meta.deck ? "mt-12" : "measure-wide mt-12"}>
-              <PostCover post={meta} className="aspect-[21/9] w-full" />
-              {meta.coverAlt && (
-                <figcaption className="mt-3 text-center font-mono text-xs text-faint">
-                  {meta.coverAlt}
-                </figcaption>
-              )}
-            </figure>
-          )}
-
-          {/*
-            The HTML is compiled from this repository's own markdown at build
-            time, never from user input, so there is nothing here to sanitise.
-            A deck post's body carries its own `.prose` wrappers around the
-            text only, so the reading styles never reach into a slide.
-          */}
-          <div
-            ref={body}
-            className={meta.deck ? "mt-14" : "prose mt-14"}
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
-
+  if (meta.deck) {
+    // A note that walks through a talk shows its slides in a viewer wider than
+    // the text, the way a paper sets a figure across both columns. The title,
+    // the text under each slide and the end matter keep the column; see
+    // `.page-deck` in src/deck.css. The slides are the note's own contents,
+    // so there is no contents rail.
+    return (
+      <article className="page page-deck">
+        <div className="column">{head}</div>
+        {content}
+        <div className="column">
           <PostFooter post={meta} />
         </div>
-
-        {!meta.deck && <Toc entries={toc} />}
       </article>
-    </>
+    );
+  }
+
+  return (
+    <article className="page">
+      <div className="column">
+        {head}
+
+        {/* The contents sit in the right margin beside the body, from the first
+            line of it, and follow the reader down. Only from `xl`: narrower,
+            the margin is not there to hold them. */}
+        <div className="relative">
+          {content}
+          <PostFooter post={meta} />
+
+          {post && (
+            <aside className="absolute top-0 bottom-0 left-full ml-[calc(var(--gutter)+2rem)] hidden w-52 xl:block">
+              <div className="sticky top-8 max-h-[calc(100svh-4rem)] overflow-y-auto">
+                <Toc entries={post.toc} />
+              </div>
+            </aside>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }
 
-/** Holds the layout while the post's chunk arrives, so the nav does not jump. */
-function PostSkeleton() {
+/**
+ * A title with a series prefix - "XKE S1: How LLMs are trained" - breaks after
+ * the colon when it has to break at all, so the prefix and the title proper
+ * each stay whole.
+ */
+function Title({ text }: { text: string }) {
+  const match = /^(.+?:)\s+(.+)$/.exec(text);
+  if (!match) return text;
+
   return (
     <>
-      <BlogNav current="post" />
-      <div className={ARTICLE}>
-        <div className={SHEET}>
-          <div className="measure animate-pulse space-y-4">
-            <div className="h-3 w-40 rounded-full bg-copy/10" />
-            <div className="h-10 w-full rounded-lg bg-copy/10" />
-            <div className="h-10 w-2/3 rounded-lg bg-copy/10" />
-            <div className="h-4 w-full rounded-full bg-copy/6" />
-            <div className="h-4 w-5/6 rounded-full bg-copy/6" />
-          </div>
-        </div>
-      </div>
+      {match[1]} <span className="inline-block">{match[2]}</span>
     </>
   );
 }

@@ -1,10 +1,10 @@
+import type { MouseEvent } from "react";
+import { NoteList } from "@/components/doc/NoteList";
+import { TitleBlock } from "@/components/doc/TitleBlock";
 import { POSTS, POST_TAGS } from "@/data/posts";
-import { Reveal } from "@/components/ui";
 import { useHead } from "@/utils/head";
 import { navigate, useSearchParam } from "@/utils/router";
 import { cn } from "@/utils/cn";
-import { BlogNav } from "./BlogNav";
-import { PostCard } from "./PostCard";
 
 const TITLE = "Notes - Almaz Murzabekov";
 const DESCRIPTION =
@@ -13,116 +13,93 @@ const DESCRIPTION =
 export function BlogIndex() {
   useHead({ title: TITLE, description: DESCRIPTION, path: "/blog" });
 
-  // The filter lives in the URL, so a project card can link straight to its
-  // notes and a filtered view can be shared.
+  // The filter lives in the URL, so a project can link straight to its notes
+  // and a filtered view can be shared.
   const tag = useSearchParam("tag");
-  const setTag = (name: string | null) =>
-    navigate(name ? `/blog?tag=${encodeURIComponent(name)}` : "/blog", { replace: true });
 
   // A tag nothing is filed under yet - a project whose first note is still
-  // being written - still shows as the active chip above the empty state,
-  // rather than leaving "All" lit over a list that is not all.
+  // being written - still shows as the current filter above the empty state,
+  // rather than leaving "all" marked over a list that is not all.
   const tags = tag && !POST_TAGS.includes(tag) ? [...POST_TAGS, tag] : POST_TAGS;
   const visible = tag ? POSTS.filter((post) => post.tags.includes(tag)) : POSTS;
-  const [featured, ...rest] = visible;
 
   return (
-    <>
-      <BlogNav current="index" />
-
-      <div className="mx-auto w-full max-w-5xl px-5 pt-28 pb-24 sm:px-8 sm:pt-36 md:pb-32">
-        <header className="max-w-2xl">
-          <Reveal className="flex items-center gap-3 font-mono text-[11px] tracking-[0.28em] text-faint uppercase">
-            <span className="text-lime">/blog</span>
-            {/* <span className="h-px w-8 bg-hair" />
-            <span>{POSTS.length} notes</span> */}
-          </Reveal>
-
-          <Reveal delay={80}>
-            <h1 className="mt-5 text-4xl leading-[1.05] font-semibold tracking-tight text-balance text-copy sm:text-5xl md:text-6xl">
-              Things I write down.
-            </h1>
-          </Reveal>
-
-          <Reveal delay={140}>
-            <p className="mt-5 text-base leading-relaxed text-muted md:text-lg">
-              Working notes on data platforms, distributed systems, AI and Rust.
-            </p>
-          </Reveal>
-        </header>
+    <div className="page">
+      <div className="column">
+        <TitleBlock
+          title="Notes"
+          subtitle="Working notes on data platforms, distributed systems, AI and Rust."
+        />
 
         {tags.length > 0 && (
-          <Reveal delay={200}>
-            <nav
-              aria-label="Filter notes by tag"
-              className="no-scrollbar mt-12 flex gap-2 overflow-x-auto pb-1"
-            >
-              <TagButton active={tag === null} onClick={() => setTag(null)}>
-                All
-              </TagButton>
-
-              {tags.map((name) => (
-                <TagButton key={name} active={tag === name} onClick={() => setTag(name)}>
+          // Set as a paper's keywords line, each keyword a filter.
+          <nav aria-label="Filter notes by tag" className="mt-8 text-muted">
+            <span className="small-caps mr-[0.4em] font-semibold text-copy">Keywords.</span>
+            <FilterLink current={tag === null} href="/blog">
+              all
+            </FilterLink>
+            {tags.map((name) => (
+              <span key={name}>
+                {", "}
+                <FilterLink current={tag === name} href={`/blog?tag=${encodeURIComponent(name)}`}>
                   {name}
-                </TagButton>
-              ))}
-            </nav>
-          </Reveal>
+                </FilterLink>
+              </span>
+            ))}
+          </nav>
         )}
 
         {visible.length === 0 ? (
-          <p className="mt-16 font-mono text-sm text-faint">
-            Nothing here yet. The first note is being written.
+          <p className="mt-10 text-muted">
+            {tag ? (
+              <>
+                Nothing is filed under <em>{tag}</em> yet.
+              </>
+            ) : (
+              "No notes published yet. The first one is being written."
+            )}
           </p>
         ) : (
-          <div className="mt-8 grid gap-5">
-            <Reveal>
-              <PostCard post={featured} featured />
-            </Reveal>
-
-            {rest.map((post, i) => (
-              <Reveal key={post.slug} delay={Math.min(i, 4) * 70}>
-                <PostCard post={post} />
-              </Reveal>
-            ))}
-          </div>
+          <NoteList posts={visible} className="mt-10" />
         )}
 
-        <Reveal className="mt-16 flex justify-center">
-          <a
-            href="/rss.xml"
-            className="font-mono text-[11px] tracking-[0.22em] text-faint uppercase transition-colors hover:text-lime"
-          >
-            subscribe via rss
-          </a>
-        </Reveal>
+        <p className="mt-12 text-muted">
+          New notes arrive in the <a href="/rss.xml">RSS feed</a>.
+        </p>
       </div>
-    </>
+    </div>
   );
 }
 
-function TagButton({
-  active,
-  onClick,
+/**
+ * A filter is a link, so it can be opened in a new tab and copied, but a click
+ * replaces the history entry rather than adding one per tag tried.
+ */
+function FilterLink({
+  current,
+  href,
   children,
 }: {
-  active: boolean;
-  onClick: () => void;
+  current: boolean;
+  href: string;
   children: string;
 }) {
+  function onClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    event.preventDefault();
+    navigate(href, { replace: true });
+  }
+
   return (
-    <button
-      type="button"
+    <a
+      href={href}
       onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        "shrink-0 rounded-full border px-3.5 py-1.5 font-mono text-[11px] tracking-wide whitespace-nowrap transition-colors",
-        active
-          ? "border-lime/50 bg-lime/12 text-lime"
-          : "border-hair bg-sheet text-muted hover:border-lime/40 hover:text-copy",
-      )}
+      aria-current={current ? "true" : undefined}
+      className={cn(current && "text-copy no-underline")}
     >
       {children}
-    </button>
+    </a>
   );
 }
